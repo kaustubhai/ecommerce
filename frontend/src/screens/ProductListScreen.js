@@ -11,6 +11,7 @@ import {
   createProduct,
 } from '../actions/productActions'
 import { PRODUCT_CREATE_RESET } from '../constants/productConstants'
+import Helmet from 'react-helmet'
 
 const ProductListScreen = ({ history, match }) => {
   const pageNumber = match.params.pageNumber || 1
@@ -72,6 +73,11 @@ const ProductListScreen = ({ history, match }) => {
 
   return (
     <>
+    <Helmet>
+        <meta charSet="utf-8" />
+        <title>Products | ProShop</title>
+        <link rel="canonical" />
+    </Helmet>
       <Row className='align-items-center'>
         <Col>
           <h1>Products</h1>

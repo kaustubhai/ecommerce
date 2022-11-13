@@ -58,7 +58,8 @@ export const cartReducer = (
       return {
         ...state,
         discount: action.payload,
-       }
+        error: action.payload === 0 ? 'Invalid Coupon' : null
+      }
     default:
       return state
   }

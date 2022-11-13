@@ -11,6 +11,7 @@ import {
   createProductReview,
 } from '../actions/productActions'
 import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants'
+import Helmet from 'react-helmet'
 
 const ProductScreen = ({ history, match }) => {
   const [qty, setQty] = useState(1)
@@ -57,6 +58,11 @@ const ProductScreen = ({ history, match }) => {
 
   return (
     <>
+    <Helmet>
+        <meta charSet="utf-8" />
+        <title>{product.name || ''} | ProShop</title>
+        <link rel="canonical" />
+    </Helmet>
       <Link className='btn btn-light my-3' to='/'>
         Go Back
       </Link>
@@ -153,8 +159,10 @@ const ProductScreen = ({ history, match }) => {
               <ListGroup variant='flush'>
                 {product.reviews.map((review) => (
                   <ListGroup.Item key={review._id}>
-                    <strong>{review.name}</strong>
-                    <Rating value={review.rating} />
+                    <div className="d-flex justify-content-between">
+                      <strong>{review?.name.slice(0, 1).toUpperCase() + review?.name.slice('1')}</strong>
+                      <Rating value={review.rating} />
+                    </div>
                     <p>{review.createdAt.substring(0, 10)}</p>
                     <p>{review.comment}</p>
                   </ListGroup.Item>

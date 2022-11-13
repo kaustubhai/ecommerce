@@ -132,8 +132,9 @@ const getOrders = asyncHandler(async (req, res) => {
 // @route   GET /api/coupons/:code
 // @access  Private
 const applyCoupon = asyncHandler(async (req, res) => {
-  const { coupon } = req.params
-  const isValid = await Coupon.findOne({ code: coupon })
+  const { code } = req.params
+  const isValid = await Coupon.findOne({ code })
+  console.log({code})
   if (isValid) {
     res.json({discount: isValid.discount})
   } else {

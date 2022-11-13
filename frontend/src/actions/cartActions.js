@@ -52,24 +52,32 @@ export const savePaymentMethod = (data) => (dispatch) => {
 }
 
 export const applyCoupon = (coupon) => async (dispatch, getState) => {
-  const {
-    userLogin: { userInfo },
-  } = getState()
-
-  const config = {
-    headers: {
-      Authorization: `Bearer ${userInfo.token}`,
-    },
+  try {
+    const {
+      userLogin: { userInfo },
+    } = getState()
+  
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+    
+    const { data } = await axios.patch(`/api/orders/coupons/${coupon}`, {}, config)
+  
+    if(data.discount) {
+      dispatch({
+        type: 'APPLY_COUPON',
+        payload: data.discount,
+      })
+    }
+  } catch (error) {
+    dispatch({
+      type: 'APPLY_COUPON',
+      payload: 0,
+    })
   }
   
-  const { data } = await axios.get(`/api/orders/coupons/${coupon}`, config)
-
-  dispatch({
-    type: 'APPLY_COUPON',
-    payload: data,
-  })
-
-  localStorage.setItem('coupon', JSON.stringify(getState().cart.coupon))
 }
 
 export const getCoupon = () => async (dispatch, getState) => {
@@ -121,7 +129,7 @@ export const deleteCoupon = (code) => async (dispatch, getState) => {
     },
   }
 
-  const { data } = await axios.delete(`/api/orders/coupons/${code}`, config)
+  await axios.delete(`/api/orders/coupons/${code}`, config)
   
   dispatch({
     type: 'DELETE_COUPON',

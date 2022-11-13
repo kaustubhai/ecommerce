@@ -7,6 +7,7 @@ import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
 import { getUserDetails, updateUser } from '../actions/userActions'
 import { USER_UPDATE_RESET } from '../constants/userConstants'
+import Helmet from 'react-helmet'
 
 const UserEditScreen = ({ match, history }) => {
   const userId = match.params.id
@@ -49,6 +50,11 @@ const UserEditScreen = ({ match, history }) => {
 
   return (
     <>
+    <Helmet>
+        <meta charSet="utf-8" />
+        <title>Edit User | ProShop</title>
+        <link rel="canonical" />
+    </Helmet>
       <Link to='/admin/userlist' className='btn btn-light my-3'>
         Go Back
       </Link>

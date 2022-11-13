@@ -6,6 +6,7 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
 import { register } from '../actions/userActions'
+import Helmet from 'react-helmet'
 
 const RegisterScreen = ({ location, history }) => {
   const [name, setName] = useState('')
@@ -38,6 +39,11 @@ const RegisterScreen = ({ location, history }) => {
 
   return (
     <FormContainer>
+    <Helmet>
+        <meta charSet="utf-8" />
+        <title>Register | ProShop</title>
+        <link rel="canonical" />
+    </Helmet>
       <h1>Sign Up</h1>
       {message && <Message variant='danger'>{message}</Message>}
       {error && <Message variant='danger'>{error}</Message>}

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Row, Col, ListGroup, Image, Form, Button, Card } from 'react-bootstrap'
 import Message from '../components/Message'
 import { addToCart, removeFromCart } from '../actions/cartActions'
+import {Helmet} from "react-helmet";
 
 const CartScreen = ({ match, location, history }) => {
   const productId = match.params.id
@@ -31,6 +32,11 @@ const CartScreen = ({ match, location, history }) => {
 
   return (
     <Row>
+      <Helmet>
+          <meta charSet="utf-8" />
+          <title>Your Cart | ProShop</title>
+          <link rel="canonical" />
+      </Helmet>
       <Col md={8}>
         <h1>Shopping Cart</h1>
         {cartItems.length === 0 ? (

@@ -6,6 +6,7 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
 import { login } from '../actions/userActions'
+import Helmet from 'react-helmet'
 
 const LoginScreen = ({ location, history }) => {
   const [email, setEmail] = useState('')
@@ -31,6 +32,11 @@ const LoginScreen = ({ location, history }) => {
 
   return (
     <FormContainer>
+    <Helmet>
+        <meta charSet="utf-8" />
+        <title>Sign In | ProShop</title>
+        <link rel="canonical" />
+    </Helmet>
       <h1>Sign In</h1>
       {error && <Message variant='danger'>{error}</Message>}
       {loading && <Loader />}

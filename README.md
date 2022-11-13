@@ -20,6 +20,7 @@ This is the course project for my [MERN eCommerce From Scratch](https://www.udem
 - Mark orders as delivered option
 - Checkout process (shipping, payment method, etc)
 - PayPal / credit card integration
+- Coupon Code management
 - Database seeder (products & users)
 
 ## Note on Issues

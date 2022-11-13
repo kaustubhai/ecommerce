@@ -7,6 +7,7 @@ import Loader from '../components/Loader'
 import { getUserDetails, updateUserProfile } from '../actions/userActions'
 import { listMyOrders } from '../actions/orderActions'
 import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants'
+import Helmet from 'react-helmet'
 
 const ProfileScreen = ({ location, history }) => {
   const [name, setName] = useState('')
@@ -55,6 +56,11 @@ const ProfileScreen = ({ location, history }) => {
 
   return (
     <Row>
+    <Helmet>
+        <meta charSet="utf-8" />
+        <title>Your Profile | ProShop</title>
+        <link rel="canonical" />
+    </Helmet>
       <Col md={3}>
         <h2>User Profile</h2>
         {message && <Message variant='danger'>{message}</Message>}

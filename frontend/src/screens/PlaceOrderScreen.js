@@ -8,6 +8,7 @@ import { createOrder } from '../actions/orderActions'
 import { ORDER_CREATE_RESET } from '../constants/orderConstants'
 import { USER_DETAILS_RESET } from '../constants/userConstants'
 import { applyCoupon } from '../actions/cartActions'
+import Helmet from 'react-helmet'
 
 const PlaceOrderScreen = ({ history }) => {
   const dispatch = useDispatch()
@@ -31,8 +32,7 @@ const PlaceOrderScreen = ({ history }) => {
   cart.taxPrice = addDecimals(Number((0.18 * cart.itemsPrice).toFixed(2)))
   cart.totalPrice = (
     Number(cart.itemsPrice) +
-    Number(cart.shippingPrice) +
-    Number(cart.taxPrice)
+    Number(cart.shippingPrice)
   ).toFixed(2)
 
   const orderCreate = useSelector((state) => state.orderCreate)
@@ -61,13 +61,18 @@ const PlaceOrderScreen = ({ history }) => {
         itemsPrice: cart.itemsPrice,
         shippingPrice: cart.shippingPrice,
         taxPrice: cart.taxPrice,
-        totalPrice: cart.totalPrice,
+        totalPrice: cart.discount ? cart.totalPrice - (cart.itemsPrice * cart.discount * 0.01).toFixed(2)?.toLocaleString('en-IN') : cart.totalPrice,
       })
     )
   }
 
   return (
     <>
+    <Helmet>
+        <meta charSet="utf-8" />
+        <title>Checkout | ProShop</title>
+        <link rel="canonical" />
+    </Helmet>
       <CheckoutSteps step1 step2 step3 step4 />
       <Row>
         <Col md={8}>
@@ -130,7 +135,7 @@ const PlaceOrderScreen = ({ history }) => {
               <ListGroup.Item>
                 <Row>
                   <Col>Items</Col>
-                  <Col>₹{cart.itemsPrice}</Col>
+                  <Col>₹{cart.itemsPrice - cart.taxPrice}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
@@ -145,10 +150,16 @@ const PlaceOrderScreen = ({ history }) => {
                   <Col>₹{cart.taxPrice}</Col>
                 </Row>
               </ListGroup.Item>
+              {cart.discount > 0 && <ListGroup.Item>
+                <Row>
+                  <Col>Discount</Col>
+                  <Col>-₹{(cart.itemsPrice * cart.discount * 0.01).toFixed(2)?.toLocaleString('en-IN')}</Col>
+                </Row>
+              </ListGroup.Item>}
               <ListGroup.Item>
                 <Row>
                   <Col>Total</Col>
-                  <Col>₹{cart.totalPrice}</Col>
+                  <Col>₹{cart.discount ? cart.totalPrice - (cart.itemsPrice * cart.discount * 0.01).toFixed(2)?.toLocaleString('en-IN') : cart.totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
@@ -160,7 +171,7 @@ const PlaceOrderScreen = ({ history }) => {
                   placeholder='Enter coupon code'
                   className='mr-sm-2'
                 ></Form.Control>
-                <Button type='submit' variant='outline-success' className='p-2'>
+                <Button disabled={coupon.length === 0} type='submit' variant='outline-success' className='p-2'>
                   Apply
                 </Button>
               </Form>
@@ -178,6 +189,12 @@ const PlaceOrderScreen = ({ history }) => {
                   Place Order
                 </Button>
               </ListGroup.Item>
+              {cart.error && <ListGroup.Item>
+                  <Message variant='danger'>{cart.error}</Message>
+              </ListGroup.Item>}
+              {cart.discount && <ListGroup.Item>
+                  <Message variant='success'>Discount of {cart.discount}% applied</Message>
+              </ListGroup.Item>}
             </ListGroup>
           </Card>
         </Col>

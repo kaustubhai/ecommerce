@@ -15,6 +15,7 @@ import {
   ORDER_PAY_RESET,
   ORDER_DELIVER_RESET,
 } from '../constants/orderConstants'
+import Helmet from 'react-helmet'
 
 const OrderScreen = ({ match, history }) => {
   const orderId = match.params.id
@@ -101,6 +102,11 @@ const OrderScreen = ({ match, history }) => {
     <Message variant='danger'>{error}</Message>
   ) : (
     <>
+    <Helmet>
+        <meta charSet="utf-8" />
+        <title>Your Order #{orderId || ''} | ProShop</title>
+        <link rel="canonical" />
+    </Helmet>
       <h1>Order {order._id}</h1>
       <Row>
         <Col md={8}>
@@ -197,6 +203,12 @@ const OrderScreen = ({ match, history }) => {
                 <Row>
                   <Col>Tax</Col>
                   <Col>₹{order.taxPrice}</Col>
+                </Row>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                <Row>
+                  <Col>Discount</Col>
+                  <Col>₹{((Number(order.itemsPrice) + Number(order.shippingPrice)) - order.totalPrice).toFixed(2)}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
