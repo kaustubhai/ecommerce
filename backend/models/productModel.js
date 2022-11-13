@@ -64,6 +64,12 @@ const productSchema = mongoose.Schema(
       required: true,
       default: 0,
     },
+    tags: [
+      {
+        type: String,
+        required: true
+      },
+    ]
   },
   {
     timestamps: true,

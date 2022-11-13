@@ -20,6 +20,7 @@ const ProductEditScreen = ({ match, history }) => {
   const [category, setCategory] = useState('')
   const [countInStock, setCountInStock] = useState(0)
   const [description, setDescription] = useState('')
+  const [tags, setTags] = useState('')
   const [uploading, setUploading] = useState(false)
 
   const dispatch = useDispatch()
@@ -49,6 +50,7 @@ const ProductEditScreen = ({ match, history }) => {
         setCategory(product.category)
         setCountInStock(product.countInStock)
         setDescription(product.description)
+        setTags(product.tags.join(', '))
       }
     }
   }, [dispatch, history, productId, product, successUpdate])
@@ -87,6 +89,7 @@ const ProductEditScreen = ({ match, history }) => {
         brand,
         category,
         description,
+        tags,
         countInStock,
       })
     )
@@ -186,6 +189,16 @@ const ProductEditScreen = ({ match, history }) => {
                 placeholder='Enter description'
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+
+            <Form.Group controlId='tags'>
+              <Form.Label>Tags</Form.Label>
+              <Form.Control
+                type='text'
+                placeholder='Enter comma seperated tags'
+                value={tags}
+                onChange={(e) => setTags(e.target.value)}
               ></Form.Control>
             </Form.Group>
 

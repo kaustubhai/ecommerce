@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { PayPalButton } from 'react-paypal-button-v2'
+// import Razorpay from 'razorpay'
 import { Link } from 'react-router-dom'
 import { Row, Col, ListGroup, Image, Card, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
@@ -43,15 +44,61 @@ const OrderScreen = ({ match, history }) => {
     }
 
     order.itemsPrice = addDecimals(
-      order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0)
+      order?.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0)
     )
-  }
+}
+
+let rzp1;
+
+  const openRazor = () => {
+      var options = {
+        "key_id": process.env.RAZORPAY_KEY_ID, // Enter the Key ID generated from the Dashboard
+        "amount": order?.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+        "currency": "INR",
+        "name": "ProShop",
+        "description": `You are buying ${order?.orderItems.length} items, worth ${order?.amount}, from ProShop`,
+        "image": "https://example.com/your_logo",
+        "order_id": order?.rpId, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+        "handler": function (response){
+            console.log(response);
+            dispatch(payOrder(orderId, response))
+        },
+        "prefill": {
+            "name": order.user.name,
+            "email": order.user.email,
+        },
+        "notes": {
+            "address": `${order.shippingAddress.address}, ${order.shippingAddress.city}, ${order.shippingAddress.postalCode}, ${order.shippingAddress.country}`
+        },
+        "theme": {
+            "color": "#3399cc"
+        }
+      }
+      const script = document.createElement('script')
+      script.type = 'text/javascript'
+      script.src = `https://checkout.razorpay.com/v1/checkout.js`
+      script.async = true
+      script.onload = () => {
+        console.log({rzp1});
+        rzp1 = new window.Razorpay(options);
+        rzp1.on('payment.failed', function (response){
+          alert(response.error.code);
+          alert(response.error.description);
+          alert(response.error.source);
+          alert(response.error.step);
+          alert(response.error.reason);
+          alert(response.error.metadata.order_id);
+          alert(response.error.metadata.payment_id);
+        });
+        rzp1.open();
+      }
+      document.body.appendChild(script)
+    }
 
   useEffect(() => {
     if (!userInfo) {
       history.push('/login')
     }
-
     const addPayPalScript = async () => {
       const { data: clientId } = await axios.get('/api/config/paypal')
       const script = document.createElement('script')
@@ -190,7 +237,7 @@ const OrderScreen = ({ match, history }) => {
               <ListGroup.Item>
                 <Row>
                   <Col>Items</Col>
-                  <Col>₹{order.itemsPrice}</Col>
+                  <Col>₹{order.itemsPrice - order.taxPrice}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
@@ -241,6 +288,18 @@ const OrderScreen = ({ match, history }) => {
                   )}
                 </ListGroup.Item>
               )}
+                {!order?.isPaid && 
+                  <ListGroup.Item>
+                    <Button
+                      type='button'
+                      className='btn-block'
+                      onClick={openRazor}
+                      id='rzp-button1'
+                      >
+                        Checkout
+                    </Button>
+                  </ListGroup.Item>
+}
               {loadingDeliver && <Loader />}
               {userInfo &&
                 userInfo.isAdmin &&

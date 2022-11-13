@@ -68,6 +68,7 @@ const createProduct = asyncHandler(async (req, res) => {
     countInStock: 0,
     numReviews: 0,
     description: 'Sample description',
+    tags: ['sample', 'tag'],
   })
 
   const createdProduct = await product.save()
@@ -86,9 +87,12 @@ const updateProduct = asyncHandler(async (req, res) => {
     brand,
     category,
     countInStock,
+    tags
   } = req.body
 
   const product = await Product.findById(req.params.id)
+
+  const tages = tags.split(',').map(tag => tag.trim())
 
   if (product) {
     product.name = name
@@ -98,6 +102,7 @@ const updateProduct = asyncHandler(async (req, res) => {
     product.brand = brand
     product.category = category
     product.countInStock = countInStock
+    product.tags = tages
 
     const updatedProduct = await product.save()
     res.json(updatedProduct)
@@ -152,7 +157,7 @@ const createProductReview = asyncHandler(async (req, res) => {
 // @route   GET /api/products/top
 // @access  Public
 const getTopProducts = asyncHandler(async (req, res) => {
-  const products = await Product.find({}).sort({ rating: -1 }).limit(3)
+  const products = await Product.find({}).sort({ rating: -1 }).limit(4)
 
   res.json(products)
 })

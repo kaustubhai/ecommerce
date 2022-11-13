@@ -2,6 +2,7 @@ import asyncHandler from 'express-async-handler'
 import Order from '../models/orderModel.js'
 import Coupon from '../models/couponModel.js'
 import Product from '../models/productModel.js'
+import Razorpay from 'razorpay'
 // @desc    Create new order
 // @route   POST /api/orders
 // @access  Private
@@ -34,6 +35,13 @@ const addOrderItems = asyncHandler(async (req, res) => {
       await product.save()
     })
 
+
+ 
+const instance = new Razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID,
+  key_secret: process.env.RAZORPAY_KEY_SECRET,
+})
+
     const order = new Order({
       orderItems,
       user: req.user._id,
@@ -47,7 +55,19 @@ const addOrderItems = asyncHandler(async (req, res) => {
 
     const createdOrder = await order.save()
 
-    res.status(201).json(createdOrder)
+    const options = {
+      amount: totalPrice * 100, // amount in the smallest currency unit
+      currency: "INR",
+      receipt: createdOrder._id.toString(),
+    };
+
+    instance.orders.create(options, function(err, order) {
+      console.log(order);
+      createdOrder.rpId = order.id
+      createdOrder.save()
+      res.json(createdOrder)
+    });
+
   }
 })
 
@@ -73,16 +93,13 @@ const getOrderById = asyncHandler(async (req, res) => {
 // @access  Private
 const updateOrderToPaid = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id)
-
+  console.log(req.body);
   if (order) {
     order.isPaid = true
     order.paidAt = Date.now()
-    order.paymentResult = {
-      id: req.body.id,
-      status: req.body.status,
-      update_time: req.body.update_time,
-      email_address: req.body.payer.email_address,
-    }
+    order.paymentResult.paymentId = req.body.razorpay_payment_id
+    order.paymentResult.orderId = req.body.razorpay_order_id
+    order.paymentResult.signature = req.body.razorpay_signature
 
     const updatedOrder = await order.save()
 
