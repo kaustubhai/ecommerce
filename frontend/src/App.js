@@ -19,6 +19,8 @@ import ProductListScreen from './screens/ProductListScreen'
 import ProductEditScreen from './screens/ProductEditScreen'
 import OrderListScreen from './screens/OrderListScreen'
 import CouponManagementScreen from './screens/CouponManagementScreen'
+import RequestPassword from './screens/RequestPassword'
+import ResetPassword from './screens/ResetPassword'
 
 const App = () => {
   return (
@@ -37,6 +39,8 @@ const App = () => {
           <Route path='/cart/:id?' component={CartScreen} />
           <Route path='/admin/userlist' component={UserListScreen} />
           <Route path='/admin/user/:id/edit' component={UserEditScreen} />
+          <Route path='/user/password/forget' component={RequestPassword} />
+          <Route path='/reset/password/:token' component={ResetPassword} />
           <Route
             path='/admin/productlist'
             component={ProductListScreen}

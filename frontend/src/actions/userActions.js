@@ -303,3 +303,67 @@ export const updateUser = (user) => async (dispatch, getState) => {
     })
   }
 }
+
+export const forgotPassword = (email) => async (dispatch) => {
+    try {
+        dispatch({
+            type: USER_UPDATE_REQUEST
+        })
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+  
+      await axios.post(
+        '/api/users/forgotpassword',
+        { email },
+        config
+      )
+      dispatch({
+        type: USER_UPDATE_SUCCESS
+      })
+    } catch (error) {
+        const message =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message
+
+      dispatch({
+        type: USER_UPDATE_FAIL,
+        payload: message,
+      })
+    }
+  }
+
+export const resetPassword = (resetToken, uid, password) => async (dispatch) => {
+    try {
+      dispatch({
+        type: USER_UPDATE_REQUEST
+      })
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+  
+      await axios.put(
+        `/api/users/reset/${resetToken}?uId=${uid}`,
+        { password },
+        config
+      )
+
+      dispatch({
+        type: USER_UPDATE_SUCCESS
+      })
+    } catch (error) {
+        const message =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message
+        dispatch({
+          type: USER_UPDATE_FAIL,
+          payload: message,
+        })
+    }
+  }

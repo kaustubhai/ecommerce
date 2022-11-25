@@ -1,6 +1,10 @@
 import asyncHandler from 'express-async-handler'
 import generateToken from '../utils/generateToken.js'
+import jwt from 'jsonwebtoken'
 import User from '../models/userModel.js'
+import emailer from '../utils/mailConfig.js'
+import generateTemplate from '../utils/resetPasswordMail.js'
+import bcrypt from 'bcryptjs'
 
 // @desc    Auth user & get token
 // @route   POST /api/users/login
@@ -166,6 +170,53 @@ const updateUser = asyncHandler(async (req, res) => {
   }
 })
 
+const forgotPasswordRequest = async (req, res) => {
+  try {
+    const { email } = req.body;
+    let user = await User.findOne({ email });
+    if (!user) return res.status(400).json({ message: "No User Founded" });
+    const payload = {
+      password: user.password,
+    };
+    const token = jwt.sign(payload, user.password, {
+      expiresIn: 3600,
+    });
+    emailer({
+      to: email,
+      body: generateTemplate(token, user._id.toString())
+    });
+    res.json("Mail sent!");
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+}
+
+const resetPassword = async (req, res) => {
+  let tokenValid = true;
+  try {
+    const { password } = req.body;
+    const { uId } = req.query;
+    const user = await User.findById(uId);
+    const token = req.params.requestId;
+    jwt.verify(token, user.password, (err) => {
+      if (err) {
+        console.log({ err })
+        tokenValid = false;
+        return res.status(400).json({ message: "Link Expired, Try again!" });
+      }
+    });
+    if (tokenValid) {
+      user.password = password;
+      await user.save();
+      res.json({ message: "Password Changed Succesfully" });
+    }
+  } catch (error) {
+    console.log(error);
+    if (tokenValid) res.status(500).json({ message: "Internal Server Error" });
+  }
+}
+
 export {
   authUser,
   registerUser,
@@ -175,4 +226,6 @@ export {
   deleteUser,
   getUserById,
   updateUser,
+  forgotPasswordRequest,
+  resetPassword
 }
