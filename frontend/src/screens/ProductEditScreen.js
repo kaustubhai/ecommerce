@@ -16,6 +16,7 @@ const ProductEditScreen = ({ match, history }) => {
   const [name, setName] = useState('')
   const [price, setPrice] = useState(0)
   const [image, setImage] = useState('')
+  const [secondaryImage, setSecondaryImage] = useState('')
   const [brand, setBrand] = useState('')
   const [category, setCategory] = useState('')
   const [countInStock, setCountInStock] = useState(0)
@@ -46,6 +47,7 @@ const ProductEditScreen = ({ match, history }) => {
         setName(product.name)
         setPrice(product.price)
         setImage(product.image)
+        setSecondaryImage(product.secondaryImage)
         setBrand(product.brand)
         setCategory(product.category)
         setCountInStock(product.countInStock)
@@ -55,7 +57,7 @@ const ProductEditScreen = ({ match, history }) => {
     }
   }, [dispatch, history, productId, product, successUpdate])
 
-  const uploadFileHandler = async (e) => {
+  const uploadFileHandler = async (e, pos) => {
     const file = e.target.files[0]
     const formData = new FormData()
     formData.append('image', file)
@@ -70,7 +72,7 @@ const ProductEditScreen = ({ match, history }) => {
 
       const { data } = await axios.post('/api/upload', formData, config)
 
-      setImage(data)
+      pos === 1 ? setImage(data) : setSecondaryImage(data)
       setUploading(false)
     } catch (error) {
       console.error(error)
@@ -86,6 +88,7 @@ const ProductEditScreen = ({ match, history }) => {
         name,
         price,
         image,
+        secondaryImage,
         brand,
         category,
         description,
@@ -147,7 +150,24 @@ const ProductEditScreen = ({ match, history }) => {
                 id='image-file'
                 label='Choose File'
                 custom
-                onChange={uploadFileHandler}
+                onChange={(event) => uploadFileHandler(event, 1)}
+              ></Form.File>
+              {uploading && <Loader />}
+            </Form.Group>
+
+            <Form.Group controlId='secondaryImage'>
+              <Form.Label>Second Image</Form.Label>
+              <Form.Control
+                type='text'
+                placeholder='Enter image url'
+                value={secondaryImage}
+                onChange={(e) => setSecondaryImage(e.target.value)}
+              ></Form.Control>
+              <Form.File
+                id='image-file-2'
+                label='Choose File'
+                custom
+                onChange={(event) => uploadFileHandler(event, 2)}
               ></Form.File>
               {uploading && <Loader />}
             </Form.Group>

@@ -1,13 +1,17 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Card } from 'react-bootstrap'
 import Rating from './Rating'
 
 const Product = ({ product }) => {
+  const [img, setImg] = useState('')
+  useEffect(() => {
+    setImg(product.image)
+  }, [product, product.image])
   return (
-    <Card className='my-3 p-3 rounded'>
-      <Link to={`/product/${product._id}`}>
-        <Card.Img src={product.image} variant='top' />
+    <Card className='my-3 rounded'>
+      <Link to={`/product/${product._id}`} className='product-img-container'>
+        <Card.Img height={'200px'} onMouseEnter={() => setImg(product.secondaryImage || product.image)} onMouseLeave={() => setImg(product.image)} className={'product-img'} src={img} variant='top' />
       </Link>
 
       <Card.Body>

@@ -13,9 +13,12 @@
     "data:destroy": "node backend/seeder -d",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend"
   },
-  "author": "Brad Traversy",
+  "author": "Kaustubh",
   "license": "MIT",
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "35.3.2",
+    "@ckeditor/ckeditor5-react": "5.0.3",
+    "@ckeditor/ckeditor5-upload": "35.3.2",
     "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
     "dotenv": "^8.2.0",

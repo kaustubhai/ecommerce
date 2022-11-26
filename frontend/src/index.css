@@ -35,6 +35,22 @@ h2 {
   color: #fff;
 }
 
+.product-img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.product-img:hover {
+  scale: 1.1;
+  transition: all 0.5s ease;
+}
+.product-img-container{
+  overflow: hidden;
+  height: 200px;
+  width: 100%;
+}
+
 .carousel img {
   height: 300px;
   padding: 30px;

@@ -21,6 +21,7 @@ import OrderListScreen from './screens/OrderListScreen'
 import CouponManagementScreen from './screens/CouponManagementScreen'
 import RequestPassword from './screens/RequestPassword'
 import ResetPassword from './screens/ResetPassword'
+import CreateNewsletter from './screens/CreateNewsletter'
 
 const App = () => {
   return (
@@ -41,6 +42,7 @@ const App = () => {
           <Route path='/admin/user/:id/edit' component={UserEditScreen} />
           <Route path='/user/password/forget' component={RequestPassword} />
           <Route path='/reset/password/:token' component={ResetPassword} />
+          <Route path='/admin/newsletter' component={CreateNewsletter} />
           <Route
             path='/admin/productlist'
             component={ProductListScreen}
