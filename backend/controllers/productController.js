@@ -31,8 +31,15 @@ const getProducts = asyncHandler(async (req, res) => {
 const getProductById = asyncHandler(async (req, res) => {
   const product = await Product.findById(req.params.id)
 
+  const relatedProducts = await Product.find({
+    category: product.category,
+    _id: { $ne: product._id },
+  }).limit(4).sort({ createdAt: -1 })
+
+  product["relatedProducts"] = relatedProducts
+
   if (product) {
-    res.json(product)
+    res.json({...product._doc, relatedProducts})
   } else {
     res.status(404)
     throw new Error('Product not found')
@@ -61,6 +68,8 @@ const createProduct = asyncHandler(async (req, res) => {
   const product = new Product({
     name: 'Sample name',
     price: 0,
+    mrp: 0,
+    discount: 0,
     user: req.user._id,
     image: '/images/sample.jpg',
     secondaryImage: '/images/sample.jpg',
@@ -83,6 +92,8 @@ const updateProduct = asyncHandler(async (req, res) => {
   const {
     name,
     price,
+    mrp,
+    discount,
     description,
     image,
     secondaryImage,
@@ -98,7 +109,9 @@ const updateProduct = asyncHandler(async (req, res) => {
 
   if (product) {
     product.name = name
-    product.price = price
+    product.mrp = mrp
+    product.price = price || mrp
+    product.discount = discount
     product.description = description
     product.image = image
     product.secondaryImage = secondaryImage

@@ -12,6 +12,7 @@ import {
 } from '../actions/productActions'
 import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants'
 import Helmet from 'react-helmet'
+import Product from '../components/Product'
 
 const ProductScreen = ({ history, match }) => {
   const [qty, setQty] = useState(1)
@@ -88,9 +89,11 @@ const ProductScreen = ({ history, match }) => {
                     text={`${product.numReviews} reviews`}
                   />
                 </ListGroup.Item>
-                <ListGroup.Item>Price: ₹{product.price?.toLocaleString('en-IN')}</ListGroup.Item>
+                <ListGroup.Item>Price: { product.price !== product.mrp ? (<span><s  style={{ color: '#acacae' }}>₹ {product.mrp?.toLocaleString('en-IN')}</s> ₹ {product.price?.toLocaleString('en-IN')}</span>)
+                 : 
+                 <span><s  style={{ color: '#acacae' }}>₹ {product.mrp?.toLocaleString('en-IN')}</s> ₹ {product.discount ? (product.price - (product.discount * product.price / 100).toFixed(0))?.toLocaleString('en-IN') : product.price?.toLocaleString('en-IN')} </span> }</ListGroup.Item>
                 <ListGroup.Item>
-                  Description: {product.description}
+                  About product: {product.description}
                 </ListGroup.Item>
               </ListGroup>
             </Col>
@@ -153,7 +156,7 @@ const ProductScreen = ({ history, match }) => {
             </Col>
           </Row>
           <Row>
-            <Col md={6}>
+            <Col md={6} className='pt-4'>
               <h2>Reviews</h2>
               {product.reviews.length === 0 && <Message>No Reviews</Message>}
               <ListGroup variant='flush'>
@@ -220,6 +223,15 @@ const ProductScreen = ({ history, match }) => {
                 </ListGroup.Item>
               </ListGroup>
             </Col>
+          </Row>
+          <Row>
+          <h2 className='mt-4'>More {product.category} products</h2>
+          <Row>
+          {product.relatedProducts?.map((related) => (
+              <Col key={related._id} sm={12} md={6} lg={4} xl={3}>
+                <Product product={related} />
+              </Col>
+            ))}</Row>
           </Row>
         </>
       )}

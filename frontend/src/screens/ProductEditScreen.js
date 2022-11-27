@@ -14,7 +14,9 @@ const ProductEditScreen = ({ match, history }) => {
   const productId = match.params.id
 
   const [name, setName] = useState('')
+  const [mrp, setMrp] = useState(0)
   const [price, setPrice] = useState(0)
+  const [discount, setDiscount] = useState(0)
   const [image, setImage] = useState('')
   const [secondaryImage, setSecondaryImage] = useState('')
   const [brand, setBrand] = useState('')
@@ -45,7 +47,9 @@ const ProductEditScreen = ({ match, history }) => {
         dispatch(listProductDetails(productId))
       } else {
         setName(product.name)
+        setMrp(product.mrp)
         setPrice(product.price)
+        setDiscount(product.discount)
         setImage(product.image)
         setSecondaryImage(product.secondaryImage)
         setBrand(product.brand)
@@ -87,6 +91,8 @@ const ProductEditScreen = ({ match, history }) => {
         _id: productId,
         name,
         price,
+        discount,
+        mrp,
         image,
         secondaryImage,
         brand,
@@ -128,6 +134,16 @@ const ProductEditScreen = ({ match, history }) => {
               ></Form.Control>
             </Form.Group>
 
+            <Form.Group controlId='mrp'>
+              <Form.Label>MRP</Form.Label>
+              <Form.Control
+                type='number'
+                placeholder='Enter MRP'
+                value={mrp}
+                onChange={(e) => setMrp(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+
             <Form.Group controlId='price'>
               <Form.Label>Price</Form.Label>
               <Form.Control
@@ -135,6 +151,16 @@ const ProductEditScreen = ({ match, history }) => {
                 placeholder='Enter price'
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+
+            <Form.Group controlId='discount'>
+              <Form.Label>Discount %</Form.Label>
+              <Form.Control
+                type='number'
+                placeholder='Enter discount percent'
+                value={discount}
+                onChange={(e) => setDiscount(e.target.value)}
               ></Form.Control>
             </Form.Group>
 
