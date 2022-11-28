@@ -1,7 +1,7 @@
 import nodemailer from "nodemailer"
 
 const emailer = (data) => {
-  const { to, body } = data;
+  const { to, body, subject } = data;
   let transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 465,
@@ -14,7 +14,8 @@ const emailer = (data) => {
   let mailOptions = {
     from: `"Admin" <${process.env.MAIL}>`,
     to,
-    subject: "Reset password request",
+    cc: ['admin@example.com'],
+    subject,
     html: body,
   };
   transporter.sendMail(mailOptions, (error) => {

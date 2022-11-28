@@ -3,7 +3,7 @@ import axios from 'axios'
 import { PayPalButton } from 'react-paypal-button-v2'
 // import Razorpay from 'razorpay'
 import { Link } from 'react-router-dom'
-import { Row, Col, ListGroup, Image, Card, Button } from 'react-bootstrap'
+import { Row, Col, ListGroup, Image, Card, Button, Form } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
@@ -22,7 +22,7 @@ const OrderScreen = ({ match, history }) => {
   const orderId = match.params.id
 
   const [sdkReady, setSdkReady] = useState(false)
-
+  const [trackingUrl, setTrackingUrl] = useState('')
   const dispatch = useDispatch()
 
   const orderDetails = useSelector((state) => state.orderDetails)
@@ -60,7 +60,6 @@ let rzp1;
         "image": "https://example.com/your_logo",
         "order_id": order?.rpId, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
         "handler": function (response){
-            console.log(response);
             dispatch(payOrder(orderId, response))
         },
         "prefill": {
@@ -79,7 +78,6 @@ let rzp1;
       script.src = `https://checkout.razorpay.com/v1/checkout.js`
       script.async = true
       script.onload = () => {
-        console.log({rzp1});
         rzp1 = new window.Razorpay(options);
         rzp1.on('payment.failed', function (response){
           alert(response.error.code);
@@ -129,7 +127,7 @@ let rzp1;
   }
 
   const deliverHandler = () => {
-    dispatch(deliverOrder(order))
+    dispatch(deliverOrder(order, trackingUrl))
   }
 
   const printDiv = () => {
@@ -173,26 +171,7 @@ let rzp1;
                 {order.shippingAddress.postalCode},{' '}
                 {order.shippingAddress.country}
               </p>
-              {order.isDelivered ? (
-                <Message variant='success'>
-                  Delivered on {order.deliveredAt}
-                </Message>
-              ) : (
-                <Message variant='danger'>Not Delivered</Message>
-              )}
-            </ListGroup.Item>
-
-            <ListGroup.Item>
-              <h2>Payment Method</h2>
-              <p>
-                <strong>Method: </strong>
-                {order.paymentMethod}
-              </p>
-              {order.isPaid ? (
-                <Message variant='success'>Paid on {order.paidAt}</Message>
-              ) : (
-                <Message variant='danger'>Not Paid</Message>
-              )}
+              
             </ListGroup.Item>
 
             <ListGroup.Item>
@@ -226,6 +205,18 @@ let rzp1;
                 </ListGroup>
               )}
             </ListGroup.Item>
+            {order.isPaid && (
+              <ListGroup.Item>
+                  <Message variant='success'>Paid on {new Date(order.paidAt).toLocaleDateString()} {new Date(order.paidAt).toLocaleTimeString()}</Message>
+                {order.isDispatched ? (
+                  <Message variant='success'>
+                    Dispatched on {new Date(order.dispatchedAt).toLocaleDateString()} {new Date(order.dispatchedAt).toLocaleTimeString()}
+                  </Message>
+                ) : (
+                  <Message variant='danger'>Not yet Dispatched</Message>
+                )}
+              </ListGroup.Item>
+            )}
           </ListGroup>
         </Col>
         <Col md={4}>
@@ -264,7 +255,7 @@ let rzp1;
                   <Col>₹{order.totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
-              {order.isPaid ?
+              {/* {order.isPaid ?
               (
                 <ListGroup.Item>
                   <Button
@@ -287,7 +278,7 @@ let rzp1;
                     />
                   )}
                 </ListGroup.Item>
-              )}
+              )} */}
                 {!order?.isPaid && 
                   <ListGroup.Item>
                     <Button
@@ -304,15 +295,24 @@ let rzp1;
               {userInfo &&
                 userInfo.isAdmin &&
                 order.isPaid &&
-                !order.isDelivered && (
+                !order.isDispatched && (
                   <ListGroup.Item>
-                    <Button
-                      type='button'
-                      className='btn btn-block'
-                      onClick={deliverHandler}
-                    >
-                      Mark As Delivered
-                    </Button>
+                    <Form onSubmit={deliverHandler}>
+                      <Form.Control
+                        type='url'
+                        placeholder='Enter Tracking URL'
+                        className='btn btn-block border'
+                        value={trackingUrl}
+                        required
+                        onChange={(e) => setTrackingUrl(e.target.value)}
+                      />
+                      <Button
+                        type='submit'
+                        className='btn btn-block'
+                      >
+                        Mark As Dispatched
+                      </Button>
+                    </Form>
                   </ListGroup.Item>
                 )}
             </ListGroup>

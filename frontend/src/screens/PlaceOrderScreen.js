@@ -17,8 +17,6 @@ const PlaceOrderScreen = ({ history }) => {
 
   if (!cart.shippingAddress.address) {
     history.push('/shipping')
-  } else if (!cart.paymentMethod) {
-    history.push('/payment')
   }
   //   Calculate prices
   const addDecimals = (num) => {
@@ -26,7 +24,7 @@ const PlaceOrderScreen = ({ history }) => {
   }
 
   cart.itemsPrice = addDecimals(
-    cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
+    cart.cartItems.reduce((acc, item) => acc + (item.price - (item.price * item.discount / 100)) * item.qty, 0)
   )
   cart.shippingPrice = addDecimals(cart.itemsPrice > 100 ? 0 : 100)
   cart.taxPrice = addDecimals(Number((0.18 * cart.itemsPrice).toFixed(2)))
@@ -57,7 +55,6 @@ const PlaceOrderScreen = ({ history }) => {
       createOrder({
         orderItems: cart.cartItems,
         shippingAddress: cart.shippingAddress,
-        paymentMethod: cart.paymentMethod,
         itemsPrice: cart.itemsPrice,
         shippingPrice: cart.shippingPrice,
         taxPrice: cart.taxPrice,
@@ -73,7 +70,7 @@ const PlaceOrderScreen = ({ history }) => {
         <title>Checkout | ProShop</title>
         <link rel="canonical" />
     </Helmet>
-      <CheckoutSteps step1 step2 step3 step4 />
+      <CheckoutSteps step1 step2 step3 />
       <Row>
         <Col md={8}>
           <ListGroup variant='flush'>
@@ -85,12 +82,6 @@ const PlaceOrderScreen = ({ history }) => {
                 {cart.shippingAddress.postalCode},{' '}
                 {cart.shippingAddress.country}
               </p>
-            </ListGroup.Item>
-
-            <ListGroup.Item>
-              <h2>Payment Method</h2>
-              <strong>Method: </strong>
-              {cart.paymentMethod}
             </ListGroup.Item>
 
             <ListGroup.Item>
@@ -116,7 +107,7 @@ const PlaceOrderScreen = ({ history }) => {
                           </Link>
                         </Col>
                         <Col md={4}>
-                          {item.qty} x ₹{item.price?.toLocaleString('en-IN')} = ₹{(item.qty * item.price)?.toLocaleString('en-IN')}
+                          {item.qty} x ₹{(item.price - (item.price * item.discount / 100))?.toFixed(0).toLocaleString('en-IN')} = ₹{(item.qty * (item.price - (item.price * item.discount / 100)))?.toFixed(0).toLocaleString('en-IN')}
                         </Col>
                       </Row>
                     </ListGroup.Item>

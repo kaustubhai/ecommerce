@@ -3,6 +3,9 @@ import Order from '../models/orderModel.js'
 import Coupon from '../models/couponModel.js'
 import Product from '../models/productModel.js'
 import Razorpay from 'razorpay'
+import emailer from '../utils/mailConfig.js'
+import generateTemplate from '../utils/orderCreatedMail.js'
+import generateTemplate2 from '../utils/orderDispatchedMail.js'
 // @desc    Create new order
 // @route   POST /api/orders
 // @access  Private
@@ -10,7 +13,6 @@ const addOrderItems = asyncHandler(async (req, res) => {
   const {
     orderItems,
     shippingAddress,
-    paymentMethod,
     itemsPrice,
     taxPrice,
     shippingPrice,
@@ -31,7 +33,6 @@ const addOrderItems = asyncHandler(async (req, res) => {
         throw new Error('Not enough stock')
         return
       }
-      console.log(product.countInStock);
       await product.save()
     })
 
@@ -46,7 +47,6 @@ const instance = new Razorpay({
       orderItems,
       user: req.user._id,
       shippingAddress,
-      paymentMethod,
       itemsPrice,
       taxPrice,
       shippingPrice,
@@ -62,12 +62,10 @@ const instance = new Razorpay({
     };
 
     instance.orders.create(options, function(err, order) {
-      console.log(order);
       createdOrder.rpId = order.id
       createdOrder.save()
       res.json(createdOrder)
     });
-
   }
 })
 
@@ -93,7 +91,6 @@ const getOrderById = asyncHandler(async (req, res) => {
 // @access  Private
 const updateOrderToPaid = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id)
-  console.log(req.body);
   if (order) {
     order.isPaid = true
     order.paidAt = Date.now()
@@ -103,6 +100,11 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
 
     const updatedOrder = await order.save()
 
+    emailer({
+      to: req.user.email,
+      subject: `Order placed, congratulations!`,
+      body: generateTemplate(order)
+    });
     res.json(updatedOrder)
   } else {
     res.status(404)
@@ -113,15 +115,20 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
 // @desc    Update order to delivered
 // @route   GET /api/orders/:id/deliver
 // @access  Private/Admin
-const updateOrderToDelivered = asyncHandler(async (req, res) => {
+const updateOrderToDispatched = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id)
+  const { trackingUrl } = req.body
 
   if (order) {
-    order.isDelivered = true
-    order.deliveredAt = Date.now()
-
+    order.isDispatched = true
+    order.dispatchedAt = Date.now()
+    order.trackingUrl = trackingUrl
     const updatedOrder = await order.save()
-
+    emailer({
+      to: req.user.email,
+      subject: `WooHoo! Order dispatched`,
+      body: generateTemplate2(order)
+    })
     res.json(updatedOrder)
   } else {
     res.status(404)
@@ -151,7 +158,6 @@ const getOrders = asyncHandler(async (req, res) => {
 const applyCoupon = asyncHandler(async (req, res) => {
   const { code } = req.params
   const isValid = await Coupon.findOne({ code })
-  console.log({code})
   if (isValid) {
     res.json({discount: isValid.discount})
   } else {
@@ -165,7 +171,6 @@ const applyCoupon = asyncHandler(async (req, res) => {
 // @access  Private/Admin
 const getCoupons = asyncHandler(async (req, res) => {
   const coupons = await Coupon.find({})
-  console.log(coupons)
   res.json(coupons)
 })
 
@@ -174,7 +179,6 @@ const getCoupons = asyncHandler(async (req, res) => {
 // @access  Private/Admin
 const addCoupons = asyncHandler(async (req, res) => {
   const { code, discount } = req.body
-  console.log(code, discount);
   const coupon = new Coupon({
     code,
     discount
@@ -202,7 +206,7 @@ export {
   addOrderItems,
   getOrderById,
   updateOrderToPaid,
-  updateOrderToDelivered,
+  updateOrderToDispatched,
   getMyOrders,
   getOrders,
   applyCoupon,

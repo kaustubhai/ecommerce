@@ -41,8 +41,6 @@ export const createOrder = (order) => async (dispatch, getState) => {
 
     const { data } = await axios.post(`/api/orders`, order, config)
 
-    console.log(data)
-
     dispatch({
       type: ORDER_CREATE_SUCCESS,
       payload: data,
@@ -149,7 +147,7 @@ export const payOrder = (orderId, paymentResult) => async (
   }
 }
 
-export const deliverOrder = (order) => async (dispatch, getState) => {
+export const deliverOrder = (order, trackingUrl) => async (dispatch, getState) => {
   try {
     dispatch({
       type: ORDER_DELIVER_REQUEST,
@@ -167,7 +165,7 @@ export const deliverOrder = (order) => async (dispatch, getState) => {
 
     const { data } = await axios.put(
       `/api/orders/${order._id}/deliver`,
-      {},
+      { trackingUrl },
       config
     )
 

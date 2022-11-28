@@ -183,6 +183,7 @@ const forgotPasswordRequest = async (req, res) => {
     });
     emailer({
       to: email,
+      subject: "Reset Password",
       body: generateTemplate(token, user._id.toString())
     });
     res.json("Mail sent!");

@@ -45,7 +45,7 @@ const CouponManagementScreen = ({ history }) => {
           <thead>
             <tr>
               <th>CODE</th>
-              <th>DISCOUNT</th>
+              <th>DISCOUNT %</th>
               <th></th>
             </tr>
             <tr>

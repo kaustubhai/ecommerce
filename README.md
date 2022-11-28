@@ -12,15 +12,17 @@ This is the course project for my [MERN eCommerce From Scratch](https://www.udem
 - Product reviews and ratings
 - Top products carousel
 - Product pagination
+- Product discount
 - Product search feature
 - User profile with orders
 - Admin product management
 - Admin user management
 - Admin Order details page
-- Mark orders as delivered option
+- Mark orders as dispatched option
 - Checkout process (shipping, payment method, etc)
-- PayPal / credit card integration
+- Razorpay credit card integration
 - Coupon Code management
+- Order completion and delivered mail delivery
 - Database seeder (products & users)
 
 ## Note on Issues
