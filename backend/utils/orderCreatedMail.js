@@ -613,7 +613,7 @@ a {text-decoration: none;}
                                                                     style="padding:0;Margin:0">
                                                                     <h2
                                                                         style="Margin:0;line-height:31px;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:26px;font-style:normal;font-weight:bold;color:#333333">
-                                                                        Order&nbsp;<a target="_blank" href="http://localhost:3000/order/${order._id}"
+                                                                        Order&nbsp;<a target="_blank" href="${process.env.PUBLIC_URL}/order/${order._id}"
                                                                             style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#5C68E2;font-size:26px">#${order._id}</a>
                                                                     </h2>
                                                                 </td>
