@@ -54,7 +54,7 @@ const CartScreen = ({ match, location, history }) => {
                   <Col md={3}>
                     <Link to={`/product/${item.product}`}>{item.name}</Link>
                   </Col>
-                  <Col md={2}>₹{item.discount ? (item.price - (item.price * item.discount / 100).toFixed(0)).toLocaleString('en-IN') : item.price?.toLocaleString('en-IN')}</Col>
+                  <Col md={2}>₹{item.discount ? (item.price - (item.price * item.discount / 100)?.toFixed(2)).toLocaleString('en-IN') : item.price?.toFixed(2)?.toLocaleString('en-IN')}</Col>
                   <Col md={2}>
                     <Form.Control
                       as='select'
@@ -97,7 +97,7 @@ const CartScreen = ({ match, location, history }) => {
               </h2>
               ₹
               {cartItems
-                .reduce((acc, item) => acc + item.qty * (item.price - (item.price * item.discount / 100)), 0).toFixed(0).toLocaleString('en-IN')}
+                .reduce((acc, item) => acc + item.qty * (item.price - (item.price * item.discount / 100)), 0)?.toFixed(2).toLocaleString('en-IN')}
             </ListGroup.Item>
             <ListGroup.Item>
               <Button

@@ -34,7 +34,7 @@ const HomeScreen = ({ match }) => {
           Go Back
         </Link>
       )}
-      <h1 className='mt-4'>Latest Products</h1>
+      <h1 style={{ marginTop: '24.5rem' }}>Latest Products</h1>
       {loading ? (
         <Loader />
       ) : error ? (

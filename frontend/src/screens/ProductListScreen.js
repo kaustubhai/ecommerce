@@ -114,7 +114,7 @@ const ProductListScreen = ({ history, match }) => {
                 <tr key={product._id}>
                   <td>{product._id}</td>
                   <td>{product.name}</td>
-                  <td>₹{product.price?.toLocaleString('en-IN')}</td>
+                  <td>₹{product.price?.toFixed(2)?.toLocaleString('en-IN')}</td>
                   <td>{product.category}</td>
                   <td>{product.brand}</td>
                   <td>

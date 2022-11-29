@@ -15,6 +15,12 @@ const Product = ({ product }) => {
         <Card.Img height={'200px'} onMouseEnter={() => setImg(product.secondaryImage || product.image)} onMouseLeave={() => setImg(product.image)} className={'product-img'} src={img} variant='top' />
       </Link>
 
+      {( product.discount || (product.mrp !== product.price)) && (
+        <Badge variant='danger' style={{ position: 'absolute' }}>
+          SALE
+        </Badge>
+      )}
+
       <Card.Body>
         <Link to={`/product/${product._id}`}>
           <Card.Title as='div'>
@@ -28,13 +34,7 @@ const Product = ({ product }) => {
             text={`${product.numReviews} reviews`}
           />
           </Card.Text> */}
-        <Card.Text as='h3' className='pb-1 mb-0'>₹{product.discount ? (product.price - (product.discount * product.price / 100).toFixed(0))?.toLocaleString('en-IN') : product.price?.toLocaleString('en-IN')}</Card.Text>
-
-        {( product.discount || (product.mrp !== product.price)) && (
-        <Badge variant='danger'>
-          SALE
-        </Badge>
-      )}
+        <Card.Text as='h3' className='pb-1 mb-0'>₹{product.discount ? (product.price - (product.discount * product.price / 100)?.toFixed(0))?.toLocaleString('en-IN') : product.price?.toFixed(0)?.toLocaleString('en-IN')}</Card.Text>
       </Card.Body>
     </Card>
   )

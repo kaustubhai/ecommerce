@@ -17,6 +17,7 @@ const addOrderItems = asyncHandler(async (req, res) => {
     taxPrice,
     shippingPrice,
     totalPrice,
+    discount
   } = req.body
 
   if (orderItems && orderItems.length === 0) {
@@ -31,7 +32,6 @@ const addOrderItems = asyncHandler(async (req, res) => {
       if(product.countInStock < 0) {
         res.status(400)
         throw new Error('Not enough stock')
-        return
       }
       await product.save()
     })
@@ -51,15 +51,18 @@ const instance = new Razorpay({
       taxPrice,
       shippingPrice,
       totalPrice,
+      discount
     })
 
     const createdOrder = await order.save()
 
     const options = {
-      amount: totalPrice * 100, // amount in the smallest currency unit
+      amount: (totalPrice * 100)?.toFixed(0), // amount in the smallest currency unit
       currency: "INR",
       receipt: createdOrder._id.toString(),
     };
+
+    console.log({ options, createdOrder});
 
     instance.orders.create(options, function(err, order) {
       createdOrder.rpId = order.id
@@ -75,7 +78,7 @@ const instance = new Razorpay({
 const getOrderById = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id).populate(
     'user',
-    'name email'
+    'name email phone'
   )
 
   if (order) {

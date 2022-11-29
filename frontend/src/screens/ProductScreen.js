@@ -89,7 +89,7 @@ const ProductScreen = ({ history, match }) => {
                     text={`${product.numReviews} reviews`}
                   />
                 </ListGroup.Item>
-                <ListGroup.Item>Price: { ((product.price !== product.mrp) || product.discount) && (<span><s  style={{ color: '#acacae' }}>₹ {product.mrp?.toLocaleString('en-IN')}</s> ₹ {product.discount ? (product.price - (product.discount * product.price / 100).toFixed(0))?.toLocaleString('en-IN') : product.price !== product.mrp ? product.price?.toLocaleString('en-IN') : product.mrp?.toLocaleString('en-IN')} </span> )}</ListGroup.Item>
+                <ListGroup.Item>Price: { ((product.price !== product.mrp) || product.discount) ? (<span><s  style={{ color: '#acacae' }}>₹{product.mrp?.toFixed(2)?.toLocaleString('en-IN')}</s> ₹{(product.price - (product.discount * product.price / 100))?.toFixed(2)?.toLocaleString('en-IN')} </span> ) : (product.price?.toFixed(2).toLocaleString('en-IN'))}</ListGroup.Item>
                 <ListGroup.Item>
                   About product: {product.description}
                 </ListGroup.Item>
@@ -102,7 +102,7 @@ const ProductScreen = ({ history, match }) => {
                     <Row>
                       <Col>Price:</Col>
                       <Col>
-                        <strong>₹{product.discount ? (product.price - (product.discount * product.price / 100).toFixed(0))?.toLocaleString('en-IN') : product.price !== product.mrp ? product.price?.toLocaleString('en-IN') : product.mrp?.toLocaleString('en-IN')}</strong>
+                        <strong>₹{product.discount ? (product.price - (product.discount * product.price / 100)?.toFixed(2))?.toLocaleString('en-IN') : product.price !== product.mrp ? product.price?.toFixed(2)?.toLocaleString('en-IN') : product.mrp?.toFixed(2)?.toLocaleString('en-IN')}</strong>
                       </Col>
                     </Row>
                   </ListGroup.Item>

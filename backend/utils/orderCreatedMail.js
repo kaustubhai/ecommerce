@@ -663,6 +663,7 @@ a {text-decoration: none;}
                                                                         style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px">
                                                                         Subtotal: ₹<strong>${(order.totalPrice - order.taxPrice - order.shippingPrice).toLocaleString('en-IN')}</strong><br>
                                                                         Shipping: ₹<strong>${order.shippingPrice.toLocaleString('en-IN')}</strong><br>
+                                                                        ${!!order.discount && `Discount: ₹<strong>${order.discount.toLocaleString('en-IN')}</strong><br>`}
                                                                         Tax: ₹<strong>${order.taxPrice.toLocaleString('en-IN')}</strong><br>
                                                                         Total: ₹<strong>${order.totalPrice.toLocaleString('en-IN')}</strong></p>
                                                                 </td>

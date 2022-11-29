@@ -37,14 +37,14 @@ const OrderScreen = ({ match, history }) => {
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
-  if (!loading) {
+  if (!loading && order) {
     //   Calculate prices
     const addDecimals = (num) => {
-      return (Math.round(num * 100) / 100).toFixed(2)
+      return (Math.round(num * 100) / 100)?.toFixed(2)
     }
 
     order.itemsPrice = addDecimals(
-      order?.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0)
+      order?.orderItems.reduce((acc, item) => acc + item?.price * item.qty, 0)
     )
 }
 
@@ -152,6 +152,12 @@ let rzp1;
         <title>Your Order #{orderId || ''} | ProShop</title>
         <link rel="canonical" />
     </Helmet>
+    {(userInfo && userInfo.isAdmin) ? <Link to='/admin/orderlist' className='btn btn-light my-3'>
+        Go Back
+      </Link> : <Link to='/profile' className='btn btn-light my-3'>
+        See Orders
+          </Link>
+      }
       <h1>Order {order._id}</h1>
       <Row>
         <Col md={8}>
@@ -164,6 +170,10 @@ let rzp1;
               <p>
                 <strong>Email: </strong>{' '}
                 <a href={`mailto:${order.user.email}`}>{order.user.email}</a>
+              </p>
+              <p>
+                <strong>Phone: </strong>{' '}
+                <a href={`tel:${order.user.phone}`}>{order.user.phone}</a>
               </p>
               <p>
                 <strong>Address: </strong>
@@ -197,7 +207,7 @@ let rzp1;
                           </Link>
                         </Col>
                         <Col md={4}>
-                          {item.qty} x ₹{item.price?.toLocaleString('en-IN')} = ₹{(item.qty * item.price)?.toLocaleString('en-IN')}
+                          {item.qty} x ₹{(item.price - (item.price * item.discount / 100))?.toFixed(2)?.toLocaleString('en-IN')} = ₹{(item.qty * (item.price - (item.price * item.discount / 100)))?.toFixed(2)?.toLocaleString('en-IN')}
                         </Col>
                       </Row>
                     </ListGroup.Item>
@@ -246,7 +256,7 @@ let rzp1;
               <ListGroup.Item>
                 <Row>
                   <Col>Discount</Col>
-                  <Col>₹{((Number(order.itemsPrice) + Number(order.shippingPrice)) - order.totalPrice).toFixed(2)}</Col>
+                  <Col>₹{((Number(order.itemsPrice) + Number(order.shippingPrice)) - order.totalPrice)?.toFixed(2)}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
@@ -255,18 +265,8 @@ let rzp1;
                   <Col>₹{order.totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
-              {/* {order.isPaid ?
+              {/* {order.isPaid &&
               (
-                <ListGroup.Item>
-                  <Button
-                    type='button'
-                    className='btn-block'
-                    onClick={printDiv}
-                    >
-                      Download Invoice
-                  </Button>
-                </ListGroup.Item>
-              ) : (
                 <ListGroup.Item>
                   {loadingPay && <Loader />}
                   {!sdkReady ? (
@@ -279,19 +279,6 @@ let rzp1;
                   )}
                 </ListGroup.Item>
               )} */}
-                {!order?.isPaid && 
-                  <ListGroup.Item>
-                    <Button
-                      type='button'
-                      className='btn-block'
-                      onClick={openRazor}
-                      id='rzp-button1'
-                      >
-                        Checkout
-                    </Button>
-                  </ListGroup.Item>
-}
-              {loadingDeliver && <Loader />}
               {userInfo &&
                 userInfo.isAdmin &&
                 order.isPaid &&
@@ -315,6 +302,29 @@ let rzp1;
                     </Form>
                   </ListGroup.Item>
                 )}
+                {!order?.isPaid ? (
+                  <ListGroup.Item>
+                    <Button
+                      type='button'
+                      className='btn-block'
+                      onClick={openRazor}
+                      id='rzp-button1'
+                      >
+                        Checkout
+                    </Button>
+                  </ListGroup.Item>
+                ) : (
+                <ListGroup.Item>
+                  <Button
+                    type='button'
+                    className='btn-block'
+                    onClick={printDiv}
+                    >
+                      Download Invoice
+                  </Button>
+                </ListGroup.Item>
+                )}
+              {loadingDeliver && <Loader />}
             </ListGroup>
           </Card>
         </Col>

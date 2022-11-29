@@ -51,6 +51,12 @@ h2 {
   width: 100%;
 }
 
+.carousel {
+  position: absolute;
+  top: 90px;
+  left: 0;
+  width: 100%;
+}
 .carousel img {
   height: 300px;
   padding: 30px;
@@ -66,4 +72,14 @@ h2 {
   .carousel-caption h2 {
     font-size: 2.5vw;
   }
+}
+#phone::-webkit-outer-spin-button,
+#phone::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+#phone[type=number] {
+  -moz-appearance: textfield;
 }

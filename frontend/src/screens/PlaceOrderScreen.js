@@ -20,18 +20,18 @@ const PlaceOrderScreen = ({ history }) => {
   }
   //   Calculate prices
   const addDecimals = (num) => {
-    return (Math.round(num * 100) / 100).toFixed(2)
+    return (Math.round(num * 100) / 100)?.toFixed(2)
   }
 
   cart.itemsPrice = addDecimals(
     cart.cartItems.reduce((acc, item) => acc + (item.price - (item.price * item.discount / 100)) * item.qty, 0)
   )
   cart.shippingPrice = addDecimals(cart.itemsPrice > 100 ? 0 : 100)
-  cart.taxPrice = addDecimals(Number((0.18 * cart.itemsPrice).toFixed(2)))
+  cart.taxPrice = addDecimals(Number((0.18 * cart.itemsPrice)?.toFixed(2)))
   cart.totalPrice = (
     Number(cart.itemsPrice) +
     Number(cart.shippingPrice)
-  ).toFixed(2)
+  )?.toFixed(2)
 
   const orderCreate = useSelector((state) => state.orderCreate)
   const { order, success, error } = orderCreate
@@ -58,7 +58,8 @@ const PlaceOrderScreen = ({ history }) => {
         itemsPrice: cart.itemsPrice,
         shippingPrice: cart.shippingPrice,
         taxPrice: cart.taxPrice,
-        totalPrice: cart.discount ? cart.totalPrice - (cart.itemsPrice * cart.discount * 0.01).toFixed(2)?.toLocaleString('en-IN') : cart.totalPrice,
+        discount: cart.discount,
+        totalPrice: cart.discount ? cart.totalPrice - (cart.itemsPrice * cart.discount * 0.01)?.toFixed(2)?.toLocaleString('en-IN') : cart.totalPrice,
       })
     )
   }
@@ -107,7 +108,7 @@ const PlaceOrderScreen = ({ history }) => {
                           </Link>
                         </Col>
                         <Col md={4}>
-                          {item.qty} x ₹{(item.price - (item.price * item.discount / 100))?.toFixed(0).toLocaleString('en-IN')} = ₹{(item.qty * (item.price - (item.price * item.discount / 100)))?.toFixed(0).toLocaleString('en-IN')}
+                          {item.qty} x ₹{(item.price - (item.price * item.discount / 100))?.toFixed(2).toLocaleString('en-IN')} = ₹{(item.qty * (item.price - (item.price * item.discount / 100)))?.toFixed(2).toLocaleString('en-IN')}
                         </Col>
                       </Row>
                     </ListGroup.Item>
@@ -144,13 +145,13 @@ const PlaceOrderScreen = ({ history }) => {
               {cart.discount > 0 && <ListGroup.Item>
                 <Row>
                   <Col>Discount</Col>
-                  <Col>-₹{(cart.itemsPrice * cart.discount * 0.01).toFixed(2)?.toLocaleString('en-IN')}</Col>
+                  <Col>-₹{(cart.itemsPrice * cart.discount * 0.01)?.toFixed(2)?.toLocaleString('en-IN')}</Col>
                 </Row>
               </ListGroup.Item>}
               <ListGroup.Item>
                 <Row>
                   <Col>Total</Col>
-                  <Col>₹{cart.discount ? cart.totalPrice - (cart.itemsPrice * cart.discount * 0.01).toFixed(2)?.toLocaleString('en-IN') : cart.totalPrice}</Col>
+                  <Col>₹{cart.discount ? cart.totalPrice - (cart.itemsPrice * cart.discount * 0.01)?.toFixed(2)?.toLocaleString('en-IN') : cart.totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
