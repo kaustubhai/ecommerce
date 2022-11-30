@@ -91,6 +91,36 @@ const products = [
     numReviews: 0,
     tags: "Electronics, Amazon, Echo, Dot, 3rd, Generation",
   },
+  {
+    name: 'Sony Noise cancellation Headphones',
+    image: '/images/headphone.jpg',
+    secondaryImage: '/images/headphone-2.jpg',
+    description:
+      'Sony Noise cancellation Headphones with 30 hours of battery life and quick charging. Enjoy music with deep, punchy bass and clear, natural vocals',
+    brand: 'Sony',
+    category: 'Electronics',
+    mrp: 29990,
+    price: 29990,
+    countInStock: 25,
+    rating: 0,
+    numReviews: 0,
+    tags: "Electronics, Sony, Noise, cancellation, Headphones",
+  },
+  {
+    name: 'Samsung A73 5G Mobile',
+    image: '/images/samsung.jpg',
+    secondaryImage: '/images/samsung-2.jpg',
+    description:
+      'Samsung A73 5G Mobile with 8GB RAM and 128GB ROM. 6.7-inch Super AMOLED Plus Infinity-O Display, 64MP Quad Camera, 4500mAh Battery',
+    brand: 'Samsung',
+    category: 'Electronics',
+    mrp: 39999,
+    price: 39999,
+    countInStock: 0,
+    rating: 0,
+    numReviews: 0,
+    tags: "Electronics, Samsung, A73, 5G, Mobile",
+  },
 ]
 
 export default products
