@@ -21,7 +21,8 @@ import OrderListScreen from './screens/OrderListScreen'
 import CouponManagementScreen from './screens/CouponManagementScreen'
 import RequestPassword from './screens/RequestPassword'
 import ResetPassword from './screens/ResetPassword'
-import CreateNewsletter from './screens/CreateNewsletter'
+import FloatingButton from './components/floatingButton'
+// import CreateNewsletter from './screens/CreateNewsletter'
 
 const App = () => {
   return (
@@ -29,6 +30,7 @@ const App = () => {
       <Header />
       <main className='py-3' id='main'>
         <Container>
+          <FloatingButton />
           <Route path='/order/:id' component={OrderScreen} />
           <Route path='/shipping' component={ShippingScreen} />
           <Route path='/payment' component={PaymentScreen} />
@@ -42,7 +44,7 @@ const App = () => {
           <Route path='/admin/user/:id/edit' component={UserEditScreen} />
           <Route path='/user/password/forget' component={RequestPassword} />
           <Route path='/reset/password/:token' component={ResetPassword} />
-          <Route path='/admin/newsletter' component={CreateNewsletter} />
+          {/* <Route path='/admin/newsletter' component={CreateNewsletter} /> */}
           <Route
             path='/admin/productlist'
             component={ProductListScreen}

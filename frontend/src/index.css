@@ -68,6 +68,50 @@ h2 {
 .carousel a {
   margin: 0 auto;
 }
+.floatingButton {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 100;
+  background-color: #000000;
+  color: #ffffff;
+  border-radius: 20px;
+  height: 65px;
+  width: 65px;
+  text-align: center;
+  font-size: 25px;
+  padding-bottom: 2px;
+  cursor: pointer;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+.floatingButton:hover {
+  background-color: #000000;
+  color: #ffffff;
+  text-decoration: none;
+  bottom: 25px;
+}
+.floatingButton .layover {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  z-index: 99;
+  background-color: #ffffff;
+  color: #000000;
+  border-radius: 100%;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+  height: 30px;
+  width: 30px;
+  font-size: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 2px;
+  /* display: none; */
+}
 @media (max-width: 900px) {
   .carousel-caption h2 {
     font-size: 2.5vw;
