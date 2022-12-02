@@ -9,6 +9,7 @@ const CouponManagementScreen = ({ history }) => {
   const dispatch = useDispatch()
 	const [code, setCode] = useState('')
 	const [discount, setDiscount] = useState('')
+	const [maximum, setMaximum] = useState('')
 
   const couponsList = useSelector((state) => state.couponsList)
   const { loading, error, coupons } = couponsList
@@ -46,6 +47,7 @@ const CouponManagementScreen = ({ history }) => {
             <tr>
               <th>CODE</th>
               <th>DISCOUNT %</th>
+              <th>MAXIMUM ₹</th>
               <th></th>
             </tr>
             <tr>
@@ -68,9 +70,18 @@ const CouponManagementScreen = ({ history }) => {
                 ></input>
               </th>
               <th>
+                <input
+                  type='text'
+                  placeholder='Enter maximum discount'
+                  value={maximum}
+                  onChange={(e) => setMaximum(e.target.value)}
+                  className='form-control'
+                ></input>
+              </th>
+              <th>
                 <Button
                   type='submit'
-                  onClick={() => dispatch(addCoupon(code, discount))}
+                  onClick={() => dispatch(addCoupon(code, discount, maximum))}
                   variant='outline-success'
                   className='p-2'
                 >

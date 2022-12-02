@@ -4,6 +4,7 @@ const couponSchema = mongoose.Schema(
     [{
         code: { type: String, required: true, unique: true },
         discount: { type: Number, required: true },
+        maximum: { type: Number, required: true },
     }]
 )
 

@@ -45,9 +45,9 @@ const PlaceOrderScreen = ({ history }) => {
     // eslint-disable-next-line
   }, [history, success])
 
-  const checkCoupon = (e) => {
+  const checkCoupon = (e, totalPrice) => {
     e.preventDefault()
-    dispatch(applyCoupon(coupon))
+    dispatch(applyCoupon(coupon, totalPrice))
   }
 
   const placeOrderHandler = () => {
@@ -55,11 +55,11 @@ const PlaceOrderScreen = ({ history }) => {
       createOrder({
         orderItems: cart.cartItems,
         shippingAddress: cart.shippingAddress,
-        itemsPrice: cart.itemsPrice,
+        itemsPrice: cart.itemsPrice - cart.taxPrice,
         shippingPrice: cart.shippingPrice,
         taxPrice: cart.taxPrice,
         discount: cart.discount,
-        totalPrice: cart.discount ? cart.totalPrice - (cart.itemsPrice * cart.discount * 0.01)?.toFixed(2)?.toLocaleString('en-IN') : cart.totalPrice,
+        totalPrice: cart.discount ? cart.totalPrice - cart.discount : cart.totalPrice,
       })
     )
   }
@@ -145,17 +145,17 @@ const PlaceOrderScreen = ({ history }) => {
               {cart.discount > 0 && <ListGroup.Item>
                 <Row>
                   <Col>Discount</Col>
-                  <Col>-₹{(cart.itemsPrice * cart.discount * 0.01)?.toFixed(2)?.toLocaleString('en-IN')}</Col>
+                  <Col>-₹{cart.discount?.toLocaleString('en-IN')}</Col>
                 </Row>
               </ListGroup.Item>}
               <ListGroup.Item>
                 <Row>
                   <Col>Total</Col>
-                  <Col>₹{cart.discount ? cart.totalPrice - (cart.itemsPrice * cart.discount * 0.01)?.toFixed(2)?.toLocaleString('en-IN') : cart.totalPrice}</Col>
+                  <Col>₹{cart.discount ? (cart.totalPrice - cart.discount)?.toLocaleString('en-IN') : cart.totalPrice?.toLocaleString('en-IN')}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
-              <Form onSubmit={checkCoupon} inline>
+              <Form onSubmit={(e) => checkCoupon(e, cart.totalPrice)} inline>
                 <Form.Control
                   type='text'
                   name='coupon'
@@ -185,7 +185,7 @@ const PlaceOrderScreen = ({ history }) => {
                   <Message variant='danger'>{cart.error}</Message>
               </ListGroup.Item>}
               {cart.discount && <ListGroup.Item>
-                  <Message variant='success'>Discount of {cart.discount}% applied</Message>
+                  <Message variant='success'>Discount of ₹ {cart.discount} applied</Message>
               </ListGroup.Item>}
             </ListGroup>
           </Card>

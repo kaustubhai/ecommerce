@@ -25,7 +25,7 @@ const orderSchema = mongoose.Schema(
     trackingUrl: {
       type: String,
     },
-    discount: { type: Number, required: true },
+    discount: { type: Number },
     shippingAddress: {
       address: { type: String, required: true },
       city: { type: String, required: true },

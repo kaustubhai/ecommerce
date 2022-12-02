@@ -162,7 +162,7 @@ const applyCoupon = asyncHandler(async (req, res) => {
   const { code } = req.params
   const isValid = await Coupon.findOne({ code })
   if (isValid) {
-    res.json({discount: isValid.discount})
+    res.json({discount: isValid.discount, maximum: isValid.maximum})
   } else {
     res.status(400)
     throw new Error('Invalid coupon')
@@ -181,10 +181,11 @@ const getCoupons = asyncHandler(async (req, res) => {
 // @route   POST /api/coupons
 // @access  Private/Admin
 const addCoupons = asyncHandler(async (req, res) => {
-  const { code, discount } = req.body
+  const { code, discount, maximum } = req.body
   const coupon = new Coupon({
     code,
-    discount
+    discount,
+    maximum
   })
   const createdCoupon = await coupon.save()
   res.json(createdCoupon)

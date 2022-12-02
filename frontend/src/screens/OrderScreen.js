@@ -253,12 +253,12 @@ let rzp1;
                   <Col>₹{order.taxPrice}</Col>
                 </Row>
               </ListGroup.Item>
-              <ListGroup.Item>
+              {order.discount && <ListGroup.Item>
                 <Row>
                   <Col>Discount</Col>
-                  <Col>₹{((Number(order.itemsPrice) + Number(order.shippingPrice)) - order.totalPrice)?.toFixed(2)}</Col>
+                  <Col>₹{order.discount?.toFixed(2)}</Col>
                 </Row>
-              </ListGroup.Item>
+              </ListGroup.Item>}
               <ListGroup.Item>
                 <Row>
                   <Col>Total</Col>

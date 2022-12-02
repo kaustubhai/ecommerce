@@ -53,7 +53,7 @@ export const savePaymentMethod = (data) => (dispatch) => {
   localStorage.setItem('paymentMethod', JSON.stringify(data))
 }
 
-export const applyCoupon = (coupon) => async (dispatch, getState) => {
+export const applyCoupon = (coupon, total) => async (dispatch, getState) => {
   try {
     const {
       userLogin: { userInfo },
@@ -66,11 +66,17 @@ export const applyCoupon = (coupon) => async (dispatch, getState) => {
     }
     
     const { data } = await axios.patch(`/api/orders/coupons/${coupon}`, {}, config)
-  
+
+    
     if(data.discount) {
+      let disc;
+      if((total * data.discount / 100) > data.maximum)
+        disc = data.maximum
+      else
+        disc = total * data.discount / 100
       dispatch({
         type: 'APPLY_COUPON',
-        payload: data.discount,
+        payload: disc,
       })
     }
   } catch (error) {
@@ -101,7 +107,7 @@ export const getCoupon = () => async (dispatch, getState) => {
   })
 }
 
-export const addCoupon = (code, discount) => async (dispatch, getState) => {
+export const addCoupon = (code, discount, maximum) => async (dispatch, getState) => {
   const {
     userLogin: { userInfo },
   } = getState()
@@ -112,7 +118,7 @@ export const addCoupon = (code, discount) => async (dispatch, getState) => {
     },
   }
 
-  const { data } = await axios.post(`/api/orders/coupons`, { code, discount }, config)
+  const { data } = await axios.post(`/api/orders/coupons`, { code, discount, maximum }, config)
 
   dispatch({
     type: 'ADD_COUPON',
