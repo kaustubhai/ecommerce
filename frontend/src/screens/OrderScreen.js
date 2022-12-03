@@ -55,8 +55,8 @@ let rzp1;
         "key_id": process.env.RAZORPAY_KEY_ID, // Enter the Key ID generated from the Dashboard
         "amount": order?.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
         "currency": "INR",
-        "name": "ProShop",
-        "description": `You are buying ${order?.orderItems.length} items, worth ${order?.amount}, from ProShop`,
+        "name": "KroShop",
+        "description": `You are buying ${order?.orderItems.length} items, worth ${order?.amount}, from KroShop`,
         "image": "https://example.com/your_logo",
         "order_id": order?.rpId, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
         "handler": function (response){
@@ -149,7 +149,7 @@ let rzp1;
     <>
     <Helmet>
         <meta charSet="utf-8" />
-        <title>Your Order #{orderId || ''} | ProShop</title>
+        <title>Your Order #{orderId || ''} | KroShop</title>
         <link rel="canonical" />
     </Helmet>
     {(userInfo && userInfo.isAdmin) ? <Link to='/admin/orderlist' className='btn btn-light my-3'>

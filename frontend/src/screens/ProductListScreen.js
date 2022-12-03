@@ -75,7 +75,7 @@ const ProductListScreen = ({ history, match }) => {
     <>
     <Helmet>
         <meta charSet="utf-8" />
-        <title>Products | ProShop</title>
+        <title>Products | KroShop</title>
         <link rel="canonical" />
     </Helmet>
       <Row className='align-items-center'>

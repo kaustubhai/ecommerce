@@ -34,7 +34,7 @@ const LoginScreen = ({ location, history }) => {
     <FormContainer>
     <Helmet>
         <meta charSet="utf-8" />
-        <title>Sign In | ProShop</title>
+        <title>Sign In | KroShop</title>
         <link rel="canonical" />
     </Helmet>
       <h1>Sign In</h1>

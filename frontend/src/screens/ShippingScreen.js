@@ -53,7 +53,7 @@ const ShippingScreen = ({ history }) => {
     <FormContainer>
     <Helmet>
         <meta charSet="utf-8" />
-        <title>Shipping | ProShop</title>
+        <title>Shipping | KroShop</title>
         <link rel="canonical" />
     </Helmet>
       <CheckoutSteps step1 step2 />

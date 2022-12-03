@@ -108,7 +108,7 @@ const ProductEditScreen = ({ match, history }) => {
     <>
     <Helmet>
         <meta charSet="utf-8" />
-        <title>Edit Product | ProShop</title>
+        <title>Edit Product | KroShop</title>
         <link rel="canonical" />
     </Helmet>
       <Link to='/admin/productlist' className='btn btn-light my-3'>

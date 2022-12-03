@@ -63,7 +63,7 @@ const ResetPassword = ({ match, location, history }) => {
     <FormContainer>
     <Helmet>
         <meta charSet="utf-8" />
-        <title>Reset Password | ProShop</title>
+        <title>Reset Password | KroShop</title>
         <link rel="canonical" />
     </Helmet>
       <Row className='py-3'>

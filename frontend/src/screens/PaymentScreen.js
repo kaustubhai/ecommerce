@@ -28,7 +28,7 @@ const PaymentScreen = ({ history }) => {
     <FormContainer>
     <Helmet>
         <meta charSet="utf-8" />
-        <title>Checkout | ProShop</title>
+        <title>Checkout | KroShop</title>
         <link rel="canonical" />
     </Helmet>
       <CheckoutSteps step1 step2 step3 />

@@ -34,7 +34,7 @@ const CartScreen = ({ match, location, history }) => {
     <Row>
       <Helmet>
           <meta charSet="utf-8" />
-          <title>Your Cart | ProShop</title>
+          <title>Your Cart | KroShop</title>
           <link rel="canonical" />
       </Helmet>
       <Col md={8}>

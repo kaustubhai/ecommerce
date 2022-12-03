@@ -28,7 +28,7 @@ const OrderListScreen = ({ history }) => {
     <>
     <Helmet>
         <meta charSet="utf-8" />
-        <title>Your Orders | ProShop</title>
+        <title>Your Orders | KroShop</title>
         <link rel="canonical" />
     </Helmet>
       <h1>Orders</h1>

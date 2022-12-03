@@ -52,7 +52,7 @@ const UserEditScreen = ({ match, history }) => {
     <>
     <Helmet>
         <meta charSet="utf-8" />
-        <title>Edit User | ProShop</title>
+        <title>Edit User | KroShop</title>
         <link rel="canonical" />
     </Helmet>
       <Link to='/admin/userlist' className='btn btn-light my-3'>

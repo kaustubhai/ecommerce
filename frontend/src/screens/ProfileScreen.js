@@ -58,7 +58,7 @@ const ProfileScreen = ({ location, history }) => {
     <Row>
     <Helmet>
         <meta charSet="utf-8" />
-        <title>Your Profile | ProShop</title>
+        <title>Your Profile | KroShop</title>
         <link rel="canonical" />
     </Helmet>
       <Col md={3}>

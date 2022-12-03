@@ -37,7 +37,7 @@ const UserListScreen = ({ history }) => {
     <>
     <Helmet>
         <meta charSet="utf-8" />
-        <title>Users | ProShop</title>
+        <title>Users | KroShop</title>
         <link rel="canonical" />
     </Helmet>
       <h1>Users</h1>

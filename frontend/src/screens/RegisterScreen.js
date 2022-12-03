@@ -48,7 +48,7 @@ const RegisterScreen = ({ location, history }) => {
     <FormContainer>
     <Helmet>
         <meta charSet="utf-8" />
-        <title>Register | ProShop</title>
+        <title>Register | KroShop</title>
         <link rel="canonical" />
     </Helmet>
       <h1>Sign Up</h1>

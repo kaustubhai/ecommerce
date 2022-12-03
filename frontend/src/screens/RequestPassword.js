@@ -35,7 +35,7 @@ const RequestPassword = ({ location, history}) => {
     <FormContainer>
     <Helmet>
         <meta charSet="utf-8" />
-        <title>Forgot Password | ProShop</title>
+        <title>Forgot Password | KroShop</title>
         <link rel="canonical" />
     </Helmet>
         <Row className='py-3'>
