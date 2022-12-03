@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { Row, Col, Image, ListGroup, Card, Button, Form } from 'react-bootstrap'
+import { Row, Col, Image, ListGroup, Card, Button, Form, Alert } from 'react-bootstrap'
 import Rating from '../components/Rating'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
@@ -9,6 +9,7 @@ import Meta from '../components/Meta'
 import {
   listProductDetails,
   createProductReview,
+  checkDelivery,
 } from '../actions/productActions'
 import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants'
 import Helmet from 'react-helmet'
@@ -18,6 +19,9 @@ const ProductScreen = ({ history, match }) => {
   const [qty, setQty] = useState(1)
   const [rating, setRating] = useState(0)
   const [comment, setComment] = useState('')
+  const [pincode, setPincode] = useState('')
+  const [deliverable, setDeliverable] = useState(true)
+  const [deliveryAlert, setDeliveryAlert] = useState('')
 
   const dispatch = useDispatch()
 
@@ -47,6 +51,16 @@ const ProductScreen = ({ history, match }) => {
     history.push(`/cart/${match.params.id}?qty=${qty}`)
   }
 
+  const checkDeliveryHandler = async () => {
+    setDeliveryAlert('Checking...')
+    const delivery = await checkDelivery(pincode);
+    setDeliverable(delivery);
+    if(!delivery)
+      setDeliveryAlert('Sorry, we do not deliver to this pincode');
+    else
+      setDeliveryAlert('We deliver to this pincode');
+  }
+
   const submitHandler = (e) => {
     e.preventDefault()
     dispatch(
@@ -67,6 +81,9 @@ const ProductScreen = ({ history, match }) => {
       <Link className='btn btn-light my-3' to='/'>
         Go Back
       </Link>
+      <a className='btn btn-light my-3' href={`https://twitter.com/intent/tweet?text=Checkout%20this%20amazing%20${product.name}%20at%20an%20amazing%20price%20on%20ProShop%20here,&url=${window.location.href}&hashtags=${product.brand},${product.category}`} target={'_blank'}>
+        <i class="fab fa-twitter"></i> Share 
+      </a>
       {loading ? (
         <Loader />
       ) : error ? (
@@ -138,17 +155,36 @@ const ProductScreen = ({ history, match }) => {
                       </Row>
                     </ListGroup.Item>
                   )}
-
                   <ListGroup.Item>
                     <Button
                       onClick={addToCartHandler}
                       className='btn-block'
                       type='button'
-                      disabled={product.countInStock === 0}
+                      disabled={product.countInStock === 0 || (deliveryAlert === 'Checking...') || !deliverable}
                     >
                       Add To Cart
                     </Button>
                   </ListGroup.Item>
+                <ListGroup.Item>
+                  <Form.Group controlId='Pincode'>
+                    <Form.Control
+                      type='number'
+                      placeholder='Enter Pincode'
+                      value={pincode}
+                      onChange={(e) => setPincode(e.target.value)}
+                      required
+                      maxLength={6}
+                      id="phone"
+                      className='mb-2 text-center mt-3'
+                      ></Form.Control>
+                      <Button onClick={checkDeliveryHandler} disabled={pincode.length === 0} type='submit' variant='primary' block>
+                        Check Delivery
+                      </Button>
+                      {deliveryAlert && <Alert variant={deliverable ? 'success': 'danger'} className='mt-2'>
+                        {deliveryAlert}
+                      </Alert>}
+                  </Form.Group>
+                </ListGroup.Item>
                 </ListGroup>
               </Card>
             </Col>

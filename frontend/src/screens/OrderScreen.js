@@ -67,7 +67,7 @@ let rzp1;
             "email": order.user.email,
         },
         "notes": {
-            "address": `${order.shippingAddress.address}, ${order.shippingAddress.city}, ${order.shippingAddress.postalCode}, ${order.shippingAddress.country}`
+            "address": `${order.shippingAddress.address}, ${order.shippingAddress.city}, ${order.shippingAddress.state}, ${order.shippingAddress.postalCode}, ${order.shippingAddress.country}`
         },
         "theme": {
             "color": "#3399cc"
@@ -178,6 +178,7 @@ let rzp1;
               <p>
                 <strong>Address: </strong>
                 {order.shippingAddress.address}, {order.shippingAddress.city}{' '}
+                , {order.shippingAddress.state}{' '}
                 {order.shippingAddress.postalCode},{' '}
                 {order.shippingAddress.country}
               </p>
