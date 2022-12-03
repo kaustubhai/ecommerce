@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Badge, Card } from 'react-bootstrap'
+import { Badge, Button, Card } from 'react-bootstrap'
 import Rating from './Rating'
 
 const Product = ({ product }) => {
@@ -34,7 +34,9 @@ const Product = ({ product }) => {
             text={`${product.numReviews} reviews`}
           />
           </Card.Text> */}
-        <Card.Text as='h3' className='pb-1 mb-0'>₹{product.discount ? (product.price - (product.discount * product.price / 100)?.toFixed(0)) : product.price?.toFixed(0)}</Card.Text>
+          <div className="d-flex justify-content-between align-items-center mt-1">
+            <Card.Text as='h3' className='pb-1 mb-0'>₹{product.discount ? (product.price - (product.discount * product.price / 100)?.toFixed(0)) : product.price?.toFixed(0)}</Card.Text>
+          </div>
       </Card.Body>
     </Card>
   )

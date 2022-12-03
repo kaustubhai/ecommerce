@@ -14,6 +14,7 @@ import {
 import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants'
 import Helmet from 'react-helmet'
 import Product from '../components/Product'
+import { updateUserWishlist } from '../actions/userActions'
 
 const ProductScreen = ({ history, match }) => {
   const [qty, setQty] = useState(1)
@@ -71,6 +72,11 @@ const ProductScreen = ({ history, match }) => {
     )
   }
 
+  const addToWishlistHandler = () => {
+    dispatch(updateUserWishlist(match.params.id))
+    history.push('/wishlist')
+  }
+
   return (
     <>
     <Helmet>
@@ -79,11 +85,14 @@ const ProductScreen = ({ history, match }) => {
         <link rel="canonical" />
     </Helmet>
       <Link className='btn btn-light my-3' to='/'>
-        Go Back
+      <i class="fas fa-arrow-left"></i> Go Back
       </Link>
       <a className='btn btn-light my-3' href={`https://twitter.com/intent/tweet?text=Checkout%20this%20amazing%20${product.name}%20at%20an%20amazing%20price%20on%20ProShop%20here,&url=${window.location.href}&hashtags=${product.brand},${product.category}`} target={'_blank'}>
         <i class="fab fa-twitter"></i> Share 
       </a>
+      <button onClick={addToWishlistHandler} className='btn btn-light my-3'>
+        <i class="fas fa-heart"></i> WishList
+      </button>
       {loading ? (
         <Loader />
       ) : error ? (

@@ -2,6 +2,7 @@ import asyncHandler from 'express-async-handler'
 import generateToken from '../utils/generateToken.js'
 import jwt from 'jsonwebtoken'
 import User from '../models/userModel.js'
+import Product from '../models/productModel.js'
 import emailer from '../utils/mailConfig.js'
 import generateTemplate from '../utils/resetPasswordMail.js'
 import bcrypt from 'bcryptjs'
@@ -222,6 +223,46 @@ const resetPassword = async (req, res) => {
   }
 }
 
+const getUserWishlist = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).populate("wishlist");
+    const wishlist = user.wishlist.reverse();
+    res.json(wishlist);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+}
+
+const updateUserWishlist = async (req, res) => {
+  try {
+    const { productId } = req.body;
+    const user = await User.findById(req.user._id);
+    const product = await Product.findById(productId);
+    if (!user.wishlist.includes(productId))
+      user.wishlist.push(productId);
+    await user.save();
+    res.json({ product });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+}
+
+const removeUserWishlist = async (req, res) => {
+  try {
+    const { productId } = req.body;
+    console.log(productId);
+    const user = await User.findById(req.user._id);
+    user.wishlist = user.wishlist.filter((id) => id != productId);
+    await user.save();
+    res.send(productId);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+}
+
 export {
   authUser,
   registerUser,
@@ -232,5 +273,8 @@ export {
   getUserById,
   updateUser,
   forgotPasswordRequest,
-  resetPassword
+  resetPassword,
+  getUserWishlist,
+  updateUserWishlist,
+  removeUserWishlist,
 }

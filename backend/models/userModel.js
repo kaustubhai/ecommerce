@@ -12,6 +12,10 @@ const userSchema = mongoose.Schema(
       required: true,
       unique: true,
     },
+    wishlist: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Product'
+    }],
     phone: {
       type: String,
       required: true,

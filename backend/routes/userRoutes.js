@@ -11,6 +11,9 @@ import {
   updateUser,
   forgotPasswordRequest,
   resetPassword,
+  getUserWishlist,
+  updateUserWishlist,
+  removeUserWishlist,
 } from '../controllers/userController.js'
 import { protect, admin } from '../middleware/authMiddleware.js'
 
@@ -20,12 +23,16 @@ router
   .route('/profile')
   .get(protect, getUserProfile)
   .put(protect, updateUserProfile)
-router
-  .route('/:id')
-  .delete(protect, admin, deleteUser)
-  .get(protect, admin, getUserById)
-  .put(protect, admin, updateUser)
-router.post('/forgotpassword', forgotPasswordRequest)
-router.put('/reset/:requestId', resetPassword)
+  router.route('/wishlist')
+  .get(protect, getUserWishlist)
+  .put(protect, updateUserWishlist)
+  .patch(protect, removeUserWishlist)
+  router.post('/forgotpassword', forgotPasswordRequest)
+  router.put('/reset/:requestId', resetPassword)
+  router
+    .route('/:id')
+    .delete(protect, admin, deleteUser)
+    .get(protect, admin, getUserById)
+    .put(protect, admin, updateUser)
 
 export default router

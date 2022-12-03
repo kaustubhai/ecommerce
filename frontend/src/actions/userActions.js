@@ -24,6 +24,8 @@ import {
   USER_UPDATE_FAIL,
   USER_UPDATE_SUCCESS,
   USER_UPDATE_REQUEST,
+  GET_USER_WISHLIST,
+  USER_WISHLIST_SUCCESS
 } from '../constants/userConstants'
 import { ORDER_LIST_MY_RESET } from '../constants/orderConstants'
 
@@ -364,5 +366,111 @@ export const resetPassword = (resetToken, uid, password) => async (dispatch) => 
           type: USER_UPDATE_FAIL,
           payload: message,
         })
+    }
+  }
+
+  export const getUserWishlist = () => async (dispatch, getState) => {
+    try {  
+
+      dispatch({
+        type: USER_UPDATE_REQUEST
+      })
+
+      const {
+        userLogin: { userInfo },
+      } = getState()
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      }
+  
+      const { data } = await axios.get(`/api/users/wishlist`, config)
+  
+      dispatch({ type: GET_USER_WISHLIST, payload: data })
+    } catch (error) {
+      const message =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message
+      if (message === 'Not authorized, token failed') {
+        dispatch(logout())
+      }
+      dispatch({
+        type: USER_UPDATE_FAIL,
+        payload: message,
+      })
+    }
+  }
+
+  export const updateUserWishlist = (productId) => async (dispatch, getState) => {
+    try {  
+
+      dispatch({
+        type: USER_UPDATE_REQUEST
+      })
+
+      const {
+        userLogin: { userInfo },
+      } = getState()
+
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      }
+  
+      await axios.put(`/api/users/wishlist`, { productId }, config)
+
+    } catch (error) {
+      const message =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message
+      if (message === 'Not authorized, token failed') {
+        dispatch(logout())
+      }
+      dispatch({
+        type: USER_UPDATE_FAIL,
+        payload: message,
+      })
+    }
+  }
+
+  export const removeFromUserWishlist = (productId) => async (dispatch, getState) => {
+    try {  
+
+      dispatch({
+        type: USER_UPDATE_REQUEST
+      })
+
+      const {
+        userLogin: { userInfo },
+      } = getState()
+
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      }
+  
+      const { data } = await axios.patch(`/api/users/wishlist`, { productId }, config)
+  
+      dispatch({ type: USER_WISHLIST_SUCCESS, payload: data })
+    } catch (error) {
+      const message =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message
+      if (message === 'Not authorized, token failed') {
+        dispatch(logout())
+      }
+      dispatch({
+        type: USER_UPDATE_FAIL,
+        payload: message,
+      })
     }
   }

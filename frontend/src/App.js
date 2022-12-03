@@ -22,6 +22,7 @@ import CouponManagementScreen from './screens/CouponManagementScreen'
 import RequestPassword from './screens/RequestPassword'
 import ResetPassword from './screens/ResetPassword'
 import FloatingButton from './components/floatingButton'
+import Wishlist from './screens/Wishlist'
 // import CreateNewsletter from './screens/CreateNewsletter'
 
 const App = () => {
@@ -38,6 +39,7 @@ const App = () => {
           <Route path='/login' component={LoginScreen} />
           <Route path='/register' component={RegisterScreen} />
           <Route path='/profile' component={ProfileScreen} />
+          <Route path='/wishlist' component={Wishlist} />
           <Route path='/product/:id' component={ProductScreen} />
           <Route path='/cart/:id?' component={CartScreen} />
           <Route path='/admin/userlist' component={UserListScreen} />

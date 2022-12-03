@@ -37,6 +37,9 @@ const Header = () => {
                   <LinkContainer to='/profile'>
                     <NavDropdown.Item>{userInfo.name.split(' ')[0].slice(0,1).toUpperCase() + userInfo.name.split(' ')[0].slice(1)}</NavDropdown.Item>
                   </LinkContainer>
+                  <LinkContainer to='/wishlist'>
+                    <NavDropdown.Item>Wishlist</NavDropdown.Item>
+                  </LinkContainer>
                   <NavDropdown.Item onClick={logoutHandler}>
                     Logout
                   </NavDropdown.Item>
