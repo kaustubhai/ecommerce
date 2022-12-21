@@ -23,6 +23,8 @@ import RequestPassword from './screens/RequestPassword'
 import ResetPassword from './screens/ResetPassword'
 import FloatingButton from './components/floatingButton'
 import Wishlist from './screens/Wishlist'
+import PrivacyPolicy from './screens/PrivacyPolicy'
+import TermsOfService from './screens/TermsOfService'
 // import CreateNewsletter from './screens/CreateNewsletter'
 
 const App = () => {
@@ -65,6 +67,16 @@ const App = () => {
           <Route
             path='/search/:keyword/page/:pageNumber'
             component={HomeScreen}
+            exact
+          />
+          <Route
+            path='/policy'
+            component={PrivacyPolicy}
+            exact
+          />
+          <Route
+            path='/terms'
+            component={TermsOfService}
             exact
           />
           <Route path='/' component={HomeScreen} exact />

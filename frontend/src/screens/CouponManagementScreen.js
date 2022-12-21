@@ -95,6 +95,7 @@ const CouponManagementScreen = ({ history }) => {
               <tr key={coupon._id}>
                 <td>{coupon.code}</td>
                 <td>{coupon.discount}</td>
+                <td>{coupon.maximum}</td>
                 <td>
                   <Button
                     variant='danger'
