@@ -5,9 +5,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
-import { register } from '../actions/userActions'
+import { googleRegister, register } from '../actions/userActions'
 import Helmet from 'react-helmet'
-
+import GoogleLogin from 'react-google-login'
 const RegisterScreen = ({ location, history }) => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -25,6 +25,19 @@ const RegisterScreen = ({ location, history }) => {
 
   const redirect = location.search ? location.search.split('=')[1] : '/'
 
+  const responseGoogle = async response => {
+    dispatch(googleRegister(response))
+    // history.push('/')
+  }
+
+  const loginError = (response) => {
+    if (response.error !== 'popup_closed_by_user') {
+      console.log({
+        loginError: response
+      })
+    }
+  }
+
   useEffect(() => {
     if (userInfo) {
       history.push(redirect)
@@ -40,7 +53,7 @@ const RegisterScreen = ({ location, history }) => {
     } else if(!terms) {
       setMessage('Please accept the terms and conditions')
     } else {
-      dispatch(register(name, email, password, phone))
+      dispatch(register(name, email, password, phone, newsLetter))
     }
   }
 
@@ -145,13 +158,51 @@ const RegisterScreen = ({ location, history }) => {
               I agree to <a href="#!">Terms & Conditions</a>
             </Form.Label>
         </Form.Group>
-
+    <Row>
+      <Col sm={12} md={4}>
         <Button type='submit' variant='primary'>
           Register
         </Button>
+      </Col>
+      <Col sm={12} md={2} className='d-flex align-items-center' style={{minHeight: '50px'}}>
+        OR
+      </Col>
+      <Col sm={12} md={6} className='d-flex justify-content-md-end justify-content-sm-start'>
+      <GoogleLogin
+          clientId={process.env.GOOGLE_CLIENT_ID}
+          render={renderProps => (
+            <Button className="text-right ml-3"
+            style={{ padding: '0'}}
+              onClick={() => {
+                renderProps.onClick()
+              }}
+            >
+              <Button
+                type="button"
+                variant='Primary'
+                style={{ color: '#ffffff', backgroundColor: '#ff5555' }}
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  fill="currentColor"
+                  className="mr-2"
+                  viewBox="0 0 1792 1792"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M896 786h725q12 67 12 128 0 217-91 387.5t-259.5 266.5-386.5 96q-157 0-299-60.5t-245-163.5-163.5-245-60.5-299 60.5-299 163.5-245 245-163.5 299-60.5q300 0 515 201l-209 201q-123-119-306-119-129 0-238.5 65t-173.5 176.5-64 243.5 64 243.5 173.5 176.5 238.5 65q87 0 160-24t120-60 82-82 51.5-87 22.5-78h-436v-264z"></path>
+                </svg>
+                Register with Google
+              </Button>
+            </Button>
+          )}
+          onSuccess={responseGoogle}
+          onFailure={loginError}
+        />
+      </Col>
+    </Row>
       </Form>
-
-      <Row className='py-3'>
+        <Row className='py-3'>
         <Col>
           Have an Account?{' '}
           <Link to={redirect ? `/login?redirect=${redirect}` : '/login'}>

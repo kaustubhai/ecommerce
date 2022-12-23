@@ -29,6 +29,41 @@ import {
 } from '../constants/userConstants'
 import { ORDER_LIST_MY_RESET } from '../constants/orderConstants'
 
+export const googleLogin = (response, history, redirect) => async dispatch => {
+  try {
+    dispatch({
+      type: USER_LOGIN_REQUEST,
+    })
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+
+    const { data } = await axios.post(
+      '/api/users/login',
+      { email: response.profileObj.email, password: response.googleId },
+      config
+    )
+
+    dispatch({
+      type: USER_LOGIN_SUCCESS,
+      payload: data,
+    })
+
+    localStorage.setItem('userInfo', JSON.stringify(data))
+    history.push(redirect)
+  } catch (error) {
+    dispatch({
+      type: USER_LOGIN_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
 export const login = (email, password) => async (dispatch) => {
   try {
     dispatch({
@@ -75,7 +110,7 @@ export const logout = () => (dispatch) => {
   document.location.href = '/login'
 }
 
-export const register = (name, email, password, phone) => async (dispatch) => {
+export const register = (name, email, password, phone, newsletter) => async (dispatch) => {
   try {
     dispatch({
       type: USER_REGISTER_REQUEST,
@@ -89,7 +124,49 @@ export const register = (name, email, password, phone) => async (dispatch) => {
 
     const { data } = await axios.post(
       '/api/users',
-      { name, email, password, phone },
+      { name, email, password, phone, newsletter },
+      config
+    )
+
+    dispatch({
+      type: USER_REGISTER_SUCCESS,
+      payload: data,
+    })
+
+    dispatch({
+      type: USER_LOGIN_SUCCESS,
+      payload: data,
+    })
+
+    localStorage.setItem('userInfo', JSON.stringify(data))
+  } catch (error) {
+    dispatch({
+      type: USER_REGISTER_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const googleRegister = (response) => async (dispatch) => {
+  try {
+    dispatch({
+      type: USER_REGISTER_REQUEST,
+    })
+
+    console.log({ response });
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+
+    const { data } = await axios.post(
+      '/api/users',
+      { name: response.profileObj.name, email: response.profileObj.email, password: response.googleId, mode:'gmail' },
       config
     )
 

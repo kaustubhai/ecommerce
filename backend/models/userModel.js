@@ -12,20 +12,25 @@ const userSchema = mongoose.Schema(
       required: true,
       unique: true,
     },
+    mode: {
+      type: String,
+      required: true,
+      default: 'email',
+      enum: ['gmail', 'email']
+    },
     wishlist: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Product'
     }],
     phone: {
       type: String,
-      required: true,
       unique: true,
     },
     password: {
       type: String,
       required: true,
     },
-    newsLetter: {
+    newsletter: {
       type: Boolean,
       required: true,
       default: true,

@@ -14,7 +14,10 @@ const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body
 
   const user = await User.findOne({ email })
-
+  if(!user){
+    res.status(400)
+    throw new Error('User not found')
+  }
   if (user && (await user.matchPassword(password))) {
     res.json({
       _id: user._id,
@@ -23,6 +26,12 @@ const authUser = asyncHandler(async (req, res) => {
       isAdmin: user.isAdmin,
       token: generateToken(user._id),
     })
+  } else if(user.mode === 'gmail') {
+    res.status(401)
+    throw new Error('Login with google')
+  } else if(user.mode === 'email') {
+    res.status(401)
+    throw new Error('Login with your password')
   } else {
     res.status(401)
     throw new Error('Invalid email or password')
@@ -33,7 +42,7 @@ const authUser = asyncHandler(async (req, res) => {
 // @route   POST /api/users
 // @access  Public
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password, phone, newsLetter } = req.body
+  const { name, email, password, phone, newsletter, mode } = req.body
 
   const userExists = await User.findOne({ email })
 
@@ -47,7 +56,8 @@ const registerUser = asyncHandler(async (req, res) => {
     email,
     password,
     phone,
-    newsLetter
+    newsletter,
+    mode
   })
 
   if (user) {
@@ -55,6 +65,7 @@ const registerUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      mode: user.mode,
       isAdmin: user.isAdmin,
       newsLetter: user.newsLetter,
       phone: user.phone,
