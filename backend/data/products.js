@@ -6,7 +6,7 @@ const products = [
     description:
       'Bluetooth technology lets you connect it with compatible devices wirelessly High-quality AAC audio offers immersive listening experience Built-in microphone allows you to take calls while working',
     brand: 'Apple',
-    category: 'Electronics',
+    category: 'electronics',
     mrp: 8999,
     price: 7999,
     countInStock: 3,
@@ -21,7 +21,7 @@ const products = [
     description:
       'Introducing the iPhone 11 Pro. A transformative triple-camera system that adds tons of capability without complexity. An unprecedented leap in battery life',
     brand: 'Apple',
-    category: 'Electronics',
+    category: 'electronics',
     mrp: 39999,
     price: 39999,
     discount: 10,
@@ -37,7 +37,7 @@ const products = [
     description:
       'Characterized by versatile imaging specs, the Canon EOS 80D further clarifies itself using a pair of robust focusing systems and an intuitive design',
     brand: 'Cannon',
-    category: 'Electronics',
+    category: 'electronics',
     mrp: 32999,
     price: 32999,
     discount: 10,
@@ -53,7 +53,7 @@ const products = [
     description:
       'The ultimate home entertainment center starts with PlayStation. Whether you are into gaming, HD movies, television, music',
     brand: 'Sony',
-    category: 'Electronics',
+    category: 'electronics',
     mrp: 40099.99,
     price: 40099.99,
     countInStock: 10,
@@ -68,7 +68,7 @@ const products = [
     description:
       'Get a better handle on your games with this Logitech LIGHTSYNC gaming mouse. The six programmable buttons allow customization for a smooth playing experience',
     brand: 'Logitech',
-    category: 'Electronics',
+    category: 'electronics',
     mrp: 4999,
     price: 4999,
     countInStock: 7,
@@ -83,7 +83,7 @@ const products = [
     description:
       'Meet Echo Dot - Our most popular smart speaker with a fabric design. It is our most compact smart speaker that fits perfectly into small space',
     brand: 'Amazon',
-    category: 'Electronics',
+    category: 'electronics',
     mrp: 2999,
     price: 2999,
     countInStock: 0,
@@ -98,7 +98,7 @@ const products = [
     description:
       'Sony Noise cancellation Headphones with 30 hours of battery life and quick charging. Enjoy music with deep, punchy bass and clear, natural vocals',
     brand: 'Sony',
-    category: 'Electronics',
+    category: 'electronics',
     mrp: 29990,
     price: 29990,
     countInStock: 25,
@@ -113,7 +113,7 @@ const products = [
     description:
       'Samsung A73 5G Mobile with 8GB RAM and 128GB ROM. 6.7-inch Super AMOLED Plus Infinity-O Display, 64MP Quad Camera, 4500mAh Battery',
     brand: 'Samsung',
-    category: 'Electronics',
+    category: 'electronics',
     mrp: 39999,
     price: 39999,
     countInStock: 0,

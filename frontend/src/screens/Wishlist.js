@@ -22,7 +22,7 @@ const Wishlist = ({ history }) => {
           </Message>
           :
         wishlist?.map((item) => (
-            <ProductRow item={item} history={history} />
+            <ProductRow item={item} history={history} wishlist={true} />
         ))}
         </Table>
     </div>

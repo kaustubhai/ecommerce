@@ -85,6 +85,27 @@ const createProduct = asyncHandler(async (req, res) => {
   res.status(201).json(createdProduct)
 })
 
+// @desc    List all Category
+// @route   GET /api/categories
+// @access  Public
+const getAllCategory = asyncHandler(async (req, res) => {
+  const category = await Product.distinct('category')
+  res.json(category)
+})
+
+// @desc    Fetch from specific Category
+// @route   GET /api/category/:category
+// @access  Public
+const getCategory = asyncHandler(async (req, res) => {
+  const { category } = req.params;
+  if(!category)
+    res.status(404).json({message: 'Category not found'})
+  const products = await Product.find({ category });
+  if(products.length === 0)
+    res.status(404).json({message: 'Category not found'})
+  res.json(products)
+})
+
 // @desc    Update a product
 // @route   PUT /api/products/:id
 // @access  Private/Admin
@@ -116,7 +137,7 @@ const updateProduct = asyncHandler(async (req, res) => {
     product.image = image
     product.secondaryImage = secondaryImage
     product.brand = brand
-    product.category = category
+    product.category = category.toLowerCase().trim()
     product.countInStock = countInStock
     product.tags = tages
 
@@ -183,6 +204,8 @@ export {
   getProductById,
   deleteProduct,
   createProduct,
+  getAllCategory,
+  getCategory,
   updateProduct,
   createProductReview,
   getTopProducts,

@@ -25,6 +25,7 @@ import FloatingButton from './components/floatingButton'
 import Wishlist from './screens/Wishlist'
 import PrivacyPolicy from './screens/PrivacyPolicy'
 import TermsOfService from './screens/TermsOfService'
+import CategoryScreen from './screens/CategoryScreen'
 // import CreateNewsletter from './screens/CreateNewsletter'
 
 const App = () => {
@@ -43,6 +44,7 @@ const App = () => {
           <Route path='/profile' component={ProfileScreen} />
           <Route path='/wishlist' component={Wishlist} />
           <Route path='/product/:id' component={ProductScreen} />
+          <Route path='/category/:category' component={CategoryScreen} />
           <Route path='/cart/:id?' component={CartScreen} />
           <Route path='/admin/userlist' component={UserListScreen} />
           <Route path='/admin/user/:id/edit' component={UserEditScreen} />

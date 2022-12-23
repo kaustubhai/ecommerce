@@ -1,6 +1,8 @@
 import {
   PRODUCT_LIST_REQUEST,
+  CATEGORY_PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
+  CATEGORY_PRODUCT_LIST_SUCCESS,
   PRODUCT_LIST_FAIL,
   PRODUCT_DETAILS_REQUEST,
   PRODUCT_DETAILS_SUCCESS,
@@ -33,6 +35,13 @@ export const productListReducer = (state = { products: [] }, action) => {
       return {
         loading: false,
         products: action.payload.products,
+        pages: action.payload.pages,
+        page: action.payload.page,
+      }
+    case CATEGORY_PRODUCT_LIST_SUCCESS:
+      return {
+        loading: false,
+        products: action.payload,
         pages: action.payload.pages,
         page: action.payload.page,
       }

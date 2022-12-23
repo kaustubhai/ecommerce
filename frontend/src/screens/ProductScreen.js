@@ -15,7 +15,6 @@ import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants'
 import Helmet from 'react-helmet'
 import Product from '../components/Product'
 import { updateUserWishlist } from '../actions/userActions'
-import Editor from '../components/Editor'
 
 const ProductScreen = ({ history, match }) => {
   const [qty, setQty] = useState(1)

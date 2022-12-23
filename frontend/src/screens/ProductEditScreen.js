@@ -9,6 +9,7 @@ import FormContainer from '../components/FormContainer'
 import { listProductDetails, updateProduct } from '../actions/productActions'
 import { PRODUCT_UPDATE_RESET } from '../constants/productConstants'
 import Helmet from 'react-helmet'
+import CreatableSelect from 'react-select/creatable';
 
 const ProductEditScreen = ({ match, history }) => {
   const productId = match.params.id
@@ -20,12 +21,12 @@ const ProductEditScreen = ({ match, history }) => {
   const [image, setImage] = useState('')
   const [secondaryImage, setSecondaryImage] = useState('')
   const [brand, setBrand] = useState('')
-  const [category, setCategory] = useState('')
   const [countInStock, setCountInStock] = useState(0)
   const [description, setDescription] = useState('')
   const [tags, setTags] = useState('')
   const [uploading, setUploading] = useState(false)
-
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [categoryDropdown, setCategoryDropdown] = useState([])
   const dispatch = useDispatch()
 
   const productDetails = useSelector((state) => state.productDetails)
@@ -53,13 +54,25 @@ const ProductEditScreen = ({ match, history }) => {
         setImage(product.image)
         setSecondaryImage(product.secondaryImage)
         setBrand(product.brand)
-        setCategory(product.category)
+        setSelectedOption(product.category)
         setCountInStock(product.countInStock)
         setDescription(product.description)
         setTags(product.tags.join(', '))
       }
     }
   }, [dispatch, history, productId, product, successUpdate])
+
+  useEffect(() => {
+    (async () => {
+      const data = await axios.get('/api/products/categories')
+      setCategoryDropdown(data.data)
+    })();
+  }, [])
+
+  const options = categoryDropdown.map(cate => ({
+    label: cate,
+    value: cate
+  }));
 
   const uploadFileHandler = async (e, pos) => {
     const file = e.target.files[0]
@@ -96,7 +109,7 @@ const ProductEditScreen = ({ match, history }) => {
         image,
         secondaryImage,
         brand,
-        category,
+        category: selectedOption.value,
         description,
         tags,
         countInStock,
@@ -220,12 +233,11 @@ const ProductEditScreen = ({ match, history }) => {
 
             <Form.Group controlId='category'>
               <Form.Label>Category</Form.Label>
-              <Form.Control
-                type='text'
-                placeholder='Enter category'
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-              ></Form.Control>
+              <CreatableSelect
+                defaultValue={product.category}
+                onChange={setSelectedOption}
+                options={options}
+              />
             </Form.Group>
 
             <Form.Group controlId='description'>

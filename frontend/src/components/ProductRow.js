@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { removeFromUserWishlist } from '../actions/userActions';
-const ProductRow = ({item, history}) => {
+const ProductRow = ({item, history, wishlist}) => {
     const [img, setImg] = useState('')
     const dispatch = useDispatch()
     const removeFromWishlist = (id) => {
@@ -38,9 +38,13 @@ const ProductRow = ({item, history}) => {
             <Button variant='primary' onClick={() => addToCartHandler(item._id)} className="mr-2">
                 <i className='fas fa-cart-plus'></i>
             </Button>
-            <Button variant='secondary' onClick={() => removeFromWishlist(item._id)}>
+            {wishlist ? <Button variant='secondary' onClick={() => removeFromWishlist(item._id)}>
                 <i className='fas fa-trash'></i>
             </Button>
+            :
+            <Button variant='secondary' onClick={() => history.push(`/product/${item._id}`)}>
+                <i className='fas fa-forward'></i>
+            </Button>}
         </td>
     </tr>
   )

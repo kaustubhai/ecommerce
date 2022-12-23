@@ -52,7 +52,7 @@ const HomeScreen = ({ match }) => {
             ))}
           </Row>
           <div className='d-flex justify-content-center align-items-center' style={{ backgroundColor: '#000', position: 'relative', height: '400px' }}>
-            <Button variant='secondary' style={{ fontSize: '1.2rem', zIndex: 20, fontWeight: 'bold', boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px' }}>Shop Electronics</Button>
+          <Link to={'/category/electronics'} style={{ zIndex: 20, boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px' }}><Button style={{fontSize: '1.2rem', fontWeight: 'bold'}} variant='secondary'>Shop Electronics</Button></Link>
             <img src={Banner} alt="" className='w-100' style={{ height: '400px', position: 'absolute', zIndex:0, opacity: 0.6, objectFit: 'cover' }}/>
           </div>
       <h1 className='text-center mt-4'>Latest Products</h1>
