@@ -37,7 +37,6 @@ const RegisterScreen = ({ location, history }) => {
       })
     }
   }
-
   useEffect(() => {
     if (userInfo) {
       history.push(redirect)
@@ -169,7 +168,7 @@ const RegisterScreen = ({ location, history }) => {
       </Col>
       <Col sm={12} md={6} className='d-flex justify-content-md-end justify-content-sm-start'>
       <GoogleLogin
-          clientId={process.env.GOOGLE_CLIENT_ID}
+          clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
           render={renderProps => (
             <Button className="text-right ml-3"
             style={{ padding: '0'}}
