@@ -21,11 +21,23 @@ const ProductCarousel = () => {
   ) : error ? (
     <Message variant='danger'>{error}</Message>
   ) : (
-    <Carousel pause='hover' className='bg-dark absolute'>
+    <Carousel pause='hover' className='bg-dark absolute' style={{
+      position: 'absolute',
+      top: '90px',
+      left: '0',
+      width: '100%',
+    }}>
       {products.map((product) => (
         <Carousel.Item key={product._id}>
           <Link to={`/product/${product._id}`}>
-            <Image src={product.image} alt={product.name} fluid />
+            <Image src={product.image}  alt={product.name} fluid style={{
+              height: '300px',
+              padding: '30px',
+              margin: '40px',
+              borderRadius: '50%',
+              marginLeft: 'auto',
+              marginRight: 'auto'
+            }} />
             <Carousel.Caption className='carousel-caption'>
               <h2>
                 {product.name}

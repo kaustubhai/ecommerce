@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { Row, Col, Image, ListGroup, Card, Button, Form, Alert } from 'react-bootstrap'
+import { Row, Col, Image, ListGroup, Card, Button, Form, Alert, Carousel } from 'react-bootstrap'
 import Rating from '../components/Rating'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
@@ -15,6 +15,7 @@ import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants'
 import Helmet from 'react-helmet'
 import Product from '../components/Product'
 import { updateUserWishlist } from '../actions/userActions'
+import Editor from '../components/Editor'
 
 const ProductScreen = ({ history, match }) => {
   const [qty, setQty] = useState(1)
@@ -23,9 +24,7 @@ const ProductScreen = ({ history, match }) => {
   const [pincode, setPincode] = useState('')
   const [deliverable, setDeliverable] = useState(true)
   const [deliveryAlert, setDeliveryAlert] = useState('')
-
   const dispatch = useDispatch()
-
   const productDetails = useSelector((state) => state.productDetails)
   const { loading, error, product } = productDetails
 
@@ -102,7 +101,13 @@ const ProductScreen = ({ history, match }) => {
           <Meta title={product.name} />
           <Row>
             <Col md={6}>
-              <Image src={product.image} alt={product.name} fluid />
+              <Carousel variant='dark' className='dark' style={{ position: 'relative', top: 0 }}>
+                {[product.image, product.secondaryImage].map(image => (
+                <Carousel.Item style={{ height: '400px', width: '100%' }}>
+                  <Image src={image} alt={product.name} className='mx-auto' fluid />
+                </Carousel.Item>
+                ))}
+              </Carousel>
             </Col>
             <Col md={3}>
               <ListGroup variant='flush'>
