@@ -6,6 +6,7 @@ import Product from '../models/productModel.js'
 import emailer from '../utils/mailConfig.js'
 import generateTemplate from '../utils/resetPasswordMail.js'
 import bcrypt from 'bcryptjs'
+import generateNewsletter from '../utils/newsletterMail.js'
 
 // @desc    Auth user & get token
 // @route   POST /api/users/login
@@ -274,6 +275,25 @@ const removeUserWishlist = async (req, res) => {
   }
 }
 
+const sendNewletter = async (req, res) => {
+  try {
+    const users = await User.find({ newsletter: true }, 'email');
+    const { subject, body } = req.body;
+    users.forEach((user) => {
+      emailer({
+        to: user.email,
+        subject,
+        body: generateNewsletter(JSON.parse(body)),
+      });
+    }
+    );
+    res.json("Mail sent!");
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+}
+
 export {
   authUser,
   registerUser,
@@ -288,4 +308,5 @@ export {
   getUserWishlist,
   updateUserWishlist,
   removeUserWishlist,
+  sendNewletter,
 }

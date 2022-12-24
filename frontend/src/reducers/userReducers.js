@@ -27,6 +27,9 @@ import {
   USER_UPDATE_PROFILE_RESET,
   USER_WISHLIST_SUCCESS,
   GET_USER_WISHLIST,
+  NEWSLETTER_REQUEST,
+  NEWSLETTER_SUCCESS,
+  NEWSLETTER_FAILURE,
 } from '../constants/userConstants'
 
 export const userLoginReducer = (state = {}, action) => {
@@ -133,6 +136,19 @@ export const userUpdateReducer = (state = { user: {}, wishlist: [] }, action) =>
       return {
         user: {},
       }
+    default:
+      return state
+  }
+}
+
+export const newsLetterReducer = (state = { loading: false, msg: '' }, action) => {
+  switch (action.type) {
+    case NEWSLETTER_REQUEST:
+      return { loading: true }
+    case NEWSLETTER_SUCCESS:
+      return { loading: false, msg: action.payload }
+    case NEWSLETTER_FAILURE:
+      return { loading: false, msg: action.payload }
     default:
       return state
   }

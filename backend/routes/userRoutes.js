@@ -14,6 +14,7 @@ import {
   getUserWishlist,
   updateUserWishlist,
   removeUserWishlist,
+  sendNewletter,
 } from '../controllers/userController.js'
 import { protect, admin } from '../middleware/authMiddleware.js'
 
@@ -34,5 +35,6 @@ router
     .delete(protect, admin, deleteUser)
     .get(protect, admin, getUserById)
     .put(protect, admin, updateUser)
+  router.route('/newsletter').post(protect, admin, sendNewletter)
 
 export default router

@@ -51,6 +51,10 @@ h2 {
   width: 100%;
 }
 
+.w-full {
+  width: 100%;
+}
+
 /* .carousel {
   position: absolute;
   top: 90px;

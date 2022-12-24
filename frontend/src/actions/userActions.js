@@ -25,7 +25,10 @@ import {
   USER_UPDATE_SUCCESS,
   USER_UPDATE_REQUEST,
   GET_USER_WISHLIST,
-  USER_WISHLIST_SUCCESS
+  USER_WISHLIST_SUCCESS,
+  NEWSLETTER_REQUEST,
+  NEWSLETTER_SUCCESS,
+  NEWSLETTER_FAILURE,
 } from '../constants/userConstants'
 import { ORDER_LIST_MY_RESET } from '../constants/orderConstants'
 
@@ -551,3 +554,39 @@ export const resetPassword = (resetToken, uid, password) => async (dispatch) => 
       })
     }
   }
+
+export const sendNewsletter = (subject, body) => async (dispatch, getState) => {
+  try {
+
+    dispatch({
+      type: NEWSLETTER_REQUEST
+    })
+
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+
+    const { data } = await axios.post(`/api/users/newsletter`, { subject, body }, config)
+
+    dispatch({ type: NEWSLETTER_SUCCESS, payload: data })
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message
+    if (message === 'Not authorized, token failed') {
+      dispatch(logout())
+    }
+    dispatch({
+      type: NEWSLETTER_FAILURE,
+      payload: message,
+    })
+  }
+}

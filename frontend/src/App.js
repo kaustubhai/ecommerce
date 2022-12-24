@@ -26,6 +26,7 @@ import Wishlist from './screens/Wishlist'
 import PrivacyPolicy from './screens/PrivacyPolicy'
 import TermsOfService from './screens/TermsOfService'
 import CategoryScreen from './screens/CategoryScreen'
+import Newsletter from './screens/Newsletter'
 // import CreateNewsletter from './screens/CreateNewsletter'
 
 const App = () => {
@@ -50,6 +51,7 @@ const App = () => {
           <Route path='/admin/user/:id/edit' component={UserEditScreen} />
           <Route path='/user/password/forget' component={RequestPassword} />
           <Route path='/reset/password/:token' component={ResetPassword} />
+          <Route path='/admin/newsletter' component={Newsletter} />
           {/* <Route path='/admin/newsletter' component={CreateNewsletter} /> */}
           <Route
             path='/admin/productlist'
