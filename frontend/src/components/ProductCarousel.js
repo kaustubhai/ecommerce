@@ -21,7 +21,7 @@ const ProductCarousel = () => {
   ) : error ? (
     <Message variant='danger'>{error}</Message>
   ) : (
-    <Carousel pause='hover' className='bg-dark absolute' style={{
+        <Carousel pause='hover' className='bg-danger absolute' style={{
       position: 'absolute',
       top: '90px',
       left: '0',
@@ -39,7 +39,7 @@ const ProductCarousel = () => {
               marginRight: 'auto'
             }} />
             <Carousel.Caption className='carousel-caption'>
-              <h2>
+              <h2 className='text-white'>
                 {product.name}
               </h2>
             </Carousel.Caption>

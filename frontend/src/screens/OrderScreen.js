@@ -307,7 +307,7 @@ let rzp1;
                   <ListGroup.Item>
                     <Button
                       type='button'
-                      className='btn-block'
+                        className='btn-block bg-danger'
                       onClick={openRazor}
                       id='rzp-button1'
                       >
@@ -318,7 +318,7 @@ let rzp1;
                 <ListGroup.Item>
                   <Button
                     type='button'
-                    className='btn-block'
+                          className='btn-block bg-danger'
                     onClick={printDiv}
                     >
                       Download Invoice

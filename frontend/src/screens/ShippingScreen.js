@@ -125,7 +125,7 @@ const ShippingScreen = ({ history }) => {
           ></Form.Control>
         </Form.Group>
 
-        <Button type='submit' disabled={!city} variant='primary'>
+        <Button type='submit' disabled={!city} variant='primary' className='bg-danger'>
           {alert === 'Processing...' ? 'Loading' : 'Continue'}
         </Button>
       </Form>
