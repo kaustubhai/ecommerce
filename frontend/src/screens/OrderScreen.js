@@ -254,7 +254,7 @@ let rzp1;
                   <Col>₹{order.taxPrice}</Col>
                 </Row>
               </ListGroup.Item>
-              {order.discount && <ListGroup.Item>
+                  {order.discount > 0 && <ListGroup.Item>
                 <Row>
                   <Col>Discount</Col>
                   <Col>₹{order.discount?.toFixed(2)}</Col>

@@ -30,9 +30,6 @@ const authUser = asyncHandler(async (req, res) => {
   } else if(user.mode === 'gmail') {
     res.status(401)
     throw new Error('Login with google')
-  } else if(user.mode === 'email') {
-    res.status(401)
-    throw new Error('Login with your password')
   } else {
     res.status(401)
     throw new Error('Invalid email or password')

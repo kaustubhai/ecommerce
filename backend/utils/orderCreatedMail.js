@@ -86,7 +86,7 @@ const generateRows = (products) => {
     }
 
 
-const generateTemplate = (order) => {
+const generateTemplate = (order, name, email) => {
     return `
     <!DOCTYPE html
     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -663,7 +663,7 @@ a {text-decoration: none;}
                                                                         style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px">
                                                                         Subtotal: ₹<strong>${(order.totalPrice - order.taxPrice - order.shippingPrice).toLocaleString('en-IN')}</strong><br>
                                                                         Shipping: ₹<strong>${order.shippingPrice.toLocaleString('en-IN')}</strong><br>
-                                                                        ${!!order.discount && `Discount: ₹<strong>${order.discount.toLocaleString('en-IN')}</strong><br>`}
+                                                                        ${!!order.discount ? `Discount: ₹<strong>${order.discount.toLocaleString('en-IN')}</strong><br>` : ''}
                                                                         Tax: ₹<strong>${order.taxPrice.toLocaleString('en-IN')}</strong><br>
                                                                         Total: ₹<strong>${order.totalPrice.toLocaleString('en-IN')}</strong></p>
                                                                 </td>
@@ -691,17 +691,17 @@ a {text-decoration: none;}
                                                                     <p
                                                                         style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px">
                                                                         Customer:
-                                                                        <strong>sarah_powell@domain.com</strong></p>
+                                                                        <strong>${email}</strong></p>
                                                                     <p
                                                                         style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px">
                                                                         Invoice date:&nbsp;<strong>${new Date().toDateString()}</strong>
                                                                     </p>
                                                                     <p
                                                                         style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px">
-                                                                        Payment method:&nbsp;<strong>PayPal</strong></p>
+                                                                        Payment method:&nbsp;<strong>RazorPay</strong></p>
                                                                     <p
                                                                         style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px">
-                                                                        Currency:&nbsp;<strong>INR</strong></p>
+                                                                        Payment ID:&nbsp;<strong>${order.rpId}</strong></p>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -722,15 +722,11 @@ a {text-decoration: none;}
                                                                     style="padding:0;Margin:0">
                                                                     <p
                                                                         style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px">
-                                                                        Shipping Method: <strong>UPS - Ground</strong>
-                                                                    </p>
-                                                                    <p
-                                                                        style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px">
                                                                         Shipping address:</p>
                                                                     <p
                                                                         style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px">
-                                                                        <strong>Sarah Powell,<br>600 Montgomery
-                                                                            St,<br>San Francisco, CA 94111</strong></p>
+                                                                        <strong>${name.slice(0, 1).toUpperCase() + name.slice(1)}, <br/>${order.shippingAddress.address}<br>${order.shippingAddress.city}
+                                                                            ,<br>${order.shippingAddress.state}, ${order.shippingAddress.postalCode}</strong></p>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -756,14 +752,10 @@ a {text-decoration: none;}
                                                                     <p
                                                                         style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px">
                                                                         Got a question?&nbsp;Email us at&nbsp;<a
-                                                                            target="_blank" href=""
-                                                                            style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#5C68E2;font-size:14px">support@</a><a
-                                                                            target="_blank" href=""
-                                                                            style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#5C68E2;font-size:14px">stylecasual</a><a
-                                                                            target="_blank" href=""
-                                                                            style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#5C68E2;font-size:14px">.com</a>&nbsp;or
+                                                                            target="_blank" href="mailto:support@example.com"
+                                                                            style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#5C68E2;font-size:14px">support@example.com</a>&nbsp;or
                                                                         give us a call at&nbsp;<a target="_blank"
-                                                                            href=""
+                                                                            href="tel:+000 123 456"
                                                                             style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#5C68E2;font-size:14px">+000
                                                                             123 456</a>.</p>
                                                                 </td>

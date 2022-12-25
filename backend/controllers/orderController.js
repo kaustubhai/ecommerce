@@ -106,7 +106,7 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
     emailer({
       to: req.user.email,
       subject: `Order placed, congratulations!`,
-      body: generateTemplate(order)
+      body: generateTemplate(order, req.user.name, req.user.email)
     });
     res.json(updatedOrder)
   } else {
@@ -130,7 +130,7 @@ const updateOrderToDispatched = asyncHandler(async (req, res) => {
     emailer({
       to: req.user.email,
       subject: `WooHoo! Order dispatched`,
-      body: generateTemplate2(order)
+      body: generateTemplate2(order, req.user.name, req.user.email)
     })
     res.json(updatedOrder)
   } else {

@@ -3,95 +3,9 @@ const expectedDeliveryDate = (dispatchedAt) => {
     date.setDate(date.getDate() + 14);
     return date;
 }
-const generateRows = (products) => {
-    const x = products.map((product) => (
-        `
-        <tr>
-            <td class="esdev-adapt-off" align="left"
-                style="Margin:0;padding-top:10px;padding-bottom:10px;padding-left:20px;padding-right:20px">
-                <table cellpadding="0" cellspacing="0" class="esdev-mso-table"
-                    style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;width:560px">
-                    <tr>
-                        <td style="padding:0;Margin:0;width:20px"></td>
-                        <td class="esdev-mso-td" valign="top" style="padding:0;Margin:0">
-                            <table cellpadding="0" cellspacing="0" class="es-left"
-                                align="left"
-                                style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:left">
-                                <tr>
-                                    <td align="center"
-                                        style="padding:0;Margin:0;width:300px">
-                                        <table cellpadding="0" cellspacing="0" width="100%"
-                                            role="presentation"
-                                            style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
-                                            <tr>
-                                                <td align="left" style="padding:0;Margin:0">
-                                                    <p
-                                                        style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px">
-                                                        <strong>${product.name}</strong></p>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                        <td style="padding:0;Margin:0;width:20px"></td>
-                        <td class="esdev-mso-td" valign="top" style="padding:0;Margin:0">
-                            <table cellpadding="0" cellspacing="0" class="es-left"
-                                align="left"
-                                style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:left">
-                                <tr>
-                                    <td align="left" style="padding:0;Margin:0;width:80px">
-                                        <table cellpadding="0" cellspacing="0" width="100%"
-                                            role="presentation"
-                                            style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
-                                            <tr>
-                                                <td align="center"
-                                                    style="padding:0;Margin:0">
-                                                    <p
-                                                        style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px">
-                                                        ${product.qty} pcs</p>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                        <td style="padding:0;Margin:0;width:20px"></td>
-                        <td class="esdev-mso-td" valign="top" style="padding:0;Margin:0">
-                            <table cellpadding="0" cellspacing="0" class="es-right"
-                                align="right"
-                                style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:right">
-                                <tr>
-                                    <td align="left" style="padding:0;Margin:0;width:85px">
-                                        <table cellpadding="0" cellspacing="0" width="100%"
-                                            role="presentation"
-                                            style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
-                                            <tr>
-                                                <td align="right"
-                                                    style="padding:0;Margin:0">
-                                                    <p
-                                                        style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px">
-                                                        ₹ ${product.price}</p>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-        `
-    ))   
-    return x.join('')     
-    }
 
 
-const generateTemplate = (order) => {
+const generateTemplate = (order, name, email) => {
     return `
     <!DOCTYPE html
     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -670,17 +584,11 @@ a {text-decoration: none;}
                                                                     <p
                                                                         style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px">
                                                                         Customer:
-                                                                        <strong>sarah_powell@domain.com</strong></p>
+                                                                        <strong>${email}</strong></p>
                                                                     <p
                                                                         style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px">
-                                                                        Invoice date:&nbsp;<strong>${new Date().toDateString()}</strong>
+                                                                        Invoice date:&nbsp;<strong>${new Date(order.createdAt).toDateString()}</strong>
                                                                     </p>
-                                                                    <p
-                                                                        style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px">
-                                                                        Payment method:&nbsp;<strong>PayPal</strong></p>
-                                                                    <p
-                                                                        style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px">
-                                                                        Currency:&nbsp;<strong>INR</strong></p>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -701,15 +609,11 @@ a {text-decoration: none;}
                                                                     style="padding:0;Margin:0">
                                                                     <p
                                                                         style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px">
-                                                                        Shipping Method: <strong>UPS - Ground</strong>
-                                                                    </p>
-                                                                    <p
-                                                                        style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px">
                                                                         Shipping address:</p>
                                                                     <p
                                                                         style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px">
-                                                                        <strong>Sarah Powell,<br>600 Montgomery
-                                                                            St,<br>San Francisco, CA 94111</strong></p>
+                                                                        <strong>${name.slice(0, 1).toUpperCase() + name.slice(1)}, <br/>${order.shippingAddress.address}<br>${order.shippingAddress.city}
+                                                                            ,<br>${order.shippingAddress.state}, ${order.shippingAddress.postalCode}</strong></p>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -730,22 +634,18 @@ a {text-decoration: none;}
                                                             role="presentation"
                                                             style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
                                                             <tr>
-                                                                <td align="center"
-                                                                    style="padding:0;Margin:0;padding-top:10px;padding-bottom:10px">
-                                                                    <p
-                                                                        style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px">
-                                                                        Got a question?&nbsp;Email us at&nbsp;<a
-                                                                            target="_blank" href=""
-                                                                            style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#5C68E2;font-size:14px">support@</a><a
-                                                                            target="_blank" href=""
-                                                                            style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#5C68E2;font-size:14px">stylecasual</a><a
-                                                                            target="_blank" href=""
-                                                                            style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#5C68E2;font-size:14px">.com</a>&nbsp;or
-                                                                        give us a call at&nbsp;<a target="_blank"
-                                                                            href=""
-                                                                            style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#5C68E2;font-size:14px">+000
-                                                                            123 456</a>.</p>
-                                                                </td>
+                                                            <td align="center"
+                                                            style="padding:0;Margin:0;padding-top:10px;padding-bottom:10px">
+                                                            <p
+                                                                style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px">
+                                                                Got a question?&nbsp;Email us at&nbsp;<a
+                                                                    target="_blank" href="mailto:support@example.com"
+                                                                    style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#5C68E2;font-size:14px">support@example.com</a>&nbsp;or
+                                                                give us a call at&nbsp;<a target="_blank"
+                                                                    href="tel:+000 123 456"
+                                                                    style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#5C68E2;font-size:14px">+000
+                                                                    123 456</a>.</p>
+                                                        </td>
                                                             </tr>
                                                         </table>
                                                     </td>
