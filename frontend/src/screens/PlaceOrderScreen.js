@@ -184,7 +184,7 @@ const PlaceOrderScreen = ({ history }) => {
               {cart.error && <ListGroup.Item>
                   <Message variant='danger'>{cart.error}</Message>
               </ListGroup.Item>}
-              {cart.discount && <ListGroup.Item>
+              {cart.discount > 0 && <ListGroup.Item>
                   <Message variant='success'>Discount of ₹ {cart.discount} applied</Message>
               </ListGroup.Item>}
             </ListGroup>

@@ -7,7 +7,8 @@ import {
   APPLY_COUPON,
   GET_COUPON,
   ADD_COUPON,
-  DELETE_COUPON
+  DELETE_COUPON,
+  REJECT_COUPON
 } from '../constants/cartConstants'
 
 export const cartReducer = (
@@ -60,6 +61,12 @@ export const cartReducer = (
         discount: action.payload,
         error: action.payload === 0 ? 'Invalid Coupon' : null
       }
+    case REJECT_COUPON:
+      return {
+        ...state,
+        discount: 0,
+        error: action.payload,
+      }
     default:
       return state
   }
@@ -71,7 +78,7 @@ export const couponListReducer = (state = { coupons: [] }, action) => {
     case GET_COUPON:
       return { coupons: action.payload }
     case ADD_COUPON:
-      return { coupons: [...state.coupons, {discount: action.payload.discount, code: action.payload.code}] }
+      return { coupons: [...state.coupons, { discount: action.payload.discount, code: action.payload.code, maximum: action.payload.maximum, minimumPrice: action.payload.minimumPrice }] }
     case DELETE_COUPON:
       return { coupons: state.coupons.filter(coupon => coupon.code !== action.payload) }
     default:

@@ -10,6 +10,7 @@ const CouponManagementScreen = ({ history }) => {
 	const [code, setCode] = useState('')
 	const [discount, setDiscount] = useState('')
 	const [maximum, setMaximum] = useState('')
+  const [minimumPrice, setMinimumPrice] = useState('')
 
   const couponsList = useSelector((state) => state.couponsList)
   const { loading, error, coupons } = couponsList
@@ -48,6 +49,7 @@ const CouponManagementScreen = ({ history }) => {
               <th>CODE</th>
               <th>DISCOUNT %</th>
               <th>MAXIMUM ₹</th>
+                  <th>MINIMUM ORDER</th>
               <th></th>
             </tr>
             <tr>
@@ -79,9 +81,18 @@ const CouponManagementScreen = ({ history }) => {
                 ></input>
               </th>
               <th>
+                    <input
+                      type='text'
+                      placeholder='Enter Minimum Price'
+                      value={minimumPrice}
+                      onChange={(e) => setMinimumPrice(e.target.value)}
+                      className='form-control'
+                    ></input>
+                  </th>
+                  <th>
                 <Button
                   type='submit'
-                  onClick={() => dispatch(addCoupon(code, discount, maximum))}
+                      onClick={() => dispatch(addCoupon(code, discount, maximum, minimumPrice))}
                   variant='outline-success'
                   className='p-2'
                 >
@@ -96,6 +107,7 @@ const CouponManagementScreen = ({ history }) => {
                 <td>{coupon.code}</td>
                 <td>{coupon.discount}</td>
                 <td>{coupon.maximum}</td>
+                <td>{coupon.minimumPrice}</td>
                 <td>
                   <Button
                     variant='danger'

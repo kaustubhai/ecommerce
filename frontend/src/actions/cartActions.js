@@ -4,6 +4,8 @@ import {
   CART_REMOVE_ITEM,
   CART_SAVE_SHIPPING_ADDRESS,
   CART_SAVE_PAYMENT_METHOD,
+  APPLY_COUPON,
+  REJECT_COUPON,
 } from '../constants/cartConstants'
 
 export const addToCart = (id, qty) => async (dispatch, getState) => {
@@ -65,7 +67,7 @@ export const applyCoupon = (coupon, total) => async (dispatch, getState) => {
       },
     }
     
-    const { data } = await axios.patch(`/api/orders/coupons/${coupon}`, {}, config)
+    const { data } = await axios.patch(`/api/orders/coupons/${coupon}`, { total }, config)
 
     
     if(data.discount) {
@@ -75,14 +77,15 @@ export const applyCoupon = (coupon, total) => async (dispatch, getState) => {
       else
         disc = total * data.discount / 100
       dispatch({
-        type: 'APPLY_COUPON',
+        type: APPLY_COUPON,
         payload: disc,
       })
     }
   } catch (error) {
+    console.log({ error })
     dispatch({
-      type: 'APPLY_COUPON',
-      payload: 0,
+      type: REJECT_COUPON,
+      payload: error.response && error.response.data.message
     })
   }
   
@@ -107,7 +110,7 @@ export const getCoupon = () => async (dispatch, getState) => {
   })
 }
 
-export const addCoupon = (code, discount, maximum) => async (dispatch, getState) => {
+export const addCoupon = (code, discount, maximum, minimumPrice) => async (dispatch, getState) => {
   const {
     userLogin: { userInfo },
   } = getState()
@@ -118,7 +121,7 @@ export const addCoupon = (code, discount, maximum) => async (dispatch, getState)
     },
   }
 
-  const { data } = await axios.post(`/api/orders/coupons`, { code, discount, maximum }, config)
+  const { data } = await axios.post(`/api/orders/coupons`, { code, discount, maximum, minimumPrice }, config)
 
   dispatch({
     type: 'ADD_COUPON',
