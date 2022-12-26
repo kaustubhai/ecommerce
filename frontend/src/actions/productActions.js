@@ -303,19 +303,20 @@ export const bulkUpload = (file) => async (dispatch, getState) => {
       },
     }
 
-    await axios.post(`/api/products/upload/bulk`, file, config)
+    const { data } = await axios.post(`/api/products/upload/bulk`, file, config)
 
     dispatch({
       type: PRODUCT_BULK_UPLOAD_SUCCESS,
+      payload: data
     })
 
   } catch (error) {
+    console.log({ error });
     dispatch({
       type: PRODUCT_BULK_UPLOAD_FAIL,
       payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
+        error.response && error.response.data
+        && error.response.data.message
     })
   }
 }

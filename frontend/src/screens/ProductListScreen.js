@@ -45,7 +45,10 @@ const ProductListScreen = ({ history, match }) => {
   const [open, setOpen] = useState(false);
 
   const onOpenModal = () => setOpen(true);
-  const onCloseModal = () => setOpen(false);
+  const onCloseModal = () => {
+    dispatch(listProducts('', pageNumber))
+    setOpen(false)
+  };
 
 
   useEffect(() => {

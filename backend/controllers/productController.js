@@ -205,7 +205,7 @@ const bulkUpload = asyncHandler(async (req, res) => {
   form.parse(req, async function (err, fields, files) {
     if (err) {
       console.log(err)
-      res.status(500).json('Internal Server Error')
+      res.status(500).json({ message: 'Internal Server Error' })
     }
     var f = files[Object.keys(files)[0]]
     var workbook = XLSX.readFile(f.filepath)
@@ -218,7 +218,7 @@ const bulkUpload = asyncHandler(async (req, res) => {
     tableHeader = tableHeader[0];
     ['name', 'image', 'secondaryImage', 'brand', 'category', 'description', 'price', 'mrp', 'discount', 'countInStock', 'tags'].forEach(item => {
       if (tableHeader.indexOf(item) === -1) {
-        res.status(400).json(`Invalid File, ${item} is missing`)
+        res.status(400).json(`"${item}" column is missing/misspelled`)
       }
     })
     let tableData = XLSX.utils.sheet_to_json(

@@ -142,12 +142,12 @@ export const productTopRatedReducer = (state = { products: [] }, action) => {
   }
 }
 
-export const bulkProductUpload = (state = { loading: false, msg: '', error: '' }, action) => {
+export const bulkProductUploadReducer = (state = { loading: false, msg: '', error: '' }, action) => {
   switch (action.type) {
     case PRODUCT_BULK_UPLOAD_REQUEST:
       return { loading: true }
     case PRODUCT_BULK_UPLOAD_SUCCESS:
-      return { loading: false, msg: action.payload }
+      return { loading: false, msg: action.payload.message }
     case PRODUCT_BULK_UPLOAD_FAIL:
       return { loading: false, error: action.payload }
     default:
