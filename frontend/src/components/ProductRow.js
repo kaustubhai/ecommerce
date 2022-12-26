@@ -22,7 +22,7 @@ const ProductRow = ({item, history, wishlist}) => {
   return (
     <tr key={item._id} className="d-flex flex-row">
         <td className='col-2 d-flex flex-column justify-content-center'>
-            <img style={{ height: '150px', width: '150px'}} src={item.image} alt={item.name} />
+              <img height={'150px'} width={'150px'} src={item.image} alt={item.name} />
         </td>
         <td className='col-6 d-flex flex-column justify-content-center'>
             <Link  to={`/product/${item._id}`}>

@@ -100,9 +100,9 @@ const ProductScreen = ({ history, match }) => {
           <Meta title={product.name} />
           <Row>
             <Col md={6}>
-              <Carousel variant='dark' className='dark' style={{ position: 'relative', top: 0 }}>
+                  <Carousel variant='dark' className='dark position-relative top-0'>
                 {[product.image, product.secondaryImage].map(image => (
-                <Carousel.Item style={{ height: '400px', width: '100%' }}>
+                  <Carousel.Item className='banner-height w-full'>
                   <Image src={image} alt={product.name} className='mx-auto' fluid />
                 </Carousel.Item>
                 ))}
@@ -119,7 +119,7 @@ const ProductScreen = ({ history, match }) => {
                     text={`${product.numReviews} reviews`}
                   />
                 </ListGroup.Item>
-                <ListGroup.Item>Price: { ((product.price !== product.mrp) || product.discount) ? (<span><s  style={{ color: '#acacae' }}>₹{product.mrp?.toFixed(2)?.toLocaleString('en-IN')}</s> ₹{(product.price - (product.discount * product.price / 100))?.toFixed(2)?.toLocaleString('en-IN')} </span> ) : (product.price?.toFixed(2).toLocaleString('en-IN'))}</ListGroup.Item>
+                    <ListGroup.Item>Price: {((product.price !== product.mrp) || product.discount) ? (<span><s>₹{product.mrp?.toFixed(2)?.toLocaleString('en-IN')}</s> ₹{(product.price - (product.discount * product.price / 100))?.toFixed(2)?.toLocaleString('en-IN')} </span>) : (product.price?.toFixed(2).toLocaleString('en-IN'))}</ListGroup.Item>
                 <ListGroup.Item>
                   About product: {product.description}
                 </ListGroup.Item>

@@ -60,14 +60,14 @@ const OrderListScreen = ({ history }) => {
                   {order.isPaid ? (
                     order.paidAt.substring(0, 10)
                   ) : (
-                    <i className='fas fa-times' style={{ color: 'red' }}></i>
+                      <i className='fas fa-times text-danger'></i>
                   )}
                 </td>
                 <td>
                   {order.isDispatched ? (
                     order.dispatchedAt.substring(0, 10)
                   ) : (
-                    <i className='fas fa-times' style={{ color: 'red' }}></i>
+                      <i className='fas fa-times text-danger'></i>
                   )}
                 </td>
                 <td>

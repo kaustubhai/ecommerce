@@ -1,0 +1,33 @@
+main {
+    min-height: 80vh;
+  }
+  
+  h3 {
+    padding: 1rem 0;
+  }
+  
+  h1 {
+    font-size: 1.8rem;
+    padding: 1rem 0;
+  }
+  
+  h2 {
+    font-size: 1.4rem;
+    padding: 0.5rem 0;
+  }
+  
+  .min-h-50 {
+    min-height: 50px;
+  }
+  
+  p.standard-size {
+    font-size: 1rem;
+  }
+  
+  s {
+    color: #acacae;
+  }
+
+  .w-full {
+    width: 100%;
+  }  

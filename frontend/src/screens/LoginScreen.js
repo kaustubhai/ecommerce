@@ -81,15 +81,14 @@ const LoginScreen = ({ location, history }) => {
           Sign In
         </Button>
       </Col>
-      <Col sm={12} md={2} className='d-flex align-items-center' style={{minHeight: '50px'}}>
+          <Col sm={12} md={2} className='d-flex align-items-center min-h-50'>
         OR
       </Col>
       <Col sm={12} md={6} className='d-flex justify-content-md-end justify-content-sm-start'>
       <GoogleLogin
           clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
           render={renderProps => (
-            <Button className="text-right"
-            style={{ padding: '0'}}
+            <Button className="text-right p-0"
               onClick={() => {
                 renderProps.onClick()
               }}
@@ -97,7 +96,7 @@ const LoginScreen = ({ location, history }) => {
               <Button
                 type="button"
                 variant='Primary'
-                style={{ color: '#ffffff', backgroundColor: '#ff5555' }}
+                className='google-login-btn'
               >
                 <svg
                   width="20"

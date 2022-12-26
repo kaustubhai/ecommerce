@@ -6,12 +6,7 @@ const Loader = () => {
     <Spinner
       animation='border'
       role='status'
-      style={{
-        width: '100px',
-        height: '100px',
-        margin: 'auto',
-        display: 'block',
-      }}
+      className='loader-spinner'
     >
       <span className='sr-only'>Loading...</span>
     </Spinner>
