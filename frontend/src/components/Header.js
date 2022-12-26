@@ -1,33 +1,72 @@
-import React from 'react'
+import React, { useState ,useRef} from 'react'
 import { Route } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
-import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap'
+import { Navbar, Nav, Container, NavDropdown,Button} from 'react-bootstrap'
 import SearchBox from './SearchBox'
 import { logout } from '../actions/userActions'
-
 const Header = () => {
   const dispatch = useDispatch()
 
   const userLogin = useSelector((state) => state.userLogin)
+  const [toggle,setToggle] = useState(false)
+  const [toggle2,setToggle2] = useState(false)
   const { userInfo } = userLogin
 
   const logoutHandler = () => {
     dispatch(logout())
   }
+  const handleToggle =()=> {
+    setToggle(!toggle);
+  }
+  const handleToggle2 =()=> {
+    setToggle2(!toggle2);
+  }
+  const myRef = useRef(null);
+  const [open, setOpen] = React.useState(false);
+
+  const showModal=()=>{
+    setOpen(true);
+  }
+  const closeModal=()=>{
+    setOpen(false);
+  }
 
   return (
-    <header>
-      <Navbar bg='dark' variant='dark' expand='lg' collapseOnSelect>
+    <header >
+      <Navbar bg='dark' variant='dark' expand='lg' collapseOnSelect ref={myRef}>
         <Container>
           <LinkContainer to='/'>
             <Navbar.Brand>KroShop</Navbar.Brand>
           </LinkContainer>
+
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
           <Navbar.Collapse id='basic-navbar-nav'>
             {/* <Route render={({ history }) => <SearchBox history={history} />} /> */}
-            <Nav className='ml-auto'>
-              <LinkContainer to='/cart'>
+            <Nav className='container-fluid'>
+            <NavDropdown title={<i onClick={handleToggle}>Item1<i className= {"fas "+ (toggle ?"fa-angle-up":"fa-angle-down")}></i></i>}>
+              <LinkContainer to="/item1">
+              <NavDropdown.Item >Option1</NavDropdown.Item>
+              </LinkContainer>
+              <LinkContainer to="/item2">
+              <NavDropdown.Item >Option2</NavDropdown.Item>
+              </LinkContainer>
+              <LinkContainer to="/item3">
+              <NavDropdown.Item >Option3</NavDropdown.Item>
+              </LinkContainer>
+            </NavDropdown>
+            <NavDropdown title={<i onClick={handleToggle2}>Item2<i className= {"fas "+ (toggle2 ?"fa-angle-up":"fa-angle-down") } ></i></i>}>
+              <LinkContainer to="/item1">
+              <NavDropdown.Item >Option1</NavDropdown.Item>
+              </LinkContainer>
+              <LinkContainer to="/item2">
+              <NavDropdown.Item >Option2</NavDropdown.Item>
+              </LinkContainer>
+              <LinkContainer to="/item3">
+              <NavDropdown.Item >Option3</NavDropdown.Item>
+              </LinkContainer>
+            </NavDropdown>
+              <LinkContainer to='/cart' className="ml-auto">
                 <Nav.Link>
                   <i className='fas fa-shopping-cart'></i> Cart
                 </Nav.Link>
