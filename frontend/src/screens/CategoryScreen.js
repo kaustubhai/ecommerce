@@ -24,9 +24,9 @@ const CategoryScreen = ({ history, match}) => {
           loading && <Spinner/>
         }
 
-        {category === 'electronics' ? <div className='d-flex justify-content-center align-items-center my-3' style={{ backgroundColor: '#000', position: 'relative', height: '400px' }}>
-          <Button style={{fontSize: '1.2rem', fontWeight: 'bold', zIndex: 20}} variant='secondary'>Checkout Electronic Products</Button>
-          <img src={Banner} alt="" className='w-100' style={{ height: '400px', position: 'absolute', zIndex:0, opacity: 0.6, objectFit: 'cover' }}/>
+      {category === 'electronics' ? <div className='d-flex justify-content-center align-items-center my-3 bg-dark position-relative banner-height'>
+        <Button className='banner-btn' variant='secondary'>Checkout Electronic Products</Button>
+        <img src={Banner} alt="" className='w-100 banner-height position-absolute banner-img' />
         </div> : <h1 className='text-center mt-1'>Top {match.params.category} Products</h1>}
         <Row>
             {products && products.slice(0, 4).map((product) => (

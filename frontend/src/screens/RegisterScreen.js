@@ -147,12 +147,12 @@ const RegisterScreen = ({ location, history }) => {
         <Form.Group controlId='terms'>
           <Form.Check
             type='checkbox'
-            style={{ display: "inline-block" }}
+            className='d-inline-block'
             checked={terms}
             onChange={(e) => setTerms(e.target.checked)}
             ></Form.Check>
             <Form.Label
-            style={{ display: "inline-block" }}
+            className='d-inline-block'
             >
               I agree to <a href="#!">Terms & Conditions</a>
             </Form.Label>
@@ -163,15 +163,14 @@ const RegisterScreen = ({ location, history }) => {
           Register
         </Button>
       </Col>
-      <Col sm={12} md={2} className='d-flex align-items-center' style={{minHeight: '50px'}}>
+          <Col sm={12} md={2} className='d-flex align-items-center min-h-50'>
         OR
       </Col>
       <Col sm={12} md={6} className='d-flex justify-content-md-end justify-content-sm-start'>
       <GoogleLogin
           clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
           render={renderProps => (
-            <Button className="text-right ml-3"
-            style={{ padding: '0'}}
+            <Button className="text-right ml-3 p-0"
               onClick={() => {
                 renderProps.onClick()
               }}
@@ -179,7 +178,7 @@ const RegisterScreen = ({ location, history }) => {
               <Button
                 type="button"
                 variant='Primary'
-                style={{ color: '#ffffff', backgroundColor: '#ff5555' }}
+                className='google-login-btn'
               >
                 <svg
                   width="20"

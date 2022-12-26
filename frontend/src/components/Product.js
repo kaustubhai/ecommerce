@@ -16,7 +16,7 @@ const Product = ({ product }) => {
       </Link>
 
       {( product.discount || (product.mrp !== product.price)) && (
-        <Badge variant='danger' style={{ position: 'absolute' }}>
+        <Badge variant='danger' className='position-absolute'>
           SALE
         </Badge>
       )}
