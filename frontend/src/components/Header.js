@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Navbar, Nav, Container, NavDropdown,Button} from 'react-bootstrap'
 import SearchBox from './SearchBox'
+import {Modal} from 'react-responsive-modal'
 import { logout } from '../actions/userActions'
 const Header = () => {
   const dispatch = useDispatch()
@@ -33,8 +34,8 @@ const Header = () => {
   }
 
   return (
-    <header >
-      <Navbar bg='dark' variant='dark' expand='lg' collapseOnSelect ref={myRef}>
+    <header>
+      <Navbar bg='dark' variant='dark' expand='lg' collapseOnSelect>
         <Container>
           <LinkContainer to='/'>
             <Navbar.Brand>KroShop</Navbar.Brand>
@@ -71,6 +72,18 @@ const Header = () => {
                   <i className='fas fa-shopping-cart'></i> Cart
                 </Nav.Link>
               </LinkContainer>
+              <Button className="searchBtn" onClick={showModal}>
+        <i className="fas fa-search"></i>
+      </Button>
+      <Modal
+        open={open}
+        onClose={closeModal}
+        classNames={{
+          modal: 'customModal',
+        }}
+      > 
+        <SearchBox closeModal={closeModal}></SearchBox>
+      </Modal>
               {userInfo ? (
                 <NavDropdown title="User" id='username'>
                   <LinkContainer to='/profile'>

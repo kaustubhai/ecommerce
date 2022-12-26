@@ -141,3 +141,25 @@ h2 {
 .dropdown-toggle::after{
   display: none;
 }
+.customModal {
+  background: #000000 !important;
+  max-width: unset !important;
+  width: 100%;
+  margin: unset !important;
+  height: 90px;
+}
+
+.navbar {
+  height: 90px;
+}
+
+.searchBtn {
+  background-color: black !important;
+}
+.positionSearch {
+  text-align: center;
+  display: block !important;
+}
+.searchbutton{
+  background-color: white;
+}
