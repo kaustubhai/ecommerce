@@ -1,11 +1,13 @@
 import asyncHandler from 'express-async-handler'
 import Product from '../models/productModel.js'
+import XLSX from 'xlsx'
+import formidable from 'formidable'
 
 // @desc    Fetch all products
 // @route   GET /api/products
 // @access  Public
 const getProducts = asyncHandler(async (req, res) => {
-  const pageSize = 10
+  const pageSize = 12
   const page = Number(req.query.pageNumber) || 1
 
   const keyword = req.query.keyword
@@ -70,7 +72,6 @@ const createProduct = asyncHandler(async (req, res) => {
     price: 0,
     mrp: 0,
     discount: 0,
-    user: req.user._id,
     image: '/images/sample.jpg',
     secondaryImage: '/images/sample.jpg',
     brand: 'Sample brand',
@@ -199,6 +200,46 @@ const getTopProducts = asyncHandler(async (req, res) => {
   res.json(products)
 })
 
+const bulkUpload = asyncHandler(async (req, res) => {
+  var form = new formidable.IncomingForm()
+  form.parse(req, async function (err, fields, files) {
+    if (err) {
+      console.log(err)
+      res.status(500).json('Internal Server Error')
+    }
+    var f = files[Object.keys(files)[0]]
+    var workbook = XLSX.readFile(f.filepath)
+    let tableHeader = XLSX.utils.sheet_to_json(
+      workbook.Sheets[workbook.SheetNames[0]],
+      {
+        header: 1,
+      },
+    )
+    tableHeader = tableHeader[0];
+    ['name', 'image', 'secondaryImage', 'brand', 'category', 'description', 'price', 'mrp', 'discount', 'countInStock', 'tags'].forEach(item => {
+      if (tableHeader.indexOf(item) === -1) {
+        res.status(400).json(`Invalid File, ${item} is missing`)
+      }
+    })
+    let tableData = XLSX.utils.sheet_to_json(
+      workbook.Sheets[workbook.SheetNames[0]],
+      {
+        header: tableHeader,
+      },
+    )
+    tableData = tableData.map(item => {
+      item.user = req.user._id
+      item.category = item.category.toLowerCase().trim()
+      item.tags = item.tags.split(',').map(tag => tag.trim())
+      return item;
+    })
+    tableData.shift();
+    await Product.insertMany(tableData);
+    res.status(200).json({ message: 'File Uploaded Successfully' });
+  })
+})
+
+
 export {
   getProducts,
   getProductById,
@@ -209,4 +250,5 @@ export {
   updateProduct,
   createProductReview,
   getTopProducts,
+  bulkUpload
 }

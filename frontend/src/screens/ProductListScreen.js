@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Table, Button, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
@@ -12,6 +12,9 @@ import {
 } from '../actions/productActions'
 import { PRODUCT_CREATE_RESET } from '../constants/productConstants'
 import Helmet from 'react-helmet'
+import 'react-responsive-modal/styles.css';
+import { Modal } from 'react-responsive-modal';
+import Bulkupload from '../components/Bulkupload'
 
 const ProductListScreen = ({ history, match }) => {
   const pageNumber = match.params.pageNumber || 1
@@ -38,6 +41,12 @@ const ProductListScreen = ({ history, match }) => {
 
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
+
+  const [open, setOpen] = useState(false);
+
+  const onOpenModal = () => setOpen(true);
+  const onCloseModal = () => setOpen(false);
+
 
   useEffect(() => {
     dispatch({ type: PRODUCT_CREATE_RESET })
@@ -78,6 +87,9 @@ const ProductListScreen = ({ history, match }) => {
         <title>Products | KroShop</title>
         <link rel="canonical" />
     </Helmet>
+      <Modal open={open} onClose={onCloseModal} center>
+        <Bulkupload onCloseModal={onCloseModal} />
+      </Modal>
       <Row className='align-items-center'>
         <Col>
           <h1>Products</h1>
@@ -85,6 +97,9 @@ const ProductListScreen = ({ history, match }) => {
         <Col className='text-right'>
           <Button className='my-3' onClick={createProductHandler}>
             <i className='fas fa-plus'></i> Create Product
+          </Button>
+          <Button className='ml-3' onClick={onOpenModal}>
+            <i className='fas fa-plus'></i> Bulk upload
           </Button>
         </Col>
       </Row>

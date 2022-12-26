@@ -25,6 +25,9 @@ import {
   PRODUCT_TOP_REQUEST,
   PRODUCT_TOP_SUCCESS,
   PRODUCT_TOP_FAIL,
+  PRODUCT_BULK_UPLOAD_FAIL,
+  PRODUCT_BULK_UPLOAD_SUCCESS,
+  PRODUCT_BULK_UPLOAD_REQUEST
 } from '../constants/productConstants'
 
 export const productListReducer = (state = { products: [] }, action) => {
@@ -133,6 +136,19 @@ export const productTopRatedReducer = (state = { products: [] }, action) => {
     case PRODUCT_TOP_SUCCESS:
       return { loading: false, products: action.payload }
     case PRODUCT_TOP_FAIL:
+      return { loading: false, error: action.payload }
+    default:
+      return state
+  }
+}
+
+export const bulkProductUpload = (state = { loading: false, msg: '', error: '' }, action) => {
+  switch (action.type) {
+    case PRODUCT_BULK_UPLOAD_REQUEST:
+      return { loading: true }
+    case PRODUCT_BULK_UPLOAD_SUCCESS:
+      return { loading: false, msg: action.payload }
+    case PRODUCT_BULK_UPLOAD_FAIL:
       return { loading: false, error: action.payload }
     default:
       return state

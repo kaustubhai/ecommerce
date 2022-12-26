@@ -23,6 +23,9 @@ import {
   PRODUCT_TOP_FAIL,
   CATEGORY_PRODUCT_LIST_REQUEST,
   CATEGORY_PRODUCT_LIST_SUCCESS,
+  PRODUCT_BULK_UPLOAD_REQUEST,
+  PRODUCT_BULK_UPLOAD_SUCCESS,
+  PRODUCT_BULK_UPLOAD_FAIL,
 } from '../constants/productConstants'
 import { logout } from './userActions'
 
@@ -277,6 +280,38 @@ export const listTopProducts = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: PRODUCT_TOP_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const bulkUpload = (file) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: PRODUCT_BULK_UPLOAD_REQUEST })
+
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+
+    await axios.post(`/api/products/upload/bulk`, file, config)
+
+    dispatch({
+      type: PRODUCT_BULK_UPLOAD_SUCCESS,
+    })
+
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_BULK_UPLOAD_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
