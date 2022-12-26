@@ -9,9 +9,24 @@ import { Link } from 'react-router-dom'
 const Wishlist = ({ history }) => {
     const dispatch = useDispatch()
     const { wishlist } = useSelector(state => state.userUpdate)
+
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
+
     useEffect(() => {
         dispatch(getUserWishlist())
     }, [])
+
+  useEffect(() => {
+    if (!userInfo) {
+      history.push('/login')
+    }
+  }, [
+    dispatch,
+    history,
+    userInfo,
+  ])
+
   return (
     <div>
         <h1>Wishlist</h1>
