@@ -45,7 +45,7 @@ const Header = () => {
           <Navbar.Collapse id='basic-navbar-nav'>
             {/* <Route render={({ history }) => <SearchBox history={history} />} /> */}
             <Nav className='container-fluid'>
-            <NavDropdown title={<i onClick={handleToggle}>Item1<i className= {"fas "+ (toggle ?"fa-angle-up":"fa-angle-down")}></i></i>}>
+              {/* <NavDropdown title={<i onClick={handleToggle}>Item1<i className= {"fas "+ (toggle ?"fa-angle-up":"fa-angle-down")}></i></i>}>
               <LinkContainer to="/item1">
               <NavDropdown.Item >Option1</NavDropdown.Item>
               </LinkContainer>
@@ -66,14 +66,9 @@ const Header = () => {
               <LinkContainer to="/item3">
               <NavDropdown.Item >Option3</NavDropdown.Item>
               </LinkContainer>
-            </NavDropdown>
-              <LinkContainer to='/cart' className="ml-auto">
-                <Nav.Link>
-                  <i className='fas fa-shopping-cart'></i> Cart
-                </Nav.Link>
-              </LinkContainer>
-              <Button className="searchBtn" onClick={showModal}>
-        <i className="fas fa-search"></i>
+              </NavDropdown> */}
+              <Button className=" bg-dark ml-auto" onClick={showModal}>
+                <i className="fas fa-search"></i>
       </Button>
       <Modal
         open={open}
@@ -84,6 +79,11 @@ const Header = () => {
       > 
         <SearchBox closeModal={closeModal}></SearchBox>
       </Modal>
+              <LinkContainer to='/cart'>
+                <Nav.Link>
+                  <i className='fas fa-shopping-cart'></i> Cart
+                </Nav.Link>
+              </LinkContainer>
               {userInfo ? (
                 <NavDropdown title="User" id='username'>
                   <LinkContainer to='/profile'>

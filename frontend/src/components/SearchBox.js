@@ -20,10 +20,10 @@ const SearchBox = ({ history, closeModal}) => {
         name='form'
         onChange={(e) => setKeyword(e.target.value)}
         placeholder='Search...'
-        className='mr-sm-2 ml-sm-5'
+        className='mr-sm-2 ml-sm-5 bg-dark text-white'
       >
       </Form.Control>
-      <Button className="searchBtn" onClick={closeModal}>
+      <Button className="bg-dark" onClick={closeModal}>
       <i class="fas fa-times"></i>
       </Button>
     </Form>
