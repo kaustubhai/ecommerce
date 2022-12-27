@@ -132,10 +132,14 @@
   width: 100%;
   margin: unset !important;
   height: 90px;
+  z-index: -1;
 }
 
 .navbar {
   height: 90px;
+}
+.navbar-collapse.show {
+  z-index: 1000 !important;
 }
 
 .positionSearch {

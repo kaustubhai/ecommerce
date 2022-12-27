@@ -17,13 +17,6 @@ const Header = () => {
   const logoutHandler = () => {
     dispatch(logout())
   }
-  const handleToggle =()=> {
-    setToggle(!toggle);
-  }
-  const handleToggle2 =()=> {
-    setToggle2(!toggle2);
-  }
-  const myRef = useRef(null);
   const [open, setOpen] = React.useState(false);
 
   const showModal=()=>{
@@ -44,7 +37,7 @@ const Header = () => {
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
           <Navbar.Collapse id='basic-navbar-nav'>
             {/* <Route render={({ history }) => <SearchBox history={history} />} /> */}
-            <Nav className='container-fluid'>
+            <Nav className='container-fluid bg-dark'>
               {/* <NavDropdown title={<i onClick={handleToggle}>Item1<i className= {"fas "+ (toggle ?"fa-angle-up":"fa-angle-down")}></i></i>}>
               <LinkContainer to="/item1">
               <NavDropdown.Item >Option1</NavDropdown.Item>
@@ -67,8 +60,9 @@ const Header = () => {
               <NavDropdown.Item >Option3</NavDropdown.Item>
               </LinkContainer>
               </NavDropdown> */}
-              <Button className=" bg-dark ml-auto" onClick={showModal}>
+              <Button className=" bg-dark ml-md-auto" onClick={showModal}>
                 <i className="fas fa-search"></i>
+                <span className='d-md-none ml-1'>Search</span>
       </Button>
       <Modal
         open={open}
@@ -77,7 +71,7 @@ const Header = () => {
           modal: 'customModal',
         }}
       > 
-        <SearchBox closeModal={closeModal}></SearchBox>
+                <Route render={({ history }) => <SearchBox history={history} closeModal={closeModal} />} />
       </Modal>
               <LinkContainer to='/cart'>
                 <Nav.Link>

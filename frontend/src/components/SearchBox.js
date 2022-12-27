@@ -11,6 +11,7 @@ const SearchBox = ({ history, closeModal}) => {
     } else {
       history.push('/')
     }
+    closeModal()
   }
 
   return (
