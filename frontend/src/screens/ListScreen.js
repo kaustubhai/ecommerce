@@ -4,8 +4,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import Product from '../components/Product'
 import { getProductsByCategory, listProducts } from '../actions/productActions'
 import ProductRow from '../components/ProductRow'
-import Banner from '../assets/Homepage.jpg'
-import { Link } from 'react-router-dom'
 
 const ListScreen = ({ history, match }) => {
     const keyword = match.params.keyword

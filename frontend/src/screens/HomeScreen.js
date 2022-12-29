@@ -9,7 +9,7 @@ import Paginate from '../components/Paginate'
 import ProductCarousel from '../components/ProductCarousel'
 import Meta from '../components/Meta'
 import { listProducts } from '../actions/productActions'
-import Banner from '../assets/Homepage.jpg'
+import Banner from '../components/Banner'
 const HomeScreen = ({ match }) => {
   const keyword = match.params.keyword
 
@@ -45,10 +45,7 @@ const HomeScreen = ({ match }) => {
               </Col>
             ))}
               </Row>}
-              {Number(pageNumber) === 1 && <div className='d-flex justify-content-center align-items-center bg-dark banner-height position-relative'>
-                <Link className='banner-btn active' to={'/category/electronics'}><Button className='banner-btn' variant='secondary'>Shop Electronics</Button></Link>
-                <img src={Banner} alt="" className='w-100 banner-height banner-img position-absolute' />
-              </div>}
+              {Number(pageNumber) === 1 && <Banner category='electronics' active={true} />}
               <h1 className={`text-center ${Number(pageNumber) > 1 ? 'below-carousel' : 'mt-4'}`}>Latest Products</h1>
               <Row>
             {products.map((product) => (

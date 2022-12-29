@@ -4,7 +4,7 @@ import { useDispatch, useSelector} from 'react-redux'
 import Product from '../components/Product'
 import { getProductsByCategory } from '../actions/productActions'
 import ProductRow from '../components/ProductRow'
-import Banner from '../assets/Homepage.jpg'
+import Banner from '../components/Banner'
 
 const CategoryScreen = ({ history, match}) => {
     const category = match.params.category;
@@ -24,10 +24,8 @@ const CategoryScreen = ({ history, match}) => {
           loading && <Spinner/>
         }
 
-      {category === 'electronics' ? <div className='d-flex justify-content-center align-items-center my-3 bg-dark position-relative banner-height'>
-        <Button className='banner-btn' variant='secondary'>Checkout Electronic Products</Button>
-        <img src={Banner} alt="" className='w-100 banner-height position-absolute banner-img' />
-        </div> : <h1 className='text-center mt-1'>Top {match.params.category} Products</h1>}
+      <Banner category={category} active={false} />
+      <h1 className='text-center mt-1'>Top {match.params.category} Products</h1>
       <Row className='justify-content-center'>
             {products && products.slice(0, 4).map((product) => (
               <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
