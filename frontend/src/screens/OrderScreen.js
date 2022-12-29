@@ -152,7 +152,7 @@ let rzp1;
         <title>Your Order #{orderId || ''} | KroShop</title>
         <link rel="canonical" />
     </Helmet>
-    {(userInfo && userInfo.isAdmin) ? <Link to='/admin/orderlist' className='btn btn-light my-3'>
+          {(userInfo && userInfo.isAdmin) ? <Link to='/admin/orderlist' className='btn btn-light my-3 d-print-none'>
         Go Back
       </Link> : <Link to='/profile' className='btn btn-light my-3'>
         See Orders
@@ -284,7 +284,7 @@ let rzp1;
                 userInfo.isAdmin &&
                 order.isPaid &&
                 !order.isDispatched && (
-                  <ListGroup.Item>
+                    <ListGroup.Item className='d-print-none'>
                     <Form onSubmit={deliverHandler}>
                       <Form.Control
                         type='url'
@@ -304,7 +304,7 @@ let rzp1;
                   </ListGroup.Item>
                 )}
                 {!order?.isPaid ? (
-                  <ListGroup.Item>
+                    <ListGroup.Item className='d-print-none'>
                     <Button
                       type='button'
                         className='btn-block bg-danger'
@@ -315,7 +315,7 @@ let rzp1;
                     </Button>
                   </ListGroup.Item>
                 ) : (
-                <ListGroup.Item>
+                      <ListGroup.Item className='d-print-none'>
                   <Button
                     type='button'
                           className='btn-block bg-danger'
