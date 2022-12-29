@@ -152,9 +152,9 @@ let rzp1;
         <title>Your Order #{orderId || ''} | KroShop</title>
         <link rel="canonical" />
     </Helmet>
-          {(userInfo && userInfo.isAdmin) ? <Link to='/admin/orderlist' className='btn btn-light my-3 d-print-none'>
+          {(userInfo && userInfo.isAdmin) ? <Button onClick={() => history.goBack()} className='btn btn-light my-3 d-print-none'>
         Go Back
-      </Link> : <Link to='/profile' className='btn btn-light my-3'>
+          </Button> : <Link to='/profile' className='btn btn-light my-3'>
         See Orders
           </Link>
       }

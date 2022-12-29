@@ -30,13 +30,7 @@ const HomeScreen = ({ match }) => {
   return (
     <>
       <Meta />
-      {!keyword ? (
-        <ProductCarousel />
-      ) : (
-        <Link to='/' className='btn btn-light'>
-          Go Back
-        </Link>
-      )}
+      <ProductCarousel />
       <h1 className='text-center' style={{ marginTop: '24.5rem' }}>Top Products</h1>
       {loading ? (
         <Loader />

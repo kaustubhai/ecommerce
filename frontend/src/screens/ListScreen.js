@@ -32,7 +32,7 @@ const ListScreen = ({ history, match }) => {
             {
                 products.length === 0 ?
                     <Alert variant='info'>
-                        No Products Found <Link to={'/'}>Go Back</Link>
+                        No Products Found <Button variant='link' onClick={() => history.goBack()}>Go Back</Button>
                     </Alert> :
                     <>
                         <h1 className='text-center mt-1'>Top {match.params.category} Products</h1>

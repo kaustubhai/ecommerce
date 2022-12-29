@@ -33,7 +33,7 @@ const Wishlist = ({ history }) => {
         <Table hover responsive className='table-sm'>
         {(wishlist.length === 0) ?
           <Message>
-            Your wishlist is empty <Link to='/'>Go Back</Link>
+            Your wishlist is empty <Button variant='link' className='p-0' onClick={() => history.goBack()}>Go Back</Button>
           </Message>
           :
         wishlist?.map((item) => (

@@ -124,9 +124,9 @@ const ProductEditScreen = ({ match, history }) => {
         <title>Edit Product | KroShop</title>
         <link rel="canonical" />
     </Helmet>
-      <Link to='/admin/productlist' className='btn btn-light my-3'>
+      <Button onClick={() => history.goBack()} className='btn btn-light my-3'>
         Go Back
-      </Link>
+      </Button>
       <FormContainer>
         <h1>Edit Product</h1>
         {loadingUpdate && <Loader />}

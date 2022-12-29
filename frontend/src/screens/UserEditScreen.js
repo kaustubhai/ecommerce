@@ -55,9 +55,9 @@ const UserEditScreen = ({ match, history }) => {
         <title>Edit User | KroShop</title>
         <link rel="canonical" />
     </Helmet>
-      <Link to='/admin/userlist' className='btn btn-light my-3'>
+      <Button onClick={() => history.goBack()} className='btn btn-light my-3'>
         Go Back
-      </Link>
+      </Button>
       <FormContainer>
         <h1>Edit User</h1>
         {loadingUpdate && <Loader />}
