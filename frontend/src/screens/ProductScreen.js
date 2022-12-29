@@ -273,12 +273,13 @@ const ProductScreen = ({ history, match }) => {
           </Row>
           <Row>
           <h2 className='mt-4'>More {product.category} products</h2>
-          <Row>
+                <Row className='w-full'>
           {product.relatedProducts?.map((related) => (
-              <Col key={related._id} sm={12} md={6} lg={4} xl={3}>
-                <Product product={related} />
-              </Col>
-            ))}</Row>
+            <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+              <Product product={related} />
+            </Col>
+          ))}
+                </Row>
           </Row>
         </>
       )}
