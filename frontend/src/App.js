@@ -27,6 +27,7 @@ import PrivacyPolicy from './screens/PrivacyPolicy'
 import TermsOfService from './screens/TermsOfService'
 import CategoryScreen from './screens/CategoryScreen'
 import Newsletter from './screens/Newsletter'
+import ListScreen from './screens/ListScreen'
 // import CreateNewsletter from './screens/CreateNewsletter'
 
 const App = () => {
@@ -66,11 +67,11 @@ const App = () => {
           <Route path='/admin/product/:id/edit' component={ProductEditScreen} />
           <Route path='/admin/orderlist' component={OrderListScreen} />
           <Route path='/admin/coupons' component={CouponManagementScreen} />
-          <Route path='/search/:keyword' component={HomeScreen} exact />
+          <Route path='/search/:keyword' component={ListScreen} exact />
           <Route path='/page/:pageNumber' component={HomeScreen} exact />
           <Route
             path='/search/:keyword/page/:pageNumber'
-            component={HomeScreen}
+            component={ListScreen}
             exact
           />
           <Route

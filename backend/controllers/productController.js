@@ -218,7 +218,7 @@ const bulkUpload = asyncHandler(async (req, res) => {
     tableHeader = tableHeader[0];
     ['name', 'image', 'secondaryImage', 'brand', 'category', 'description', 'price', 'mrp', 'discount', 'countInStock', 'tags'].forEach(item => {
       if (tableHeader.indexOf(item) === -1) {
-        res.status(400).json(`"${item}" column is missing/misspelled`)
+        res.status(400).json({ message: `"${item}" column is missing/misspelled` })
       }
     })
     let tableData = XLSX.utils.sheet_to_json(

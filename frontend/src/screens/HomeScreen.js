@@ -9,7 +9,7 @@ import Paginate from '../components/Paginate'
 import ProductCarousel from '../components/ProductCarousel'
 import Meta from '../components/Meta'
 import { listProducts } from '../actions/productActions'
-import Banner from '../assets/Homepage.jpg'
+import Banner from '../components/Banner'
 const HomeScreen = ({ match }) => {
   const keyword = match.params.keyword
 
@@ -30,33 +30,24 @@ const HomeScreen = ({ match }) => {
   return (
     <>
       <Meta />
-      {!keyword ? (
-        <ProductCarousel />
-      ) : (
-        <Link to='/' className='btn btn-light'>
-          Go Back
-        </Link>
-      )}
-      <h1 className='text-center' style={{ marginTop: '24.5rem' }}>Top Products</h1>
+      <ProductCarousel />
       {loading ? (
         <Loader />
       ) : error ? (
         <Message variant='danger'>{error}</Message>
       ) : (
         <>
-          <Row>
+              {Number(pageNumber) === 1 && <h1 className='text-center below-carousel'>Top Products</h1>}
+              {Number(pageNumber) === 1 && <Row>
             {topProducts.map((product) => (
               <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
                 <Product product={product} />
               </Col>
             ))}
-          </Row>
-              <div className='d-flex justify-content-center align-items-center bg-dark banner-height position-relative'>
-                <Link className='banner-btn active' to={'/category/electronics'}><Button className='banner-btn' variant='secondary'>Shop Electronics</Button></Link>
-                <img src={Banner} alt="" className='w-100 banner-height banner-img position-absolute' />
-          </div>
-      <h1 className='text-center mt-4'>Latest Products</h1>
-      <Row>
+              </Row>}
+              {Number(pageNumber) === 1 && <Banner category='electronics' active={true} />}
+              <h1 className={`text-center ${Number(pageNumber) > 1 ? 'below-carousel' : 'mt-4'}`}>Latest Products</h1>
+              <Row>
             {products.map((product) => (
               <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
                 <Product product={product} />

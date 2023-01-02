@@ -82,9 +82,9 @@ const ProductScreen = ({ history, match }) => {
         <title>{product.name || ''} | KroShop</title>
         <link rel="canonical" />
     </Helmet>
-      <Link className='btn btn-light my-3' to='/'>
+      <Button className='btn btn-light my-3' onClick={() => history.goBack()}>
       <i class="fas fa-arrow-left"></i> Go Back
-      </Link>
+      </Button>
       <a className='btn btn-light my-3' href={`https://twitter.com/intent/tweet?text=Checkout%20this%20amazing%20${product.name}%20at%20an%20amazing%20price%20on%20KroShop%20here,&url=${window.location.href}&hashtags=${product.brand},${product.category}`} target={'_blank'}>
         <i class="fab fa-twitter"></i> Share 
       </a>
@@ -273,12 +273,13 @@ const ProductScreen = ({ history, match }) => {
           </Row>
           <Row>
           <h2 className='mt-4'>More {product.category} products</h2>
-          <Row>
+                <Row className='w-full'>
           {product.relatedProducts?.map((related) => (
-              <Col key={related._id} sm={12} md={6} lg={4} xl={3}>
-                <Product product={related} />
-              </Col>
-            ))}</Row>
+            <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+              <Product product={related} />
+            </Col>
+          ))}
+                </Row>
           </Row>
         </>
       )}

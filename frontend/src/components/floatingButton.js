@@ -6,7 +6,7 @@ const FloatingButton = ({ history }) => {
     const cart = useSelector((state) => state.cart)
     const { cartItems } = cart
   return (
-    <Link to={'/cart'} className='floatingButton'>
+    <Link to={'/cart'} className='floatingButton d-print-none'>
         <p className='layover'>{cartItems.length}</p>
         <i className='fas fa-shopping-cart'></i>
     </Link>

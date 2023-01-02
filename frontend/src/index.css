@@ -132,15 +132,19 @@
   width: 100%;
   margin: unset !important;
   height: 90px;
+  z-index: -1;
 }
 
 .navbar {
   height: 90px;
 }
-
-.searchBtn {
-  background-color: black !important;
+.navbar-collapse.show {
+  z-index: 1000 !important;
 }
+.below-carousel {
+  margin-top: 24.5rem;
+}
+
 .positionSearch {
   text-align: center;
   display: block !important;
