@@ -57,7 +57,7 @@ const Footer = () => {
           <Link to={'/books'} >
           <i class="fab fa-twitter mr-3"></i>
           </Link>
-          <Link to={'/books'} >
+          <Link to={'/books'}>
           <i class="fab fa-facebook-square mr-3"></i>
           </Link>
           <Link to={'/books'} >
@@ -71,6 +71,18 @@ const Footer = () => {
           </Link>
           </div>
           </Col>
+        </Row>
+        <Row className="mt-3 justify-content-center">
+          <Col className="col-3">
+          <img src="/images/visa2.svg" style={{height:"40px"}}></img>
+          <img src="/images/mastercard.png" style={{height:"35px"}}></img>
+          <img src="/images/amex.png" style={{height:"35px"}}></img>
+          <img src="/images/paypal3.png" style={{height:"40px"}}></img>
+          <img src="/images/discover.png" style={{height:"40px"}}></img>
+          </Col>
+        </Row>
+        <Row className="mt-3 justify-content-center">
+           <Col className='text-center py-3'>Copyright &copy; KroShop</Col>
         </Row>
       </Container>
     </footer>
