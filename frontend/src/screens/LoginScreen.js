@@ -118,7 +118,15 @@ const LoginScreen = ({ location, history }) => {
       </Col>
       </Row>
       </Form>
-      <Row className='py-3'>
+      <Row className='pt-5 pb-2'>
+        <Col>
+          Forgot password?{' '}
+          <Link to='/user/password/forget'>
+            Reset it.
+          </Link>
+        </Col>
+      </Row>
+      <Row >
         <Col>
           New Customer?{' '}
           <Link to={redirect ? `/register?redirect=${redirect}` : '/register'}>

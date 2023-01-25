@@ -225,6 +225,7 @@ const resetPassword = async (req, res) => {
     });
     if (tokenValid) {
       user.password = password;
+      user.mode = 'email';
       await user.save();
       res.json({ message: "Password Changed Succesfully" });
     }
