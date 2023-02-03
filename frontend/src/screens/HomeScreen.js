@@ -9,6 +9,7 @@ import Paginate from '../components/Paginate'
 import ProductCarousel from '../components/ProductCarousel'
 import Meta from '../components/Meta'
 import { listProducts } from '../actions/productActions'
+import { getConfig } from '../actions/configActions'
 import Banner from '../components/Banner'
 const HomeScreen = ({ match }) => {
   const keyword = match.params.keyword
@@ -23,8 +24,15 @@ const HomeScreen = ({ match }) => {
   const productTopRated = useSelector((state) => state.productTopRated)
   const topProducts = productTopRated.products
 
+  const { overall, homeScreen } = useSelector((state) => state.screenConfig)
+
   useEffect(() => {
     dispatch(listProducts(keyword, pageNumber))
+
+    if (!overall)
+      dispatch(getConfig('overall'))
+    if (!homeScreen)
+      dispatch(getConfig('homescreen'))
   }, [dispatch, keyword, pageNumber])
 
   return (
