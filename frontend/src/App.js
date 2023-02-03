@@ -28,6 +28,7 @@ import TermsOfService from './screens/TermsOfService'
 import CategoryScreen from './screens/CategoryScreen'
 import Newsletter from './screens/Newsletter'
 import ListScreen from './screens/ListScreen'
+import Scroller from './components/Scroller'
 // import CreateNewsletter from './screens/CreateNewsletter'
 
 const App = () => {
@@ -37,6 +38,7 @@ const App = () => {
       <main className='py-3' id='main'>
         <Container>
           <FloatingButton />
+          <Route path='*' component={Scroller} />
           <Route path='/order/:id' component={OrderScreen} />
           <Route path='/shipping' component={ShippingScreen} />
           <Route path='/payment' component={PaymentScreen} />

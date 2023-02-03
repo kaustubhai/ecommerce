@@ -7,10 +7,12 @@ import './index.css'
 import './utils.css'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
+import Scroller from './components/Scroller'
 
 ReactDOM.render(
   <Provider store={store}>
     <App />
+    <Scroller />
   </Provider>,
   document.getElementById('root')
 )
