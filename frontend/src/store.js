@@ -31,6 +31,7 @@ import {
   orderListReducer,
 } from './reducers/orderReducers'
 import { configReducer } from './reducers/configReducer'
+import { analyticsReducer } from './reducers/analyticsReducer'
 
 const reducer = combineReducers({
   productList: productListReducer,
@@ -57,7 +58,8 @@ const reducer = combineReducers({
   orderDeliver: orderDeliverReducer,
   orderListMy: orderListMyReducer,
   orderList: orderListReducer,
-  screenConfig: configReducer
+  screenConfig: configReducer,
+  analytics: analyticsReducer
 })
 
 const cartItemsFromStorage = localStorage.getItem('cartItems')

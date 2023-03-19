@@ -29,6 +29,7 @@ import CategoryScreen from './screens/CategoryScreen'
 import Newsletter from './screens/Newsletter'
 import ListScreen from './screens/ListScreen'
 import Scroller from './components/Scroller'
+import AnalyticsScreen from './screens/AnalyticsScreen'
 // import CreateNewsletter from './screens/CreateNewsletter'
 
 const App = () => {
@@ -55,6 +56,7 @@ const App = () => {
           <Route path='/user/password/forget' component={RequestPassword} />
           <Route path='/reset/password/:token' component={ResetPassword} />
           <Route path='/admin/newsletter' component={Newsletter} />
+          <Route path='/admin/analytics' component={AnalyticsScreen} />
           {/* <Route path='/admin/newsletter' component={CreateNewsletter} /> */}
           <Route
             path='/admin/productlist'
