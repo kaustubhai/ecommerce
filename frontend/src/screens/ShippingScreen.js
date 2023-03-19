@@ -12,6 +12,7 @@ const ShippingScreen = ({ history }) => {
   const { shippingAddress } = cart
   const { state, city, pincode, deliveryDays, error: deliveryError } = useSelector((state) => state.shipping)
   const { userInfo } = useSelector((state) => state.userLogin)
+  const { error: phoneError } = useSelector(state => state.userUpdateProfile)
   const { phone: userPhone } = userInfo;
   const [address, setAddress] = useState('')
   const [address2, setAddress2] = useState('')
@@ -24,8 +25,12 @@ const ShippingScreen = ({ history }) => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    checkDeliveryHandler()
+    checkDeliveryHandler(shippingAddress.postalCode)
   }, [shippingAddress.postalCode])
+
+  useEffect(() => {
+    setAlert(phoneError)
+  }, [phoneError])
   
 
   const submitHandler = async (e) => {
@@ -34,13 +39,18 @@ const ShippingScreen = ({ history }) => {
       history.push('/placeorder')
   }
 
-  const checkDeliveryHandler = async () => {
-    setAlert('Processing...')
-    dispatch(checkDelivery(postalCode));
+  const checkDeliveryHandler = async (val) => {
+    setPostalCode(val)
+    if(val.length === 6){
+      setAlert('Processing...')
+      dispatch(checkDelivery(val));
+    }
   }
 
-  const updatePhoneNumber = async () => {
-    dispatch(updatePhone(phone))
+  const updatePhoneNumber = async (val) => {
+    setPhone(val)
+    if(val.length === 10)
+      dispatch(updatePhone(val))
   }
 
   useEffect(() => {
@@ -74,8 +84,8 @@ const ShippingScreen = ({ history }) => {
           value={postalCode}
           required
           max={6}
-          onBlur={checkDeliveryHandler}
-          onChange={(e) => setPostalCode(e.target.value)}
+          onChange={(e) => checkDeliveryHandler(e.target.value)}
+          onBlur={(e) => checkDeliveryHandler(e.target.value)}
         ></Form.Control>
       </Form.Group>
 
@@ -89,8 +99,7 @@ const ShippingScreen = ({ history }) => {
           required
           maxLength={10}
           minLength={10}
-          onBlur={updatePhoneNumber}
-          onChange={(e) => setPhone(e.target.value)}
+          onChange={(e) => updatePhoneNumber(e.target.value)}
         ></Form.Control>
       </Form.Group>
         <Form.Group controlId='address'>
@@ -145,12 +154,12 @@ const ShippingScreen = ({ history }) => {
           ></Form.Control>
         </Form.Group>
 
-        <Button type='submit' disabled={!city} variant='primary' className='bg-danger'>
+        <Button type='submit' disabled={!city || !(phone.length === 10) || phoneError} variant='primary' className='bg-danger'>
           {alert === 'Processing...' ? 'Loading' : 'Continue'}
         </Button>
       </Form>
     
-      {alert && alert !== 'Processing...' && !deliverable && pincode && <Alert variant='danger' style={{marginTop: '10px'}}>
+      {alert && alert !== 'Processing...' && pincode && <Alert variant={deliverable && !phoneError ? 'success' : 'danger'} style={{marginTop: '10px'}}>
         {alert}
       </Alert>}
     </FormContainer>

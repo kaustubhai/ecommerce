@@ -1,5 +1,6 @@
 import axios from "axios"
 import { SET_CITY, SET_ERROR, SET_LOADING, SET_PINCODE } from "../constants/shippingConstants"
+import { USER_UPDATE_PROFILE_FAIL, USER_UPDATE_PROFILE_REQUEST, USER_UPDATE_PROFILE_SUCCESS } from "../constants/userConstants"
 
 
 export const checkDelivery = (pincode) => async (dispatch, getState) => {
@@ -38,6 +39,9 @@ export const checkDelivery = (pincode) => async (dispatch, getState) => {
       dispatch({
         type: SET_LOADING
       })
+      dispatch({
+        type: USER_UPDATE_PROFILE_REQUEST
+      })
       const {
         userLogin: { userInfo },
       } = getState()
@@ -48,7 +52,15 @@ export const checkDelivery = (pincode) => async (dispatch, getState) => {
         },
       }
       const { data } = await axios.put(`/api/users/update/phone`, { phone }, config)
+      dispatch({
+        type: USER_UPDATE_PROFILE_SUCCESS,
+        payload: data
+      })
   } catch (error) {
       console.log(error)
+      dispatch({
+        type: USER_UPDATE_PROFILE_FAIL,
+        payload: 'Phone number is already registered'
+      })
   }
 }

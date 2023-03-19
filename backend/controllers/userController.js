@@ -298,10 +298,10 @@ const sendNewletter = async (req, res) => {
 
 const updatePhoneNumber = asyncHandler(async (req, res) => { 
   const user = await User.findById(req.user._id)
-  if(!user.phone)
-    user.phone = req.body.phone;
+  user.phone = req.body.phone;
+  console.log(user.phone);
   await user.save();
-  res.json({ msg: 'Phone number updated' })
+  res.json(user)
 })
 
 export {
