@@ -5,20 +5,21 @@ import FormContainer from '../components/FormContainer'
 import CheckoutSteps from '../components/CheckoutSteps'
 import { saveShippingAddress } from '../actions/cartActions'
 import Helmet from 'react-helmet'
-import { checkDelivery } from '../actions/productActions'
+import { checkDelivery, updatePhone } from '../actions/shippingActions'
 
 const ShippingScreen = ({ history }) => {
   const cart = useSelector((state) => state.cart)
   const { shippingAddress } = cart
-
+  const { state, city, pincode, deliveryDays, error: deliveryError } = useSelector((state) => state.shipping)
+  const { userInfo } = useSelector((state) => state.userLogin)
+  const { phone: userPhone } = userInfo;
   const [address, setAddress] = useState('')
   const [address2, setAddress2] = useState('')
-  const [state, setState] = useState(shippingAddress.state)
-  const [city, setCity] = useState(shippingAddress.city)
-  const [postalCode, setPostalCode] = useState(shippingAddress.postalCode)
+  const [postalCode, setPostalCode] = useState(pincode || shippingAddress.postalCode || '')
   const [country, setCountry] = useState(shippingAddress.country)
   const [deliverable, setDeliverable] = useState(false)
   const [alert, setAlert] = useState(false)
+  const [phone, setPhone] = useState(userPhone || '')
 
   const dispatch = useDispatch()
 
@@ -34,20 +35,25 @@ const ShippingScreen = ({ history }) => {
   }
 
   const checkDeliveryHandler = async () => {
-    if(postalCode && postalCode !== deliverable){
     setAlert('Processing...')
-    setState('')
-    setCity('')
-    const delieryCheck = await checkDelivery(postalCode)
-    setDeliverable(postalCode)
-    if(delieryCheck){
-        setState(delieryCheck.state)
-        setCity(delieryCheck.city)
-        setAlert(false)
-    } else{
-        setAlert("Sorry! This pincode is not covered by us.")
-    }}
+    dispatch(checkDelivery(postalCode));
   }
+
+  const updatePhoneNumber = async () => {
+    dispatch(updatePhone(phone))
+  }
+
+  useEffect(() => {
+    if(deliveryError){
+      setDeliverable(false)
+      setAlert(deliveryError);
+    }
+    if(deliveryDays){
+      setDeliverable(true)
+      setAlert(`Estimated delivery in ${deliveryDays} days`);
+    }
+  }, [deliveryError, deliveryDays])
+
 
   return (
     <FormContainer>
@@ -73,6 +79,20 @@ const ShippingScreen = ({ history }) => {
         ></Form.Control>
       </Form.Group>
 
+      <Form.Group controlId='phone'>
+        <Form.Label>Mobile Number</Form.Label>
+        <Form.Control
+          type='number'
+          placeholder='Enter mobile number'
+          step={1}
+          value={phone}
+          required
+          maxLength={10}
+          minLength={10}
+          onBlur={updatePhoneNumber}
+          onChange={(e) => setPhone(e.target.value)}
+        ></Form.Control>
+      </Form.Group>
         <Form.Group controlId='address'>
           <Form.Label>Address</Form.Label>
           <Form.Control
@@ -129,7 +149,8 @@ const ShippingScreen = ({ history }) => {
           {alert === 'Processing...' ? 'Loading' : 'Continue'}
         </Button>
       </Form>
-    {alert && alert !== 'Processing...' && <Alert variant='danger' style={{marginTop: '10px'}}>
+    
+      {alert && alert !== 'Processing...' && !deliverable && pincode && <Alert variant='danger' style={{marginTop: '10px'}}>
         {alert}
       </Alert>}
     </FormContainer>

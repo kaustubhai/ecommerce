@@ -15,6 +15,7 @@ import {
   updateUserWishlist,
   removeUserWishlist,
   sendNewletter,
+  updatePhoneNumber,
 } from '../controllers/userController.js'
 import { protect, admin } from '../middleware/authMiddleware.js'
 
@@ -30,11 +31,12 @@ router
   .patch(protect, removeUserWishlist)
   router.post('/forgotpassword', forgotPasswordRequest)
   router.put('/reset/:requestId', resetPassword)
+  router.put('/update/phone', protect, updatePhoneNumber)
+  router.route('/newsletter').post(protect, admin, sendNewletter)
   router
     .route('/:id')
     .delete(protect, admin, deleteUser)
     .get(protect, admin, getUserById)
     .put(protect, admin, updateUser)
-  router.route('/newsletter').post(protect, admin, sendNewletter)
 
 export default router

@@ -135,18 +135,6 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
   }
 }
 
-export const checkDelivery = async (pincode) => {
-  try {
-      const { data } = await axios.get(`https://api.postalpincode.in/pincode/${pincode}`)
-      if(data[0].PostOffice)
-          return {state: data[0].PostOffice[0].State, city: data[0].PostOffice[0].District}
-      else
-          return false
-  } catch (error) {
-      console.log(error)
-  }
-}
-
 export const createProduct = () => async (dispatch, getState) => {
   try {
     dispatch({

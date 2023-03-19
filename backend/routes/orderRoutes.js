@@ -11,6 +11,7 @@ import {
   addCoupons,
   deleteCoupons,
   getCoupons,
+  checkCourierService,
 } from '../controllers/orderController.js'
 import { protect, admin } from '../middleware/authMiddleware.js'
 
@@ -23,5 +24,6 @@ router.route('/coupons/:code').patch(protect, applyCoupon)
 router.route('/coupons/get').get(protect, admin, getCoupons)
 router.route('/coupons').post(protect, admin, addCoupons)
 router.route('/coupons/:code').delete(protect, admin, deleteCoupons)
+router.route('/courier/service').post(protect, checkCourierService)
 
 export default router

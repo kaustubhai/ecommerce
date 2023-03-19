@@ -294,6 +294,16 @@ const sendNewletter = async (req, res) => {
   }
 }
 
+
+
+const updatePhoneNumber = asyncHandler(async (req, res) => { 
+  const user = await User.findById(req.user._id)
+  if(!user.phone)
+    user.phone = req.body.phone;
+  await user.save();
+  res.json({ msg: 'Phone number updated' })
+})
+
 export {
   authUser,
   registerUser,
@@ -309,4 +319,5 @@ export {
   updateUserWishlist,
   removeUserWishlist,
   sendNewletter,
+  updatePhoneNumber
 }

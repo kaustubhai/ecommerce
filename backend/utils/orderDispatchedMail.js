@@ -5,7 +5,7 @@ const expectedDeliveryDate = (dispatchedAt) => {
 }
 
 
-const generateTemplate = (order, name, email) => {
+const generateTemplate = (order, name, email, url) => {
     return `
     <!DOCTYPE html
     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -563,7 +563,7 @@ a {text-decoration: none;}
                                     <tr>
                                         <td align="center" class="es-m-p0r es-m-p0l"
                                             style="Margin:0;padding-top:5px;padding-bottom:15px;padding-left:40px;padding-right:40px">
-                                            <a href=${order.trackingUrl} style="background-color: #5C68E2; color: white; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;">Track Order</a>
+                                            <a href=${url} style="background-color: #5C68E2; color: white; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;">Track Order</a>
                                         </td>
                                     </tr>
                                     

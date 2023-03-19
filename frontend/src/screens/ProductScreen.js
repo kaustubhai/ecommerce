@@ -9,12 +9,12 @@ import Meta from '../components/Meta'
 import {
   listProductDetails,
   createProductReview,
-  checkDelivery,
 } from '../actions/productActions'
 import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants'
 import Helmet from 'react-helmet'
 import Product from '../components/Product'
 import { updateUserWishlist } from '../actions/userActions'
+import { checkDelivery } from '../actions/shippingActions'
 
 const ProductScreen = ({ history, match }) => {
   const [qty, setQty] = useState(1)
@@ -29,7 +29,7 @@ const ProductScreen = ({ history, match }) => {
 
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
-
+  const { deliveryDays, error: deliveryError, pincode: deliveryPincode, loading: deliveryLoading } = useSelector((state) => state.shipping)
   const productReviewCreate = useSelector((state) => state.productReviewCreate)
   const {
     success: successProductReview,
@@ -49,16 +49,23 @@ const ProductScreen = ({ history, match }) => {
   const addToCartHandler = () => {
     history.push(`/cart/${match.params.id}?qty=${qty}`)
   }
-
   const checkDeliveryHandler = async () => {
     setDeliveryAlert('Checking...')
-    const delivery = await checkDelivery(pincode);
-    setDeliverable(delivery);
-    if(!delivery)
-      setDeliveryAlert('Sorry, we do not deliver to this pincode');
-    else
-      setDeliveryAlert('We deliver to this pincode');
+    dispatch(checkDelivery(pincode));
   }
+
+  useEffect(() => {
+    if(deliveryError){
+      setDeliverable(false)
+      setDeliveryAlert(deliveryError);
+    }
+    if(deliveryDays){
+      setDeliverable(true)
+      setDeliveryAlert(`Estimated delivery in ${deliveryDays} days`);
+    }
+    if(deliveryLoading)
+    setDeliveryAlert('Checking...')
+  }, [deliveryError, deliveryDays, deliveryLoading])
 
   const submitHandler = (e) => {
     e.preventDefault()
@@ -193,7 +200,7 @@ const ProductScreen = ({ history, match }) => {
                       <Button onClick={checkDeliveryHandler} disabled={pincode.length === 0} type='submit' variant='primary' block>
                         Check Delivery
                       </Button>
-                      {deliveryAlert && <Alert variant={deliverable ? 'success': 'danger'} className='mt-2'>
+                      {pincode && pincode == deliveryPincode && deliveryAlert && <Alert variant={deliverable ? 'success': 'danger'} className='mt-2'>
                         {deliveryAlert}
                       </Alert>}
                   </Form.Group>

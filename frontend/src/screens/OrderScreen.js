@@ -280,7 +280,7 @@ let rzp1;
                   )}
                 </ListGroup.Item>
               )} */}
-              {userInfo &&
+              {/* {userInfo &&
                 userInfo.isAdmin &&
                 order.isPaid &&
                 !order.isDispatched && (
@@ -302,7 +302,7 @@ let rzp1;
                       </Button>
                     </Form>
                   </ListGroup.Item>
-                )}
+                )} */}
                 {!order?.isPaid ? (
                     <ListGroup.Item className='d-print-none'>
                     <Button
