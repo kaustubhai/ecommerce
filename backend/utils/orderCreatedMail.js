@@ -82,9 +82,9 @@ const generateRows = (products) => {
             </td>
         </tr>
         `
-  );
-  return x.join("");
-};
+  )
+  return x.join('')
+}
 
 const generateTemplate = (order, name, email) => {
   return `
@@ -674,23 +674,23 @@ a {text-decoration: none;}
                                                                           order.taxPrice -
                                                                           order.shippingPrice
                                                                         ).toLocaleString(
-                                                                          "en-IN"
+                                                                          'en-IN'
                                                                         )}</strong><br>
                                                                         Shipping: ₹<strong>${order.shippingPrice.toLocaleString(
-                                                                          "en-IN"
+                                                                          'en-IN'
                                                                         )}</strong><br>
                                                                         ${
                                                                           order.discount
                                                                             ? `Discount: ₹<strong>${order.discount.toLocaleString(
-                                                                                "en-IN"
+                                                                                'en-IN'
                                                                               )}</strong><br>`
-                                                                            : ""
+                                                                            : ''
                                                                         }
                                                                         Tax: ₹<strong>${order.taxPrice.toLocaleString(
-                                                                          "en-IN"
+                                                                          'en-IN'
                                                                         )}</strong><br>
                                                                         Total: ₹<strong>${order.totalPrice.toLocaleString(
-                                                                          "en-IN"
+                                                                          'en-IN'
                                                                         )}</strong></p>
                                                                 </td>
                                                             </tr>
@@ -971,7 +971,7 @@ a {text-decoration: none;}
     </div>
 </body>
 
-</html>`;
-};
+</html>`
+}
 
-export default generateTemplate;
+export default generateTemplate

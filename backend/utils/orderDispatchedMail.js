@@ -1,8 +1,8 @@
 const expectedDeliveryDate = (dispatchedAt) => {
-  const date = new Date(dispatchedAt);
-  date.setDate(date.getDate() + 14);
-  return date;
-};
+  const date = new Date(dispatchedAt)
+  date.setDate(date.getDate() + 14)
+  return date
+}
 
 const generateTemplate = (order, name, email, url) => {
   return `
@@ -843,7 +843,7 @@ a {text-decoration: none;}
     </div>
 </body>
 
-</html>`;
-};
+</html>`
+}
 
-export default generateTemplate;
+export default generateTemplate

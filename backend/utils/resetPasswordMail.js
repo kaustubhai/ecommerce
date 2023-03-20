@@ -80,7 +80,7 @@ const generateTemplate = (token, uId) => {
     <!--/100% body table-->
 </body>
 
-</html>`;
-};
+</html>`
+}
 
-export default generateTemplate;
+export default generateTemplate

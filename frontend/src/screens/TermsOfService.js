@@ -360,7 +360,7 @@ const TermsOfService = () => {
         Questions about the Terms of Service should be sent to us at
         info@kicksmachine.com.
       </p>
-      <h1 className="mt-4 text-center">Top Products</h1>
+      <h1 className="mt-4 text-center">Our Top Products</h1>
       <Row>
         {products.map((product) => (
           <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
