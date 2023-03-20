@@ -1,122 +1,148 @@
-import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { Row, Col, Image, ListGroup, Card, Button, Form, Alert, Carousel } from 'react-bootstrap'
-import Rating from '../components/Rating'
-import Message from '../components/Message'
-import Loader from '../components/Loader'
-import Meta from '../components/Meta'
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  Row,
+  Col,
+  Image,
+  ListGroup,
+  Card,
+  Button,
+  Form,
+  Alert,
+  Carousel,
+} from "react-bootstrap";
+import Rating from "../components/Rating";
+import Message from "../components/Message";
+import Loader from "../components/Loader";
+import Meta from "../components/Meta";
 import {
   listProductDetails,
   createProductReview,
-} from '../actions/productActions'
-import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants'
-import Helmet from 'react-helmet'
-import Product from '../components/Product'
-import { updateUserWishlist } from '../actions/userActions'
-import { checkDelivery } from '../actions/shippingActions'
+} from "../actions/productActions";
+import { PRODUCT_CREATE_REVIEW_RESET } from "../constants/productConstants";
+import Helmet from "react-helmet";
+import Product from "../components/Product";
+import { updateUserWishlist } from "../actions/userActions";
+import { checkDelivery } from "../actions/shippingActions";
 
 const ProductScreen = ({ history, match }) => {
-  const [qty, setQty] = useState(1)
-  const [rating, setRating] = useState(0)
-  const [comment, setComment] = useState('')
-  const [pincode, setPincode] = useState('')
-  const [deliverable, setDeliverable] = useState(true)
-  const [deliveryAlert, setDeliveryAlert] = useState('')
-  const dispatch = useDispatch()
-  const productDetails = useSelector((state) => state.productDetails)
-  const { loading, error, product } = productDetails
+  const [qty, setQty] = useState(1);
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
+  const [pincode, setPincode] = useState("");
+  const [deliverable, setDeliverable] = useState(true);
+  const [deliveryAlert, setDeliveryAlert] = useState("");
+  const dispatch = useDispatch();
+  const productDetails = useSelector((state) => state.productDetails);
+  const { loading, error, product } = productDetails;
 
-  const userLogin = useSelector((state) => state.userLogin)
-  const { userInfo } = userLogin
-  const { deliveryDays, error: deliveryError, pincode: deliveryPincode, loading: deliveryLoading } = useSelector((state) => state.shipping)
-  const productReviewCreate = useSelector((state) => state.productReviewCreate)
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+  const {
+    deliveryDays,
+    error: deliveryError,
+    pincode: deliveryPincode,
+    loading: deliveryLoading,
+  } = useSelector((state) => state.shipping);
+  const productReviewCreate = useSelector((state) => state.productReviewCreate);
   const {
     success: successProductReview,
     loading: loadingProductReview,
     error: errorProductReview,
-  } = productReviewCreate
+  } = productReviewCreate;
 
   useEffect(() => {
     if (successProductReview) {
-      setRating(0)
-      setComment('')
+      setRating(0);
+      setComment("");
     }
-      dispatch(listProductDetails(match.params.id))
-      dispatch({ type: PRODUCT_CREATE_REVIEW_RESET })
-  }, [dispatch, match, successProductReview])
+    dispatch(listProductDetails(match.params.id));
+    dispatch({ type: PRODUCT_CREATE_REVIEW_RESET });
+  }, [dispatch, match, successProductReview]);
 
   const addToCartHandler = () => {
-    history.push(`/cart/${match.params.id}?qty=${qty}`)
-  }
+    history.push(`/cart/${match.params.id}?qty=${qty}`);
+  };
   const checkDeliveryHandler = async () => {
-    setDeliveryAlert('Checking...')
+    setDeliveryAlert("Checking...");
     dispatch(checkDelivery(pincode));
-  }
+  };
 
   useEffect(() => {
-    if(deliveryError){
-      setDeliverable(false)
+    if (deliveryError) {
+      setDeliverable(false);
       setDeliveryAlert(deliveryError);
     }
-    if(deliveryDays){
-      setDeliverable(true)
+    if (deliveryDays) {
+      setDeliverable(true);
       setDeliveryAlert(`Estimated delivery in ${deliveryDays} days`);
     }
-    if(deliveryLoading)
-    setDeliveryAlert('Checking...')
-  }, [deliveryError, deliveryDays, deliveryLoading])
+    if (deliveryLoading) setDeliveryAlert("Checking...");
+  }, [deliveryError, deliveryDays, deliveryLoading]);
 
   const submitHandler = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     dispatch(
       createProductReview(match.params.id, {
         rating,
         comment,
       })
-    )
-  }
+    );
+  };
 
   const addToWishlistHandler = () => {
-    dispatch(updateUserWishlist(match.params.id))
-    history.push('/wishlist')
-  }
+    dispatch(updateUserWishlist(match.params.id));
+    history.push("/wishlist");
+  };
 
   return (
     <>
-    <Helmet>
+      <Helmet>
         <meta charSet="utf-8" />
-        <title>{product.name || ''} | KroShop</title>
+        <title>{product.name || ""} | KroShop</title>
         <link rel="canonical" />
-    </Helmet>
-      <Button className='btn btn-light my-3' onClick={() => history.goBack()}>
-      <i class="fas fa-arrow-left"></i> Go Back
+      </Helmet>
+      <Button className="btn btn-light my-3" onClick={() => history.goBack()}>
+        <i class="fas fa-arrow-left"></i> Go Back
       </Button>
-      <a className='btn btn-light my-3' href={`https://twitter.com/intent/tweet?text=Checkout%20this%20amazing%20${product.name}%20at%20an%20amazing%20price%20on%20KroShop%20here,&url=${window.location.href}&hashtags=${product.brand},${product.category}`} target={'_blank'} rel="noopener noreferrer">
-        <i class="fab fa-twitter"></i> Share 
+      <a
+        className="btn btn-light my-3"
+        href={`https://twitter.com/intent/tweet?text=Checkout%20this%20amazing%20${product.name}%20at%20an%20amazing%20price%20on%20KroShop%20here,&url=${window.location.href}&hashtags=${product.brand},${product.category}`}
+        target={"_blank"}
+        rel="noopener noreferrer"
+      >
+        <i class="fab fa-twitter"></i> Share
       </a>
-      {userInfo && <button onClick={addToWishlistHandler} className='btn btn-light my-3'>
-        <i class="fas fa-heart"></i> WishList
-      </button>}
+      {userInfo && (
+        <button onClick={addToWishlistHandler} className="btn btn-light my-3">
+          <i class="fas fa-heart"></i> WishList
+        </button>
+      )}
       {loading ? (
         <Loader />
       ) : error ? (
-        <Message variant='danger'>{error}</Message>
+        <Message variant="danger">{error}</Message>
       ) : (
         <>
           <Meta title={product.name} />
           <Row>
             <Col md={6}>
-                  <Carousel variant='dark' className='dark position-relative top-0'>
-                {[product.image, product.secondaryImage].map(image => (
-                  <Carousel.Item className='banner-height w-full'>
-                  <Image src={image} alt={product.name} className='mx-auto' fluid />
-                </Carousel.Item>
+              <Carousel variant="dark" className="dark position-relative top-0">
+                {[product.image, product.secondaryImage].map((image) => (
+                  <Carousel.Item className="banner-height w-full">
+                    <Image
+                      src={image}
+                      alt={product.name}
+                      className="mx-auto"
+                      fluid
+                    />
+                  </Carousel.Item>
                 ))}
               </Carousel>
             </Col>
             <Col md={3}>
-              <ListGroup variant='flush'>
+              <ListGroup variant="flush">
                 <ListGroup.Item>
                   <h3>{product.name}</h3>
                 </ListGroup.Item>
@@ -126,7 +152,23 @@ const ProductScreen = ({ history, match }) => {
                     text={`${product.numReviews} reviews`}
                   />
                 </ListGroup.Item>
-                    <ListGroup.Item>Price: {((product.price !== product.mrp) || product.discount) ? (<span><s>₹{product.mrp?.toFixed(2)?.toLocaleString('en-IN')}</s> ₹{(product.price - (product.discount * product.price / 100))?.toFixed(2)?.toLocaleString('en-IN')} </span>) : (product.price?.toFixed(2).toLocaleString('en-IN'))}</ListGroup.Item>
+                <ListGroup.Item>
+                  Price:{" "}
+                  {product.price !== product.mrp || product.discount ? (
+                    <span>
+                      <s>₹{product.mrp?.toFixed(2)?.toLocaleString("en-IN")}</s>{" "}
+                      ₹
+                      {(
+                        product.price -
+                        (product.discount * product.price) / 100
+                      )
+                        ?.toFixed(2)
+                        ?.toLocaleString("en-IN")}{" "}
+                    </span>
+                  ) : (
+                    product.price?.toFixed(2).toLocaleString("en-IN")
+                  )}
+                </ListGroup.Item>
                 <ListGroup.Item>
                   About product: {product.description}
                 </ListGroup.Item>
@@ -134,12 +176,25 @@ const ProductScreen = ({ history, match }) => {
             </Col>
             <Col md={3}>
               <Card>
-                <ListGroup variant='flush'>
+                <ListGroup variant="flush">
                   <ListGroup.Item>
                     <Row>
                       <Col>Price:</Col>
                       <Col>
-                        <strong>₹{product.discount ? (product.price - (product.discount * product.price / 100)?.toFixed(2))?.toLocaleString('en-IN') : product.price !== product.mrp ? product.price?.toFixed(2)?.toLocaleString('en-IN') : product.mrp?.toFixed(2)?.toLocaleString('en-IN')}</strong>
+                        <strong>
+                          ₹
+                          {product.discount
+                            ? (
+                                product.price -
+                                (
+                                  (product.discount * product.price) /
+                                  100
+                                )?.toFixed(2)
+                              )?.toLocaleString("en-IN")
+                            : product.price !== product.mrp
+                            ? product.price?.toFixed(2)?.toLocaleString("en-IN")
+                            : product.mrp?.toFixed(2)?.toLocaleString("en-IN")}
+                        </strong>
                       </Col>
                     </Row>
                   </ListGroup.Item>
@@ -148,7 +203,7 @@ const ProductScreen = ({ history, match }) => {
                     <Row>
                       <Col>Status:</Col>
                       <Col>
-                        {product.countInStock > 0 ? 'In Stock' : 'Out Of Stock'}
+                        {product.countInStock > 0 ? "In Stock" : "Out Of Stock"}
                       </Col>
                     </Row>
                   </ListGroup.Item>
@@ -159,7 +214,7 @@ const ProductScreen = ({ history, match }) => {
                         <Col>Qty</Col>
                         <Col>
                           <Form.Control
-                            as='select'
+                            as="select"
                             value={qty}
                             onChange={(e) => setQty(e.target.value)}
                           >
@@ -178,46 +233,64 @@ const ProductScreen = ({ history, match }) => {
                   <ListGroup.Item>
                     <Button
                       onClick={addToCartHandler}
-                          className='btn-block bg-danger'
-                      type='button'
-                      disabled={product.countInStock === 0 || (deliveryAlert === 'Checking...') || !deliverable}
+                      className="btn-block bg-danger"
+                      type="button"
+                      disabled={
+                        product.countInStock === 0 ||
+                        deliveryAlert === "Checking..." ||
+                        !deliverable
+                      }
                     >
                       Add To Cart
                     </Button>
                   </ListGroup.Item>
-                <ListGroup.Item>
-                  <Form.Group controlId='Pincode'>
-                    <Form.Control
-                      type='number'
-                      placeholder='Enter Pincode'
-                      value={pincode}
-                      onChange={(e) => setPincode(e.target.value)}
-                      required
-                      maxLength={6}
-                      id="phone"
-                      className='mb-2 text-center mt-3'
+                  <ListGroup.Item>
+                    <Form.Group controlId="Pincode">
+                      <Form.Control
+                        type="number"
+                        placeholder="Enter Pincode"
+                        value={pincode}
+                        onChange={(e) => setPincode(e.target.value)}
+                        required
+                        maxLength={6}
+                        id="phone"
+                        className="mb-2 text-center mt-3"
                       ></Form.Control>
-                      <Button onClick={checkDeliveryHandler} disabled={pincode.length === 0} type='submit' variant='primary' block>
+                      <Button
+                        onClick={checkDeliveryHandler}
+                        disabled={pincode.length === 0}
+                        type="submit"
+                        variant="primary"
+                        block
+                      >
                         Check Delivery
                       </Button>
-                      {pincode && pincode === deliveryPincode && deliveryAlert && <Alert variant={deliverable ? 'success': 'danger'} className='mt-2'>
-                        {deliveryAlert}
-                      </Alert>}
-                  </Form.Group>
-                </ListGroup.Item>
+                      {pincode && pincode === deliveryPincode && deliveryAlert && (
+                        <Alert
+                          variant={deliverable ? "success" : "danger"}
+                          className="mt-2"
+                        >
+                          {deliveryAlert}
+                        </Alert>
+                      )}
+                    </Form.Group>
+                  </ListGroup.Item>
                 </ListGroup>
               </Card>
             </Col>
           </Row>
           <Row>
-            <Col md={6} className='pt-4'>
+            <Col md={6} className="pt-4">
               <h2>Reviews</h2>
               {product.reviews.length === 0 && <Message>No Reviews</Message>}
-              <ListGroup variant='flush'>
+              <ListGroup variant="flush">
                 {product.reviews.map((review) => (
                   <ListGroup.Item key={review._id}>
                     <div className="d-flex justify-content-between">
-                      <strong>{review?.name.slice(0, 1).toUpperCase() + review?.name.slice('1')}</strong>
+                      <strong>
+                        {review?.name.slice(0, 1).toUpperCase() +
+                          review?.name.slice("1")}
+                      </strong>
                       <Rating value={review.rating} />
                     </div>
                     <p>{review.createdAt.substring(0, 10)}</p>
@@ -227,51 +300,51 @@ const ProductScreen = ({ history, match }) => {
                 <ListGroup.Item>
                   <h2>Write a Customer Review</h2>
                   {successProductReview && (
-                    <Message variant='success'>
+                    <Message variant="success">
                       Review submitted successfully
                     </Message>
                   )}
                   {loadingProductReview && <Loader />}
                   {errorProductReview && (
-                    <Message variant='danger'>{errorProductReview}</Message>
+                    <Message variant="danger">{errorProductReview}</Message>
                   )}
                   {userInfo ? (
                     <Form onSubmit={submitHandler}>
-                      <Form.Group controlId='rating'>
+                      <Form.Group controlId="rating">
                         <Form.Label>Rating</Form.Label>
                         <Form.Control
-                          as='select'
+                          as="select"
                           value={rating}
                           onChange={(e) => setRating(e.target.value)}
                         >
-                          <option value=''>Select...</option>
-                          <option value='1'>1 - Poor</option>
-                          <option value='2'>2 - Fair</option>
-                          <option value='3'>3 - Good</option>
-                          <option value='4'>4 - Very Good</option>
-                          <option value='5'>5 - Excellent</option>
+                          <option value="">Select...</option>
+                          <option value="1">1 - Poor</option>
+                          <option value="2">2 - Fair</option>
+                          <option value="3">3 - Good</option>
+                          <option value="4">4 - Very Good</option>
+                          <option value="5">5 - Excellent</option>
                         </Form.Control>
                       </Form.Group>
-                      <Form.Group controlId='comment'>
+                      <Form.Group controlId="comment">
                         <Form.Label>Comment</Form.Label>
                         <Form.Control
-                          as='textarea'
-                          row='3'
+                          as="textarea"
+                          row="3"
                           value={comment}
                           onChange={(e) => setComment(e.target.value)}
                         ></Form.Control>
                       </Form.Group>
                       <Button
                         disabled={loadingProductReview}
-                        type='submit'
-                        variant='primary'
+                        type="submit"
+                        variant="primary"
                       >
                         Submit
                       </Button>
                     </Form>
                   ) : (
                     <Message>
-                      Please <Link to='/login'>sign in</Link> to write a review{' '}
+                      Please <Link to="/login">sign in</Link> to write a review{" "}
                     </Message>
                   )}
                 </ListGroup.Item>
@@ -279,19 +352,19 @@ const ProductScreen = ({ history, match }) => {
             </Col>
           </Row>
           <Row>
-          <h2 className='mt-4'>More {product.category} products</h2>
-                <Row className='w-full'>
-          {product.relatedProducts?.map((related) => (
-            <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-              <Product product={related} />
-            </Col>
-          ))}
-                </Row>
+            <h2 className="mt-4">More {product.category} products</h2>
+            <Row className="w-full">
+              {product.relatedProducts?.map((related) => (
+                <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+                  <Product product={related} />
+                </Col>
+              ))}
+            </Row>
           </Row>
         </>
       )}
     </>
-  )
-}
+  );
+};
 
-export default ProductScreen
+export default ProductScreen;

@@ -1,101 +1,101 @@
-import React from 'react'
+import React from "react";
 // import { useState, useEffect } from 'react'
 // import axios from 'axios'
 // import { PayPalButton } from 'react-paypal-button-v2'
 // import Razorpay from 'razorpay'
-import { Link } from 'react-router-dom'
-import { Row, Col, ListGroup, Image, Card, Button } from 'react-bootstrap'
-import { useDispatch, useSelector } from 'react-redux'
-import Message from '../components/Message'
-import Loader from '../components/Loader'
+import { Link } from "react-router-dom";
+import { Row, Col, ListGroup, Image, Card, Button } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import Message from "../components/Message";
+import Loader from "../components/Loader";
 import {
   // getOrderDetails,
   payOrder,
   // deliverOrder,
-} from '../actions/orderActions'
+} from "../actions/orderActions";
 // import {
 //   ORDER_PAY_RESET,
 //   ORDER_DELIVER_RESET,
 // } from '../constants/orderConstants'
-import Helmet from 'react-helmet'
+import Helmet from "react-helmet";
 
 const OrderScreen = ({ match, history }) => {
-  const orderId = match.params.id
+  const orderId = match.params.id;
 
   // const [sdkReady, setSdkReady] = useState(false)
   // const [trackingUrl, setTrackingUrl] = useState('')
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const orderDetails = useSelector((state) => state.orderDetails)
-  const { order, loading, error } = orderDetails
+  const orderDetails = useSelector((state) => state.orderDetails);
+  const { order, loading, error } = orderDetails;
 
   // const orderPay = useSelector((state) => state.orderPay)
   // const { loading: loadingPay, success: successPay } = orderPay
 
-  const orderDeliver = useSelector((state) => state.orderDeliver)
-  const { 
-    loading: loadingDeliver, 
-    // success: successDeliver 
-  } = orderDeliver
+  const orderDeliver = useSelector((state) => state.orderDeliver);
+  const {
+    loading: loadingDeliver,
+    // success: successDeliver
+  } = orderDeliver;
 
-  const userLogin = useSelector((state) => state.userLogin)
-  const { userInfo } = userLogin
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
   if (!loading && order) {
     //   Calculate prices
     const addDecimals = (num) => {
-      return (Math.round(num * 100) / 100)?.toFixed(2)
-    }
+      return (Math.round(num * 100) / 100)?.toFixed(2);
+    };
 
     order.itemsPrice = addDecimals(
       order?.orderItems.reduce((acc, item) => acc + item?.price * item.qty, 0)
-    )
-}
+    );
+  }
 
-let rzp1;
+  let rzp1;
 
   const openRazor = () => {
-      var options = {
-        "key_id": process.env.RAZORPAY_KEY_ID, // Enter the Key ID generated from the Dashboard
-        "amount": order?.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-        "currency": "INR",
-        "name": "KroShop",
-        "description": `You are buying ${order?.orderItems.length} items, worth ${order?.amount}, from KroShop`,
-        "image": "https://example.com/your_logo",
-        "order_id": order?.rpId, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-        "handler": function (response){
-            dispatch(payOrder(orderId, response))
-        },
-        "prefill": {
-            "name": order.user.name,
-            "email": order.user.email,
-        },
-        "notes": {
-            "address": `${order.shippingAddress.address}, ${order.shippingAddress.city}, ${order.shippingAddress.state}, ${order.shippingAddress.postalCode}, ${order.shippingAddress.country}`
-        },
-        "theme": {
-            "color": "#3399cc"
-        }
-      }
-      const script = document.createElement('script')
-      script.type = 'text/javascript'
-      script.src = `https://checkout.razorpay.com/v1/checkout.js`
-      script.async = true
-      script.onload = () => {
-        rzp1 = new window.Razorpay(options);
-        rzp1.on('payment.failed', function (response){
-          alert(response.error.code);
-          alert(response.error.description);
-          alert(response.error.source);
-          alert(response.error.step);
-          alert(response.error.reason);
-          alert(response.error.metadata.order_id);
-          alert(response.error.metadata.payment_id);
-        });
-        rzp1.open();
-      }
-      document.body.appendChild(script)
-    }
+    var options = {
+      key_id: process.env.RAZORPAY_KEY_ID, // Enter the Key ID generated from the Dashboard
+      amount: order?.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+      currency: "INR",
+      name: "KroShop",
+      description: `You are buying ${order?.orderItems.length} items, worth ${order?.amount}, from KroShop`,
+      image: "https://example.com/your_logo",
+      order_id: order?.rpId, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+      handler: function (response) {
+        dispatch(payOrder(orderId, response));
+      },
+      prefill: {
+        name: order.user.name,
+        email: order.user.email,
+      },
+      notes: {
+        address: `${order.shippingAddress.address}, ${order.shippingAddress.city}, ${order.shippingAddress.state}, ${order.shippingAddress.postalCode}, ${order.shippingAddress.country}`,
+      },
+      theme: {
+        color: "#3399cc",
+      },
+    };
+    const script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = `https://checkout.razorpay.com/v1/checkout.js`;
+    script.async = true;
+    script.onload = () => {
+      rzp1 = new window.Razorpay(options);
+      rzp1.on("payment.failed", function (response) {
+        alert(response.error.code);
+        alert(response.error.description);
+        alert(response.error.source);
+        alert(response.error.step);
+        alert(response.error.reason);
+        alert(response.error.metadata.order_id);
+        alert(response.error.metadata.payment_id);
+      });
+      rzp1.open();
+    };
+    document.body.appendChild(script);
+  };
 
   // useEffect(() => {
   //   if (!userInfo) {
@@ -135,58 +135,62 @@ let rzp1;
   // }
 
   const printDiv = () => {
-    var printContents = document.getElementById('main').innerHTML
-    var originalContents = document.body.innerHTML
+    var printContents = document.getElementById("main").innerHTML;
+    var originalContents = document.body.innerHTML;
 
-    document.body.innerHTML = printContents
+    document.body.innerHTML = printContents;
 
-    window.print()
+    window.print();
 
-    document.body.innerHTML = originalContents
-  }
+    document.body.innerHTML = originalContents;
+  };
 
   return loading ? (
     <Loader />
   ) : error ? (
-    <Message variant='danger'>{error}</Message>
+    <Message variant="danger">{error}</Message>
   ) : (
     <>
-    <Helmet>
+      <Helmet>
         <meta charSet="utf-8" />
-        <title>Your Order #{orderId || ''} | KroShop</title>
+        <title>Your Order #{orderId || ""} | KroShop</title>
         <link rel="canonical" />
-    </Helmet>
-          {(userInfo && userInfo.isAdmin) ? <Button onClick={() => history.goBack()} className='btn btn-light my-3 d-print-none'>
-        Go Back
-          </Button> : <Link to='/profile' className='btn btn-light my-3'>
-        See Orders
-          </Link>
-      }
+      </Helmet>
+      {userInfo && userInfo.isAdmin ? (
+        <Button
+          onClick={() => history.goBack()}
+          className="btn btn-light my-3 d-print-none"
+        >
+          Go Back
+        </Button>
+      ) : (
+        <Link to="/profile" className="btn btn-light my-3">
+          See Orders
+        </Link>
+      )}
       <h1>Order {order._id}</h1>
       <Row>
         <Col md={8}>
-          <ListGroup variant='flush'>
+          <ListGroup variant="flush">
             <ListGroup.Item>
               <h2>Shipping</h2>
               <p>
                 <strong>Name: </strong> {order.user.name}
               </p>
               <p>
-                <strong>Email: </strong>{' '}
+                <strong>Email: </strong>{" "}
                 <a href={`mailto:${order.user.email}`}>{order.user.email}</a>
               </p>
               <p>
-                <strong>Phone: </strong>{' '}
+                <strong>Phone: </strong>{" "}
                 <a href={`tel:${order.user.phone}`}>{order.user.phone}</a>
               </p>
               <p>
                 <strong>Address: </strong>
-                {order.shippingAddress.address}, {order.shippingAddress.city}{' '}
-                , {order.shippingAddress.state}{' '}
-                {order.shippingAddress.postalCode},{' '}
-                {order.shippingAddress.country}
+                {order.shippingAddress.address}, {order.shippingAddress.city} ,{" "}
+                {order.shippingAddress.state} {order.shippingAddress.postalCode}
+                , {order.shippingAddress.country}
               </p>
-              
             </ListGroup.Item>
 
             <ListGroup.Item>
@@ -194,7 +198,7 @@ let rzp1;
               {order.orderItems.length === 0 ? (
                 <Message>Order is empty</Message>
               ) : (
-                <ListGroup variant='flush'>
+                <ListGroup variant="flush">
                   {order.orderItems.map((item, index) => (
                     <ListGroup.Item key={index}>
                       <Row>
@@ -212,7 +216,17 @@ let rzp1;
                           </Link>
                         </Col>
                         <Col md={4}>
-                          {item.qty} x ₹{(item.price - (item.price * item.discount / 100))?.toFixed(2)?.toLocaleString('en-IN')} = ₹{(item.qty * (item.price - (item.price * item.discount / 100)))?.toFixed(2)?.toLocaleString('en-IN')}
+                          {item.qty} x ₹
+                          {(item.price - (item.price * item.discount) / 100)
+                            ?.toFixed(2)
+                            ?.toLocaleString("en-IN")}{" "}
+                          = ₹
+                          {(
+                            item.qty *
+                            (item.price - (item.price * item.discount) / 100)
+                          )
+                            ?.toFixed(2)
+                            ?.toLocaleString("en-IN")}
                         </Col>
                       </Row>
                     </ListGroup.Item>
@@ -222,13 +236,19 @@ let rzp1;
             </ListGroup.Item>
             {order.isPaid && (
               <ListGroup.Item>
-                  <Message variant='success'>Paid on {new Date(order.paidAt).toLocaleDateString()} {new Date(order.paidAt).toLocaleTimeString()}</Message>
+                <Message variant="success">
+                  Paid on {new Date(order.paidAt).toLocaleDateString()}{" "}
+                  {new Date(order.paidAt).toLocaleTimeString()}
+                </Message>
                 {order.isDispatched ? (
-                  <Message variant='success'>
-                    Dispatched on {new Date(order.dispatchedAt).toLocaleDateString()} {new Date(order.dispatchedAt).toLocaleTimeString()}, Track <Link to={order.trackingUrl}>Here</Link>
+                  <Message variant="success">
+                    Dispatched on{" "}
+                    {new Date(order.dispatchedAt).toLocaleDateString()}{" "}
+                    {new Date(order.dispatchedAt).toLocaleTimeString()}, Track{" "}
+                    <Link to={order.trackingUrl}>Here</Link>
                   </Message>
                 ) : (
-                  <Message variant='danger'>Not yet Dispatched</Message>
+                  <Message variant="danger">Not yet Dispatched</Message>
                 )}
               </ListGroup.Item>
             )}
@@ -236,7 +256,7 @@ let rzp1;
         </Col>
         <Col md={4}>
           <Card>
-            <ListGroup variant='flush'>
+            <ListGroup variant="flush">
               <ListGroup.Item>
                 <h2>Order Summary</h2>
               </ListGroup.Item>
@@ -258,12 +278,14 @@ let rzp1;
                   <Col>₹{order.taxPrice}</Col>
                 </Row>
               </ListGroup.Item>
-                  {order.discount > 0 && <ListGroup.Item>
-                <Row>
-                  <Col>Discount</Col>
-                  <Col>₹{order.discount?.toFixed(2)}</Col>
-                </Row>
-              </ListGroup.Item>}
+              {order.discount > 0 && (
+                <ListGroup.Item>
+                  <Row>
+                    <Col>Discount</Col>
+                    <Col>₹{order.discount?.toFixed(2)}</Col>
+                  </Row>
+                </ListGroup.Item>
+              )}
               <ListGroup.Item>
                 <Row>
                   <Col>Total</Col>
@@ -307,35 +329,35 @@ let rzp1;
                     </Form>
                   </ListGroup.Item>
                 )} */}
-                {!order?.isPaid ? (
-                    <ListGroup.Item className='d-print-none'>
-                    <Button
-                      type='button'
-                        className='btn-block bg-danger'
-                      onClick={openRazor}
-                      id='rzp-button1'
-                      >
-                        Checkout
-                    </Button>
-                  </ListGroup.Item>
-                ) : (
-                      <ListGroup.Item className='d-print-none'>
+              {!order?.isPaid ? (
+                <ListGroup.Item className="d-print-none">
                   <Button
-                    type='button'
-                          className='btn-block bg-danger'
-                    onClick={printDiv}
-                    >
-                      Download Invoice
+                    type="button"
+                    className="btn-block bg-danger"
+                    onClick={openRazor}
+                    id="rzp-button1"
+                  >
+                    Checkout
                   </Button>
                 </ListGroup.Item>
-                )}
+              ) : (
+                <ListGroup.Item className="d-print-none">
+                  <Button
+                    type="button"
+                    className="btn-block bg-danger"
+                    onClick={printDiv}
+                  >
+                    Download Invoice
+                  </Button>
+                </ListGroup.Item>
+              )}
               {loadingDeliver && <Loader />}
             </ListGroup>
           </Card>
         </Col>
       </Row>
     </>
-  )
-}
+  );
+};
 
-export default OrderScreen
+export default OrderScreen;

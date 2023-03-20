@@ -12,8 +12,8 @@
     "data:import": "node backend/seeder",
     "data:destroy": "node backend/seeder -d",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend",
-    "lint": "eslint backend --ext .js --ext .jsx && eslint frontend/src --ext .js",
-    "lint:fix": "npm run lint -- --fix"
+    "lint": "eslint backend --ext .js --fix && eslint frontend/src --ext .js --fix",
+    "format": "prettier --write backend/**/* frontend/src/**/*.{js,css}"
   },
   "author": "Kaustubh",
   "license": "MIT",
@@ -42,6 +42,11 @@
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-promise": "6.1.1",
     "eslint-plugin-react": "7.32.2",
-    "nodemon": "^2.0.4"
-  }
+    "nodemon": "^2.0.4",
+    "pre-commit": "1.2.2"
+  },
+  "pre-commit": [
+    "format",
+    "lint"
+  ]
 }

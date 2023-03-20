@@ -1,8 +1,8 @@
 const expectedDeliveryDate = (dispatchedAt) => {
-  const date = new Date(dispatchedAt)
-  date.setDate(date.getDate() + 14)
-  return date
-}
+  const date = new Date(dispatchedAt);
+  date.setDate(date.getDate() + 14);
+  return date;
+};
 
 const generateTemplate = (order, name, email, url) => {
   return `
@@ -531,8 +531,16 @@ a {text-decoration: none;}
                                                                     style="padding:0;Margin:0">
                                                                     <h2
                                                                         style="Margin:0;line-height:31px;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:26px;font-style:normal;font-weight:bold;color:#333333">
-                                                                        Order&nbsp;<a target="_blank" href="${process.env.PUBLIC_URL}/order/${order._id}"
-                                                                            style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#5C68E2;font-size:26px">#${order._id}</a>
+                                                                        Order&nbsp;<a target="_blank" href="${
+                                                                          process
+                                                                            .env
+                                                                            .PUBLIC_URL
+                                                                        }/order/${
+    order._id
+  }"
+                                                                            style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#5C68E2;font-size:26px">#${
+                                                                              order._id
+                                                                            }</a>
                                                                     </h2>
                                                                 </td>
                                                             </tr>
@@ -541,7 +549,9 @@ a {text-decoration: none;}
                                                                     style="Margin:0;padding-top:5px;padding-bottom:5px;padding-left:40px;padding-right:40px">
                                                                     <p
                                                                         style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px">
-                                                                        order is shipped on ${new Date(order.dispatchedAt).toLocaleDateString()}</p>
+                                                                        order is shipped on ${new Date(
+                                                                          order.dispatchedAt
+                                                                        ).toLocaleDateString()}</p>
                                                                 </td>
                                                             </tr>
                                                             <tr>
@@ -549,7 +559,9 @@ a {text-decoration: none;}
                                                                     style="Margin:0;padding-top:5px;padding-bottom:15px;padding-left:40px;padding-right:40px">
                                                                     <p
                                                                         style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px">
-                                                                        Expected date of delivery ${expectedDeliveryDate(order.dispatchedAt).toLocaleDateString()}</p>
+                                                                        Expected date of delivery ${expectedDeliveryDate(
+                                                                          order.dispatchedAt
+                                                                        ).toLocaleDateString()}</p>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -586,7 +598,9 @@ a {text-decoration: none;}
                                                                         <strong>${email}</strong></p>
                                                                     <p
                                                                         style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px">
-                                                                        Invoice date:&nbsp;<strong>${new Date(order.createdAt).toDateString()}</strong>
+                                                                        Invoice date:&nbsp;<strong>${new Date(
+                                                                          order.createdAt
+                                                                        ).toDateString()}</strong>
                                                                     </p>
                                                                 </td>
                                                             </tr>
@@ -611,8 +625,26 @@ a {text-decoration: none;}
                                                                         Shipping address:</p>
                                                                     <p
                                                                         style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px">
-                                                                        <strong>${name.slice(0, 1).toUpperCase() + name.slice(1)}, <br/>${order.shippingAddress.address}<br>${order.shippingAddress.city}
-                                                                            ,<br>${order.shippingAddress.state}, ${order.shippingAddress.postalCode}</strong></p>
+                                                                        <strong>${
+                                                                          name
+                                                                            .slice(
+                                                                              0,
+                                                                              1
+                                                                            )
+                                                                            .toUpperCase() +
+                                                                          name.slice(
+                                                                            1
+                                                                          )
+                                                                        }, <br/>${
+    order.shippingAddress.address
+  }<br>${order.shippingAddress.city}
+                                                                            ,<br>${
+                                                                              order
+                                                                                .shippingAddress
+                                                                                .state
+                                                                            }, ${
+    order.shippingAddress.postalCode
+  }</strong></p>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -811,7 +843,7 @@ a {text-decoration: none;}
     </div>
 </body>
 
-</html>`
-}
+</html>`;
+};
 
-export default generateTemplate
+export default generateTemplate;

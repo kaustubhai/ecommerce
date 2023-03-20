@@ -1,6 +1,7 @@
 const generateRows = (products) => {
-  const x = products.map((product) => (
-        `
+  const x = products.map(
+    (product) =>
+      `
         <tr>
             <td class="esdev-adapt-off" align="left"
                 style="Margin:0;padding-top:10px;padding-bottom:10px;padding-left:20px;padding-right:20px">
@@ -81,9 +82,9 @@ const generateRows = (products) => {
             </td>
         </tr>
         `
-  ))
-  return x.join('')
-}
+  );
+  return x.join("");
+};
 
 const generateTemplate = (order, name, email) => {
   return `
@@ -612,8 +613,16 @@ a {text-decoration: none;}
                                                                     style="padding:0;Margin:0">
                                                                     <h2
                                                                         style="Margin:0;line-height:31px;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:26px;font-style:normal;font-weight:bold;color:#333333">
-                                                                        Order&nbsp;<a target="_blank" href="${process.env.PUBLIC_URL}/order/${order._id}"
-                                                                            style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#5C68E2;font-size:26px">#${order._id}</a>
+                                                                        Order&nbsp;<a target="_blank" href="${
+                                                                          process
+                                                                            .env
+                                                                            .PUBLIC_URL
+                                                                        }/order/${
+    order._id
+  }"
+                                                                            style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#5C68E2;font-size:26px">#${
+                                                                              order._id
+                                                                            }</a>
                                                                     </h2>
                                                                 </td>
                                                             </tr>
@@ -660,11 +669,29 @@ a {text-decoration: none;}
                                                                     style="padding:0;Margin:0;padding-top:10px;padding-bottom:20px">
                                                                     <p
                                                                         style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px">
-                                                                        Subtotal: ₹<strong>${(order.totalPrice - order.taxPrice - order.shippingPrice).toLocaleString('en-IN')}</strong><br>
-                                                                        Shipping: ₹<strong>${order.shippingPrice.toLocaleString('en-IN')}</strong><br>
-                                                                        ${order.discount ? `Discount: ₹<strong>${order.discount.toLocaleString('en-IN')}</strong><br>` : ''}
-                                                                        Tax: ₹<strong>${order.taxPrice.toLocaleString('en-IN')}</strong><br>
-                                                                        Total: ₹<strong>${order.totalPrice.toLocaleString('en-IN')}</strong></p>
+                                                                        Subtotal: ₹<strong>${(
+                                                                          order.totalPrice -
+                                                                          order.taxPrice -
+                                                                          order.shippingPrice
+                                                                        ).toLocaleString(
+                                                                          "en-IN"
+                                                                        )}</strong><br>
+                                                                        Shipping: ₹<strong>${order.shippingPrice.toLocaleString(
+                                                                          "en-IN"
+                                                                        )}</strong><br>
+                                                                        ${
+                                                                          order.discount
+                                                                            ? `Discount: ₹<strong>${order.discount.toLocaleString(
+                                                                                "en-IN"
+                                                                              )}</strong><br>`
+                                                                            : ""
+                                                                        }
+                                                                        Tax: ₹<strong>${order.taxPrice.toLocaleString(
+                                                                          "en-IN"
+                                                                        )}</strong><br>
+                                                                        Total: ₹<strong>${order.totalPrice.toLocaleString(
+                                                                          "en-IN"
+                                                                        )}</strong></p>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -700,7 +727,9 @@ a {text-decoration: none;}
                                                                         Payment method:&nbsp;<strong>RazorPay</strong></p>
                                                                     <p
                                                                         style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px">
-                                                                        Payment ID:&nbsp;<strong>${order.rpId}</strong></p>
+                                                                        Payment ID:&nbsp;<strong>${
+                                                                          order.rpId
+                                                                        }</strong></p>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -724,8 +753,26 @@ a {text-decoration: none;}
                                                                         Shipping address:</p>
                                                                     <p
                                                                         style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px">
-                                                                        <strong>${name.slice(0, 1).toUpperCase() + name.slice(1)}, <br/>${order.shippingAddress.address}<br>${order.shippingAddress.city}
-                                                                            ,<br>${order.shippingAddress.state}, ${order.shippingAddress.postalCode}</strong></p>
+                                                                        <strong>${
+                                                                          name
+                                                                            .slice(
+                                                                              0,
+                                                                              1
+                                                                            )
+                                                                            .toUpperCase() +
+                                                                          name.slice(
+                                                                            1
+                                                                          )
+                                                                        }, <br/>${
+    order.shippingAddress.address
+  }<br>${order.shippingAddress.city}
+                                                                            ,<br>${
+                                                                              order
+                                                                                .shippingAddress
+                                                                                .state
+                                                                            }, ${
+    order.shippingAddress.postalCode
+  }</strong></p>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -924,7 +971,7 @@ a {text-decoration: none;}
     </div>
 </body>
 
-</html>`
-}
+</html>`;
+};
 
-export default generateTemplate
+export default generateTemplate;

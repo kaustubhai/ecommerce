@@ -1,38 +1,36 @@
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Row, Col } from 'react-bootstrap'
-import Product from '../components/Product'
-import Message from '../components/Message'
-import Loader from '../components/Loader'
-import Paginate from '../components/Paginate'
-import ProductCarousel from '../components/ProductCarousel'
-import Meta from '../components/Meta'
-import { listProducts } from '../actions/productActions'
-import { getConfig } from '../actions/configActions'
-import Banner from '../components/Banner'
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Row, Col } from "react-bootstrap";
+import Product from "../components/Product";
+import Message from "../components/Message";
+import Loader from "../components/Loader";
+import Paginate from "../components/Paginate";
+import ProductCarousel from "../components/ProductCarousel";
+import Meta from "../components/Meta";
+import { listProducts } from "../actions/productActions";
+import { getConfig } from "../actions/configActions";
+import Banner from "../components/Banner";
 const HomeScreen = ({ match }) => {
-  const keyword = match.params.keyword
+  const keyword = match.params.keyword;
 
-  const pageNumber = match.params.pageNumber || 1
+  const pageNumber = match.params.pageNumber || 1;
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const productList = useSelector((state) => state.productList)
-  const { loading, error, products, page, pages } = productList
+  const productList = useSelector((state) => state.productList);
+  const { loading, error, products, page, pages } = productList;
 
-  const productTopRated = useSelector((state) => state.productTopRated)
-  const topProducts = productTopRated.products
+  const productTopRated = useSelector((state) => state.productTopRated);
+  const topProducts = productTopRated.products;
 
-  const { overall, homeScreen } = useSelector((state) => state.screenConfig)
+  const { overall, homeScreen } = useSelector((state) => state.screenConfig);
 
   useEffect(() => {
-    dispatch(listProducts(keyword, pageNumber))
+    dispatch(listProducts(keyword, pageNumber));
 
-    if (!overall)
-      dispatch(getConfig('overall'))
-    if (!homeScreen)
-      dispatch(getConfig('homescreen'))
-  }, [dispatch, homeScreen, keyword, overall, pageNumber])
+    if (!overall) dispatch(getConfig("overall"));
+    if (!homeScreen) dispatch(getConfig("homescreen"));
+  }, [dispatch, homeScreen, keyword, overall, pageNumber]);
 
   return (
     <>
@@ -41,20 +39,32 @@ const HomeScreen = ({ match }) => {
       {loading ? (
         <Loader />
       ) : error ? (
-        <Message variant='danger'>{error}</Message>
+        <Message variant="danger">{error}</Message>
       ) : (
         <>
-              {Number(pageNumber) === 1 && <h1 className='text-center below-carousel'>Top Products</h1>}
-              {Number(pageNumber) === 1 && <Row>
-            {topProducts.map((product) => (
-              <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-                <Product product={product} />
-              </Col>
-            ))}
-              </Row>}
-              {Number(pageNumber) === 1 && <Banner category='electronics' active={true} />}
-              <h1 className={`text-center ${Number(pageNumber) > 1 ? 'below-carousel' : 'mt-4'}`}>Latest Products</h1>
-              <Row>
+          {Number(pageNumber) === 1 && (
+            <h1 className="text-center below-carousel">Top Products</h1>
+          )}
+          {Number(pageNumber) === 1 && (
+            <Row>
+              {topProducts.map((product) => (
+                <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+                  <Product product={product} />
+                </Col>
+              ))}
+            </Row>
+          )}
+          {Number(pageNumber) === 1 && (
+            <Banner category="electronics" active={true} />
+          )}
+          <h1
+            className={`text-center ${
+              Number(pageNumber) > 1 ? "below-carousel" : "mt-4"
+            }`}
+          >
+            Latest Products
+          </h1>
+          <Row>
             {products.map((product) => (
               <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
                 <Product product={product} />
@@ -64,12 +74,12 @@ const HomeScreen = ({ match }) => {
           <Paginate
             pages={pages}
             page={page}
-            keyword={keyword ? keyword : ''}
+            keyword={keyword ? keyword : ""}
           />
         </>
       )}
     </>
-  )
-}
+  );
+};
 
-export default HomeScreen
+export default HomeScreen;

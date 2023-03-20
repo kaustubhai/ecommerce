@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 
 const Scroller = ({ location }) => {
-
   // const { pathname } = useLocation();
 
   useEffect(() => {
@@ -9,6 +8,6 @@ const Scroller = ({ location }) => {
   }, [location]);
 
   return null;
-}
+};
 
-export default Scroller
+export default Scroller;

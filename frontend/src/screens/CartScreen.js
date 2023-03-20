@@ -1,50 +1,65 @@
-import React, { useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { Row, Col, ListGroup, Image, Form, Button, Card } from 'react-bootstrap'
-import Message from '../components/Message'
-import { addToCart, removeFromCart } from '../actions/cartActions'
-import {Helmet} from "react-helmet";
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  Row,
+  Col,
+  ListGroup,
+  Image,
+  Form,
+  Button,
+  Card,
+} from "react-bootstrap";
+import Message from "../components/Message";
+import { addToCart, removeFromCart } from "../actions/cartActions";
+import { Helmet } from "react-helmet";
 
 const CartScreen = ({ match, location, history }) => {
-  const productId = match.params.id
+  const productId = match.params.id;
 
-  const qty = location.search ? Number(location.search.split('=')[1]) : 1
+  const qty = location.search ? Number(location.search.split("=")[1]) : 1;
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const cart = useSelector((state) => state.cart)
-  const { cartItems } = cart
+  const cart = useSelector((state) => state.cart);
+  const { cartItems } = cart;
 
   useEffect(() => {
     if (productId) {
-      dispatch(addToCart(productId, qty))
+      dispatch(addToCart(productId, qty));
     }
-  }, [dispatch, productId, qty])
+  }, [dispatch, productId, qty]);
 
   const removeFromCartHandler = (id) => {
-    dispatch(removeFromCart(id))
-  }
+    dispatch(removeFromCart(id));
+  };
 
   const checkoutHandler = () => {
-    history.push('/login?redirect=shipping')
-  }
+    history.push("/login?redirect=shipping");
+  };
 
   return (
     <Row>
       <Helmet>
-          <meta charSet="utf-8" />
-          <title>Your Cart | KroShop</title>
-          <link rel="canonical" />
+        <meta charSet="utf-8" />
+        <title>Your Cart | KroShop</title>
+        <link rel="canonical" />
       </Helmet>
       <Col md={8}>
         <h1>Shopping Cart</h1>
         {cartItems.length === 0 ? (
           <Message>
-            Your cart is empty <Button variant='link' className='p-0' onClick={() => history.goBack()}>Go Back</Button>
+            Your cart is empty{" "}
+            <Button
+              variant="link"
+              className="p-0"
+              onClick={() => history.goBack()}
+            >
+              Go Back
+            </Button>
           </Message>
         ) : (
-          <ListGroup variant='flush'>
+          <ListGroup variant="flush">
             {cartItems.map((item) => (
               <ListGroup.Item key={item.product}>
                 <Row>
@@ -54,10 +69,18 @@ const CartScreen = ({ match, location, history }) => {
                   <Col md={3}>
                     <Link to={`/product/${item.product}`}>{item.name}</Link>
                   </Col>
-                  <Col md={2}>₹{item.discount ? (item.price - (item.price * item.discount / 100)?.toFixed(2)).toLocaleString('en-IN') : item.price?.toFixed(2)?.toLocaleString('en-IN')}</Col>
+                  <Col md={2}>
+                    ₹
+                    {item.discount
+                      ? (
+                          item.price -
+                          ((item.price * item.discount) / 100)?.toFixed(2)
+                        ).toLocaleString("en-IN")
+                      : item.price?.toFixed(2)?.toLocaleString("en-IN")}
+                  </Col>
                   <Col md={2}>
                     <Form.Control
-                      as='select'
+                      as="select"
                       value={item.qty}
                       onChange={(e) =>
                         dispatch(
@@ -74,11 +97,11 @@ const CartScreen = ({ match, location, history }) => {
                   </Col>
                   <Col md={2}>
                     <Button
-                      type='button'
-                      variant='light'
+                      type="button"
+                      variant="light"
                       onClick={() => removeFromCartHandler(item.product)}
                     >
-                      <i className='fas fa-trash'></i>
+                      <i className="fas fa-trash"></i>
                     </Button>
                   </Col>
                 </Row>
@@ -89,7 +112,7 @@ const CartScreen = ({ match, location, history }) => {
       </Col>
       <Col md={4}>
         <Card>
-          <ListGroup variant='flush'>
+          <ListGroup variant="flush">
             <ListGroup.Item>
               <h2>
                 Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)})
@@ -97,12 +120,20 @@ const CartScreen = ({ match, location, history }) => {
               </h2>
               ₹
               {cartItems
-                .reduce((acc, item) => acc + item.qty * (item.price - (item.price * item.discount / 100)), 0)?.toFixed(2).toLocaleString('en-IN')}
+                .reduce(
+                  (acc, item) =>
+                    acc +
+                    item.qty *
+                      (item.price - (item.price * item.discount) / 100),
+                  0
+                )
+                ?.toFixed(2)
+                .toLocaleString("en-IN")}
             </ListGroup.Item>
             <ListGroup.Item>
               <Button
-                type='button'
-                className='btn-block bg-danger'
+                type="button"
+                className="btn-block bg-danger"
                 disabled={cartItems.length === 0}
                 onClick={checkoutHandler}
               >
@@ -113,7 +144,7 @@ const CartScreen = ({ match, location, history }) => {
         </Card>
       </Col>
     </Row>
-  )
-}
+  );
+};
 
-export default CartScreen
+export default CartScreen;

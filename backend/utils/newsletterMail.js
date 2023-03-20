@@ -20,7 +20,7 @@ const generateNewsletter = (body) => {
     </div>
 </body>
 
-</html>`
-}
+</html>`;
+};
 
-export default generateNewsletter
+export default generateNewsletter;

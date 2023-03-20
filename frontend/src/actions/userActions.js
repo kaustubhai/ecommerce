@@ -1,5 +1,5 @@
-import axios from 'axios'
-import jwt_decode from 'jwt-decode'
+import axios from "axios";
+import jwt_decode from "jwt-decode";
 import {
   USER_DETAILS_FAIL,
   USER_DETAILS_REQUEST,
@@ -30,70 +30,71 @@ import {
   NEWSLETTER_REQUEST,
   NEWSLETTER_SUCCESS,
   NEWSLETTER_FAILURE,
-} from '../constants/userConstants'
-import { ORDER_LIST_MY_RESET } from '../constants/orderConstants'
+} from "../constants/userConstants";
+import { ORDER_LIST_MY_RESET } from "../constants/orderConstants";
 
-export const googleLogin = (response, history, redirect) => async dispatch => {
-  try {
-    dispatch({
-      type: USER_LOGIN_REQUEST,
-    })
+export const googleLogin =
+  (response, history, redirect) => async (dispatch) => {
+    try {
+      dispatch({
+        type: USER_LOGIN_REQUEST,
+      });
 
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+
+      const payload = jwt_decode(response.credential);
+
+      const { data } = await axios.post(
+        "/api/users/login",
+        { email: payload.email, password: payload.sub },
+        config
+      );
+
+      dispatch({
+        type: USER_LOGIN_SUCCESS,
+        payload: data,
+      });
+
+      localStorage.setItem("userInfo", JSON.stringify(data));
+      history.push(redirect);
+    } catch (error) {
+      dispatch({
+        type: USER_LOGIN_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
     }
-
-    const payload = jwt_decode(response.credential)
-
-    const { data } = await axios.post(
-      '/api/users/login',
-      { email: payload.email, password: payload.sub },
-      config
-    )
-
-    dispatch({
-      type: USER_LOGIN_SUCCESS,
-      payload: data,
-    })
-
-    localStorage.setItem('userInfo', JSON.stringify(data))
-    history.push(redirect)
-  } catch (error) {
-    dispatch({
-      type: USER_LOGIN_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    })
-  }
-}
+  };
 export const login = (email, password) => async (dispatch) => {
   try {
     dispatch({
       type: USER_LOGIN_REQUEST,
-    })
+    });
 
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-    }
+    };
 
     const { data } = await axios.post(
-      '/api/users/login',
+      "/api/users/login",
       { email, password },
       config
-    )
+    );
 
     dispatch({
       type: USER_LOGIN_SUCCESS,
       payload: data,
-    })
+    });
 
-    localStorage.setItem('userInfo', JSON.stringify(data))
+    localStorage.setItem("userInfo", JSON.stringify(data));
   } catch (error) {
     dispatch({
       type: USER_LOGIN_FAIL,
@@ -101,92 +102,98 @@ export const login = (email, password) => async (dispatch) => {
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message,
-    })
+    });
   }
-}
+};
 
 export const logout = () => (dispatch) => {
-  localStorage.removeItem('userInfo')
-  localStorage.removeItem('cartItems')
-  localStorage.removeItem('shippingAddress')
-  dispatch({ type: USER_LOGOUT })
-  dispatch({ type: USER_DETAILS_RESET })
-  dispatch({ type: ORDER_LIST_MY_RESET })
-  dispatch({ type: USER_LIST_RESET })
-  document.location.href = '/login'
-}
+  localStorage.removeItem("userInfo");
+  localStorage.removeItem("cartItems");
+  localStorage.removeItem("shippingAddress");
+  dispatch({ type: USER_LOGOUT });
+  dispatch({ type: USER_DETAILS_RESET });
+  dispatch({ type: ORDER_LIST_MY_RESET });
+  dispatch({ type: USER_LIST_RESET });
+  document.location.href = "/login";
+};
 
-export const register = (name, email, password, phone, newsletter) => async (dispatch) => {
-  try {
-    dispatch({
-      type: USER_REGISTER_REQUEST,
-    })
+export const register =
+  (name, email, password, phone, newsletter) => async (dispatch) => {
+    try {
+      dispatch({
+        type: USER_REGISTER_REQUEST,
+      });
 
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+
+      const { data } = await axios.post(
+        "/api/users",
+        { name, email, password, phone, newsletter },
+        config
+      );
+
+      dispatch({
+        type: USER_REGISTER_SUCCESS,
+        payload: data,
+      });
+
+      dispatch({
+        type: USER_LOGIN_SUCCESS,
+        payload: data,
+      });
+
+      localStorage.setItem("userInfo", JSON.stringify(data));
+    } catch (error) {
+      dispatch({
+        type: USER_REGISTER_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
     }
-
-    const { data } = await axios.post(
-      '/api/users',
-      { name, email, password, phone, newsletter },
-      config
-    )
-
-    dispatch({
-      type: USER_REGISTER_SUCCESS,
-      payload: data,
-    })
-
-    dispatch({
-      type: USER_LOGIN_SUCCESS,
-      payload: data,
-    })
-
-    localStorage.setItem('userInfo', JSON.stringify(data))
-  } catch (error) {
-    dispatch({
-      type: USER_REGISTER_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    })
-  }
-}
+  };
 
 export const googleRegister = (response) => async (dispatch) => {
   try {
     dispatch({
       type: USER_REGISTER_REQUEST,
-    })
+    });
 
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-    }
+    };
 
-    const payload = jwt_decode(response.credential)
+    const payload = jwt_decode(response.credential);
 
     const { data } = await axios.post(
-      '/api/users',
-      { name: payload.name, email: payload.email, password: payload.sub, mode: 'gmail' },
+      "/api/users",
+      {
+        name: payload.name,
+        email: payload.email,
+        password: payload.sub,
+        mode: "gmail",
+      },
       config
-    )
+    );
 
     dispatch({
       type: USER_REGISTER_SUCCESS,
       payload: data,
-    })
+    });
 
     dispatch({
       type: USER_LOGIN_SUCCESS,
       payload: data,
-    })
+    });
 
-    localStorage.setItem('userInfo', JSON.stringify(data))
+    localStorage.setItem("userInfo", JSON.stringify(data));
   } catch (error) {
     dispatch({
       type: USER_REGISTER_FAIL,
@@ -194,402 +201,403 @@ export const googleRegister = (response) => async (dispatch) => {
         error.response && error.response.data.message
           ? error.response.data.message
           : error.message,
-    })
+    });
   }
-}
+};
 
 export const getUserDetails = (id) => async (dispatch, getState) => {
   try {
     dispatch({
       type: USER_DETAILS_REQUEST,
-    })
+    });
 
     const {
       userLogin: { userInfo },
-    } = getState()
+    } = getState();
 
     const config = {
       headers: {
         Authorization: `Bearer ${userInfo.token}`,
       },
-    }
+    };
 
-    const { data } = await axios.get(`/api/users/${id}`, config)
+    const { data } = await axios.get(`/api/users/${id}`, config);
 
     dispatch({
       type: USER_DETAILS_SUCCESS,
       payload: data,
-    })
+    });
   } catch (error) {
     const message =
       error.response && error.response.data.message
         ? error.response.data.message
-        : error.message
-    if (message === 'Not authorized, token failed') {
-      dispatch(logout())
+        : error.message;
+    if (message === "Not authorized, token failed") {
+      dispatch(logout());
     }
     dispatch({
       type: USER_DETAILS_FAIL,
       payload: message,
-    })
+    });
   }
-}
+};
 
 export const updateUserProfile = (user) => async (dispatch, getState) => {
   try {
     dispatch({
       type: USER_UPDATE_PROFILE_REQUEST,
-    })
+    });
 
     const {
       userLogin: { userInfo },
-    } = getState()
+    } = getState();
 
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${userInfo.token}`,
       },
-    }
+    };
 
-    const { data } = await axios.put(`/api/users/profile`, user, config)
+    const { data } = await axios.put(`/api/users/profile`, user, config);
 
     dispatch({
       type: USER_UPDATE_PROFILE_SUCCESS,
       payload: data,
-    })
+    });
     dispatch({
       type: USER_LOGIN_SUCCESS,
       payload: data,
-    })
-    localStorage.setItem('userInfo', JSON.stringify(data))
+    });
+    localStorage.setItem("userInfo", JSON.stringify(data));
   } catch (error) {
     const message =
       error.response && error.response.data.message
         ? error.response.data.message
-        : error.message
-    if (message === 'Not authorized, token failed') {
-      dispatch(logout())
+        : error.message;
+    if (message === "Not authorized, token failed") {
+      dispatch(logout());
     }
     dispatch({
       type: USER_UPDATE_PROFILE_FAIL,
       payload: message,
-    })
+    });
   }
-}
+};
 
 export const listUsers = () => async (dispatch, getState) => {
   try {
     dispatch({
       type: USER_LIST_REQUEST,
-    })
+    });
 
     const {
       userLogin: { userInfo },
-    } = getState()
+    } = getState();
 
     const config = {
       headers: {
         Authorization: `Bearer ${userInfo.token}`,
       },
-    }
+    };
 
-    const { data } = await axios.get(`/api/users`, config)
+    const { data } = await axios.get(`/api/users`, config);
 
     dispatch({
       type: USER_LIST_SUCCESS,
       payload: data,
-    })
+    });
   } catch (error) {
     const message =
       error.response && error.response.data.message
         ? error.response.data.message
-        : error.message
-    if (message === 'Not authorized, token failed') {
-      dispatch(logout())
+        : error.message;
+    if (message === "Not authorized, token failed") {
+      dispatch(logout());
     }
     dispatch({
       type: USER_LIST_FAIL,
       payload: message,
-    })
+    });
   }
-}
+};
 
 export const deleteUser = (id) => async (dispatch, getState) => {
   try {
     dispatch({
       type: USER_DELETE_REQUEST,
-    })
+    });
 
     const {
       userLogin: { userInfo },
-    } = getState()
+    } = getState();
 
     const config = {
       headers: {
         Authorization: `Bearer ${userInfo.token}`,
       },
-    }
+    };
 
-    await axios.delete(`/api/users/${id}`, config)
+    await axios.delete(`/api/users/${id}`, config);
 
-    dispatch({ type: USER_DELETE_SUCCESS })
+    dispatch({ type: USER_DELETE_SUCCESS });
   } catch (error) {
     const message =
       error.response && error.response.data.message
         ? error.response.data.message
-        : error.message
-    if (message === 'Not authorized, token failed') {
-      dispatch(logout())
+        : error.message;
+    if (message === "Not authorized, token failed") {
+      dispatch(logout());
     }
     dispatch({
       type: USER_DELETE_FAIL,
       payload: message,
-    })
+    });
   }
-}
+};
 
 export const updateUser = (user) => async (dispatch, getState) => {
   try {
     dispatch({
       type: USER_UPDATE_REQUEST,
-    })
+    });
 
     const {
       userLogin: { userInfo },
-    } = getState()
+    } = getState();
 
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${userInfo.token}`,
       },
-    }
+    };
 
-    const { data } = await axios.put(`/api/users/${user._id}`, user, config)
+    const { data } = await axios.put(`/api/users/${user._id}`, user, config);
 
-    dispatch({ type: USER_UPDATE_SUCCESS })
+    dispatch({ type: USER_UPDATE_SUCCESS });
 
-    dispatch({ type: USER_DETAILS_SUCCESS, payload: data })
+    dispatch({ type: USER_DETAILS_SUCCESS, payload: data });
 
-    dispatch({ type: USER_DETAILS_RESET })
+    dispatch({ type: USER_DETAILS_RESET });
   } catch (error) {
     const message =
       error.response && error.response.data.message
         ? error.response.data.message
-        : error.message
-    if (message === 'Not authorized, token failed') {
-      dispatch(logout())
+        : error.message;
+    if (message === "Not authorized, token failed") {
+      dispatch(logout());
     }
     dispatch({
       type: USER_UPDATE_FAIL,
       payload: message,
-    })
+    });
   }
-}
+};
 
 export const forgotPassword = (email) => async (dispatch) => {
   try {
     dispatch({
-      type: USER_UPDATE_REQUEST
-    })
+      type: USER_UPDATE_REQUEST,
+    });
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-    }
+    };
 
-    await axios.post(
-      '/api/users/forgotpassword',
-      { email },
-      config
-    )
+    await axios.post("/api/users/forgotpassword", { email }, config);
     dispatch({
-      type: USER_UPDATE_SUCCESS
-    })
+      type: USER_UPDATE_SUCCESS,
+    });
   } catch (error) {
     const message =
       error.response && error.response.data.message
         ? error.response.data.message
-        : error.message
+        : error.message;
 
     dispatch({
       type: USER_UPDATE_FAIL,
       payload: message,
-    })
+    });
   }
-}
+};
 
-export const resetPassword = (resetToken, uid, password) => async (dispatch) => {
-  try {
-    dispatch({
-      type: USER_UPDATE_REQUEST
-    })
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
+export const resetPassword =
+  (resetToken, uid, password) => async (dispatch) => {
+    try {
+      dispatch({
+        type: USER_UPDATE_REQUEST,
+      });
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+
+      await axios.put(
+        `/api/users/reset/${resetToken}?uId=${uid}`,
+        { password },
+        config
+      );
+
+      dispatch({
+        type: USER_UPDATE_SUCCESS,
+      });
+    } catch (error) {
+      const message =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      dispatch({
+        type: USER_UPDATE_FAIL,
+        payload: message,
+      });
     }
-
-    await axios.put(
-      `/api/users/reset/${resetToken}?uId=${uid}`,
-      { password },
-      config
-    )
-
-    dispatch({
-      type: USER_UPDATE_SUCCESS
-    })
-  } catch (error) {
-    const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message
-    dispatch({
-      type: USER_UPDATE_FAIL,
-      payload: message,
-    })
-  }
-}
+  };
 
 export const getUserWishlist = () => async (dispatch, getState) => {
   try {
-
     dispatch({
-      type: USER_UPDATE_REQUEST
-    })
+      type: USER_UPDATE_REQUEST,
+    });
 
     const {
       userLogin: { userInfo },
-    } = getState()
+    } = getState();
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${userInfo.token}`,
       },
-    }
+    };
 
-    const { data } = await axios.get(`/api/users/wishlist`, config)
+    const { data } = await axios.get(`/api/users/wishlist`, config);
 
-    dispatch({ type: GET_USER_WISHLIST, payload: data })
+    dispatch({ type: GET_USER_WISHLIST, payload: data });
   } catch (error) {
     const message =
       error.response && error.response.data.message
         ? error.response.data.message
-        : error.message
-    if (message === 'Not authorized, token failed') {
-      dispatch(logout())
+        : error.message;
+    if (message === "Not authorized, token failed") {
+      dispatch(logout());
     }
     dispatch({
       type: USER_UPDATE_FAIL,
       payload: message,
-    })
+    });
   }
-}
+};
 
 export const updateUserWishlist = (productId) => async (dispatch, getState) => {
   try {
-
     dispatch({
-      type: USER_UPDATE_REQUEST
-    })
+      type: USER_UPDATE_REQUEST,
+    });
 
     const {
       userLogin: { userInfo },
-    } = getState()
+    } = getState();
 
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${userInfo.token}`,
       },
-    }
+    };
 
-    await axios.put(`/api/users/wishlist`, { productId }, config)
-
+    await axios.put(`/api/users/wishlist`, { productId }, config);
   } catch (error) {
     const message =
       error.response && error.response.data.message
         ? error.response.data.message
-        : error.message
-    if (message === 'Not authorized, token failed') {
-      dispatch(logout())
+        : error.message;
+    if (message === "Not authorized, token failed") {
+      dispatch(logout());
     }
     dispatch({
       type: USER_UPDATE_FAIL,
       payload: message,
-    })
+    });
   }
-}
+};
 
-export const removeFromUserWishlist = (productId) => async (dispatch, getState) => {
-  try {
+export const removeFromUserWishlist =
+  (productId) => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: USER_UPDATE_REQUEST,
+      });
 
-    dispatch({
-      type: USER_UPDATE_REQUEST
-    })
+      const {
+        userLogin: { userInfo },
+      } = getState();
 
-    const {
-      userLogin: { userInfo },
-    } = getState()
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
 
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${userInfo.token}`,
-      },
+      const { data } = await axios.patch(
+        `/api/users/wishlist`,
+        { productId },
+        config
+      );
+
+      dispatch({ type: USER_WISHLIST_SUCCESS, payload: data });
+    } catch (error) {
+      const message =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      if (message === "Not authorized, token failed") {
+        dispatch(logout());
+      }
+      dispatch({
+        type: USER_UPDATE_FAIL,
+        payload: message,
+      });
     }
-
-    const { data } = await axios.patch(`/api/users/wishlist`, { productId }, config)
-
-    dispatch({ type: USER_WISHLIST_SUCCESS, payload: data })
-  } catch (error) {
-    const message =
-      error.response && error.response.data.message
-        ? error.response.data.message
-        : error.message
-    if (message === 'Not authorized, token failed') {
-      dispatch(logout())
-    }
-    dispatch({
-      type: USER_UPDATE_FAIL,
-      payload: message,
-    })
-  }
-}
+  };
 
 export const sendNewsletter = (subject, body) => async (dispatch, getState) => {
   try {
-
     dispatch({
-      type: NEWSLETTER_REQUEST
-    })
+      type: NEWSLETTER_REQUEST,
+    });
 
     const {
       userLogin: { userInfo },
-    } = getState()
+    } = getState();
 
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${userInfo.token}`,
       },
-    }
+    };
 
-    const { data } = await axios.post(`/api/users/newsletter`, { subject, body }, config)
+    const { data } = await axios.post(
+      `/api/users/newsletter`,
+      { subject, body },
+      config
+    );
 
-    dispatch({ type: NEWSLETTER_SUCCESS, payload: data })
+    dispatch({ type: NEWSLETTER_SUCCESS, payload: data });
   } catch (error) {
     const message =
       error.response && error.response.data.message
         ? error.response.data.message
-        : error.message
-    if (message === 'Not authorized, token failed') {
-      dispatch(logout())
+        : error.message;
+    if (message === "Not authorized, token failed") {
+      dispatch(logout());
     }
     dispatch({
       type: NEWSLETTER_FAILURE,
       payload: message,
-    })
+    });
   }
-}
+};
