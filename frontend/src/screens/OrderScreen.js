@@ -221,7 +221,7 @@ let rzp1;
                   <Message variant='success'>Paid on {new Date(order.paidAt).toLocaleDateString()} {new Date(order.paidAt).toLocaleTimeString()}</Message>
                 {order.isDispatched ? (
                   <Message variant='success'>
-                    Dispatched on {new Date(order.dispatchedAt).toLocaleDateString()} {new Date(order.dispatchedAt).toLocaleTimeString()}
+                    Dispatched on {new Date(order.dispatchedAt).toLocaleDateString()} {new Date(order.dispatchedAt).toLocaleTimeString()}, Track <Link to={order.trackingUrl}>Here</Link>
                   </Message>
                 ) : (
                   <Message variant='danger'>Not yet Dispatched</Message>
