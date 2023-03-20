@@ -5,7 +5,6 @@ import User from '../models/userModel.js'
 import Product from '../models/productModel.js'
 import emailer from '../utils/mailConfig.js'
 import generateTemplate from '../utils/resetPasswordMail.js'
-import bcrypt from 'bcryptjs'
 import generateNewsletter from '../utils/newsletterMail.js'
 
 // @desc    Auth user & get token
@@ -15,7 +14,7 @@ const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body
 
   const user = await User.findOne({ email })
-  if(!user){
+  if (!user) {
     res.status(400)
     throw new Error('User not found')
   }
@@ -25,9 +24,9 @@ const authUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
-      token: generateToken(user._id),
+      token: generateToken(user._id)
     })
-  } else if(user.mode === 'gmail') {
+  } else if (user.mode === 'gmail') {
     res.status(401)
     throw new Error('Login with google')
   } else {
@@ -67,7 +66,7 @@ const registerUser = asyncHandler(async (req, res) => {
       isAdmin: user.isAdmin,
       newsLetter: user.newsLetter,
       phone: user.phone,
-      token: generateToken(user._id),
+      token: generateToken(user._id)
     })
   } else {
     res.status(400)
@@ -87,7 +86,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       phone: user.phone,
-      isAdmin: user.isAdmin,
+      isAdmin: user.isAdmin
     })
   } else {
     res.status(404)
@@ -117,7 +116,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       email: updatedUser.email,
       phone: updatedUser.phone,
       isAdmin: updatedUser.isAdmin,
-      token: generateToken(updatedUser._id),
+      token: generateToken(updatedUser._id)
     })
   } else {
     res.status(404)
@@ -178,7 +177,7 @@ const updateUser = asyncHandler(async (req, res) => {
       _id: updatedUser._id,
       name: updatedUser.name,
       email: updatedUser.email,
-      isAdmin: updatedUser.isAdmin,
+      isAdmin: updatedUser.isAdmin
     })
   } else {
     res.status(404)
@@ -188,119 +187,116 @@ const updateUser = asyncHandler(async (req, res) => {
 
 const forgotPasswordRequest = async (req, res) => {
   try {
-    const { email } = req.body;
-    let user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ message: "No User Founded" });
+    const { email } = req.body
+    const user = await User.findOne({ email })
+    if (!user) return res.status(400).json({ message: 'No User Founded' })
     const payload = {
-      password: user.password,
-    };
+      password: user.password
+    }
     const token = jwt.sign(payload, user.password, {
-      expiresIn: 3600,
-    });
+      expiresIn: 3600
+    })
     emailer({
       to: email,
-      subject: "Reset Password",
+      subject: 'Reset Password',
       body: generateTemplate(token, user._id.toString())
-    });
-    res.json("Mail sent!");
+    })
+    res.json('Mail sent!')
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Internal Server Error" });
+    console.log(error)
+    res.status(500).json({ message: 'Internal Server Error' })
   }
 }
 
 const resetPassword = async (req, res) => {
-  let tokenValid = true;
+  let tokenValid = true
   try {
-    const { password } = req.body;
-    const { uId } = req.query;
-    const user = await User.findById(uId);
-    const token = req.params.requestId;
+    const { password } = req.body
+    const { uId } = req.query
+    const user = await User.findById(uId)
+    const token = req.params.requestId
     jwt.verify(token, user.password, (err) => {
       if (err) {
         console.log({ err })
-        tokenValid = false;
-        return res.status(400).json({ message: "Link Expired, Try again!" });
+        tokenValid = false
+        return res.status(400).json({ message: 'Link Expired, Try again!' })
       }
-    });
+    })
     if (tokenValid) {
-      user.password = password;
-      user.mode = 'email';
-      await user.save();
-      res.json({ message: "Password Changed Succesfully" });
+      user.password = password
+      user.mode = 'email'
+      await user.save()
+      res.json({ message: 'Password Changed Succesfully' })
     }
   } catch (error) {
-    console.log(error);
-    if (tokenValid) res.status(500).json({ message: "Internal Server Error" });
+    console.log(error)
+    if (tokenValid) res.status(500).json({ message: 'Internal Server Error' })
   }
 }
 
 const getUserWishlist = async (req, res) => {
   try {
-    const user = await User.findById(req.user._id).populate("wishlist");
-    const wishlist = user.wishlist.reverse();
-    res.json(wishlist);
+    const user = await User.findById(req.user._id).populate('wishlist')
+    const wishlist = user.wishlist.reverse()
+    res.json(wishlist)
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Internal Server Error" });
+    console.log(error)
+    res.status(500).json({ message: 'Internal Server Error' })
   }
 }
 
 const updateUserWishlist = async (req, res) => {
   try {
-    const { productId } = req.body;
-    const user = await User.findById(req.user._id);
-    const product = await Product.findById(productId);
-    if (!user.wishlist.includes(productId))
-      user.wishlist.push(productId);
-    await user.save();
-    res.json({ product });
+    const { productId } = req.body
+    const user = await User.findById(req.user._id)
+    const product = await Product.findById(productId)
+    if (!user.wishlist.includes(productId)) { user.wishlist.push(productId) }
+    await user.save()
+    res.json({ product })
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Internal Server Error" });
+    console.log(error)
+    res.status(500).json({ message: 'Internal Server Error' })
   }
 }
 
 const removeUserWishlist = async (req, res) => {
   try {
-    const { productId } = req.body;
-    console.log(productId);
-    const user = await User.findById(req.user._id);
-    user.wishlist = user.wishlist.filter((id) => id != productId);
-    await user.save();
-    res.send(productId);
+    const { productId } = req.body
+    console.log(productId)
+    const user = await User.findById(req.user._id)
+    user.wishlist = user.wishlist.filter((id) => id !== productId)
+    await user.save()
+    res.send(productId)
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Internal Server Error" });
+    console.log(error)
+    res.status(500).json({ message: 'Internal Server Error' })
   }
 }
 
 const sendNewletter = async (req, res) => {
   try {
-    const users = await User.find({ newsletter: true }, 'email');
-    const { subject, body } = req.body;
+    const users = await User.find({ newsletter: true }, 'email')
+    const { subject, body } = req.body
     users.forEach((user) => {
       emailer({
         to: user.email,
         subject,
-        body: generateNewsletter(JSON.parse(body)),
-      });
+        body: generateNewsletter(JSON.parse(body))
+      })
     }
-    );
-    res.json("Mail sent!");
+    )
+    res.json('Mail sent!')
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Internal Server Error" });
+    console.log(error)
+    res.status(500).json({ message: 'Internal Server Error' })
   }
 }
 
-
-
-const updatePhoneNumber = asyncHandler(async (req, res) => { 
+const updatePhoneNumber = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id)
-  user.phone = req.body.phone;
-  console.log(user.phone);
-  await user.save();
+  user.phone = req.body.phone
+  console.log(user.phone)
+  await user.save()
   res.json(user)
 })
 

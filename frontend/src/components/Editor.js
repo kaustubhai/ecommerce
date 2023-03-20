@@ -181,14 +181,6 @@ const ColorBar = ({ editor }) => {
 
 export default ({ dispatch }) => {
 
-    const addImage = () => {
-        const url = window.prompt('URL')
-
-        if (url) {
-            editor.chain().focus().setImage({ src: url }).run()
-        }
-    }
-
     const [uploading, setUploading] = useState(false)
 
     const uploadFileHandler = async (e) => {

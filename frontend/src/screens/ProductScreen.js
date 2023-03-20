@@ -92,7 +92,7 @@ const ProductScreen = ({ history, match }) => {
       <Button className='btn btn-light my-3' onClick={() => history.goBack()}>
       <i class="fas fa-arrow-left"></i> Go Back
       </Button>
-      <a className='btn btn-light my-3' href={`https://twitter.com/intent/tweet?text=Checkout%20this%20amazing%20${product.name}%20at%20an%20amazing%20price%20on%20KroShop%20here,&url=${window.location.href}&hashtags=${product.brand},${product.category}`} target={'_blank'}>
+      <a className='btn btn-light my-3' href={`https://twitter.com/intent/tweet?text=Checkout%20this%20amazing%20${product.name}%20at%20an%20amazing%20price%20on%20KroShop%20here,&url=${window.location.href}&hashtags=${product.brand},${product.category}`} target={'_blank'} rel="noopener noreferrer">
         <i class="fab fa-twitter"></i> Share 
       </a>
       {userInfo && <button onClick={addToWishlistHandler} className='btn btn-light my-3'>
@@ -200,7 +200,7 @@ const ProductScreen = ({ history, match }) => {
                       <Button onClick={checkDeliveryHandler} disabled={pincode.length === 0} type='submit' variant='primary' block>
                         Check Delivery
                       </Button>
-                      {pincode && pincode == deliveryPincode && deliveryAlert && <Alert variant={deliverable ? 'success': 'danger'} className='mt-2'>
+                      {pincode && pincode === deliveryPincode && deliveryAlert && <Alert variant={deliverable ? 'success': 'danger'} className='mt-2'>
                         {deliveryAlert}
                       </Alert>}
                   </Form.Group>

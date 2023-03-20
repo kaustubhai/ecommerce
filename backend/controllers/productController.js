@@ -14,8 +14,8 @@ const getProducts = asyncHandler(async (req, res) => {
     ? {
         name: {
           $regex: req.query.keyword,
-          $options: 'i',
-        },
+          $options: 'i'
+        }
       }
     : {}
 
@@ -35,13 +35,13 @@ const getProductById = asyncHandler(async (req, res) => {
 
   const relatedProducts = await Product.find({
     category: product.category,
-    _id: { $ne: product._id },
+    _id: { $ne: product._id }
   }).limit(4).sort({ createdAt: -1 })
 
-  product["relatedProducts"] = relatedProducts
+  product.relatedProducts = relatedProducts
 
   if (product) {
-    res.json({...product._doc, relatedProducts})
+    res.json({ ...product._doc, relatedProducts })
   } else {
     res.status(404)
     throw new Error('Product not found')
@@ -79,7 +79,7 @@ const createProduct = asyncHandler(async (req, res) => {
     countInStock: 0,
     numReviews: 0,
     description: 'Sample description',
-    tags: ['sample', 'tag'],
+    tags: ['sample', 'tag']
   })
 
   const createdProduct = await product.save()
@@ -98,12 +98,10 @@ const getAllCategory = asyncHandler(async (req, res) => {
 // @route   GET /api/category/:category
 // @access  Public
 const getCategory = asyncHandler(async (req, res) => {
-  const { category } = req.params;
-  if(!category)
-    res.status(404).json({message: 'Category not found'})
-  const products = await Product.find({ category });
-  if(products.length === 0)
-    res.status(404).json({message: 'Category not found'})
+  const { category } = req.params
+  if (!category) { res.status(404).json({ message: 'Category not found' }) }
+  const products = await Product.find({ category })
+  if (products.length === 0) { res.status(404).json({ message: 'Category not found' }) }
   res.json(products)
 })
 
@@ -172,7 +170,7 @@ const createProductReview = asyncHandler(async (req, res) => {
       name: req.user.name,
       rating: Number(rating),
       comment,
-      user: req.user._id,
+      user: req.user._id
     }
 
     product.reviews.push(review)
@@ -201,19 +199,19 @@ const getTopProducts = asyncHandler(async (req, res) => {
 })
 
 const bulkUpload = asyncHandler(async (req, res) => {
-  var form = new formidable.IncomingForm()
+  const form = new formidable.IncomingForm()
   form.parse(req, async function (err, fields, files) {
     if (err) {
       console.log(err)
       res.status(500).json({ message: 'Internal Server Error' })
     }
-    var f = files[Object.keys(files)[0]]
-    var workbook = XLSX.readFile(f.filepath)
+    const f = files[Object.keys(files)[0]]
+    const workbook = XLSX.readFile(f.filepath)
     let tableHeader = XLSX.utils.sheet_to_json(
       workbook.Sheets[workbook.SheetNames[0]],
       {
-        header: 1,
-      },
+        header: 1
+      }
     )
     tableHeader = tableHeader[0];
     ['name', 'image', 'secondaryImage', 'brand', 'category', 'description', 'price', 'mrp', 'discount', 'countInStock', 'tags'].forEach(item => {
@@ -224,21 +222,20 @@ const bulkUpload = asyncHandler(async (req, res) => {
     let tableData = XLSX.utils.sheet_to_json(
       workbook.Sheets[workbook.SheetNames[0]],
       {
-        header: tableHeader,
-      },
+        header: tableHeader
+      }
     )
     tableData = tableData.map(item => {
       item.user = req.user._id
       item.category = item.category.toLowerCase().trim()
       item.tags = item.tags.split(',').map(tag => tag.trim())
-      return item;
+      return item
     })
-    tableData.shift();
-    await Product.insertMany(tableData);
-    res.status(200).json({ message: 'File Uploaded Successfully' });
+    tableData.shift()
+    await Product.insertMany(tableData)
+    res.status(200).json({ message: 'File Uploaded Successfully' })
   })
 })
-
 
 export {
   getProducts,

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { Row, Col, Table, Spinner, Button } from 'react-bootstrap'
+import React, { useEffect } from 'react'
+import { Row, Col, Table, Spinner } from 'react-bootstrap'
 import { useDispatch, useSelector} from 'react-redux'
 import Product from '../components/Product'
 import { getProductsByCategory } from '../actions/productActions'
@@ -13,10 +13,10 @@ const CategoryScreen = ({ history, match}) => {
         if(category.trim() !== '') {
           dispatch(getProductsByCategory(category))
         }
-    }, [dispatch, match])
+    }, [category, dispatch, match])
 
     const productList = useSelector((state) => state.productList)
-    const { loading, error, products, page, pages } = productList
+    const { loading, products } = productList
 
   return (
     <div>

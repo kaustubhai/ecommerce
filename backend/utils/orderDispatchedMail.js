@@ -1,12 +1,11 @@
 const expectedDeliveryDate = (dispatchedAt) => {
-    var date = new Date(dispatchedAt);
-    date.setDate(date.getDate() + 14);
-    return date;
+  const date = new Date(dispatchedAt)
+  date.setDate(date.getDate() + 14)
+  return date
 }
 
-
 const generateTemplate = (order, name, email, url) => {
-    return `
+  return `
     <!DOCTYPE html
     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office"
@@ -815,4 +814,4 @@ a {text-decoration: none;}
 </html>`
 }
 
-export default generateTemplate;
+export default generateTemplate

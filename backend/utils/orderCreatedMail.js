@@ -1,5 +1,5 @@
 const generateRows = (products) => {
-    const x = products.map((product) => (
+  const x = products.map((product) => (
         `
         <tr>
             <td class="esdev-adapt-off" align="left"
@@ -81,13 +81,12 @@ const generateRows = (products) => {
             </td>
         </tr>
         `
-    ))   
-    return x.join('')     
-    }
-
+  ))
+  return x.join('')
+}
 
 const generateTemplate = (order, name, email) => {
-    return `
+  return `
     <!DOCTYPE html
     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office"
@@ -663,7 +662,7 @@ a {text-decoration: none;}
                                                                         style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px">
                                                                         Subtotal: ₹<strong>${(order.totalPrice - order.taxPrice - order.shippingPrice).toLocaleString('en-IN')}</strong><br>
                                                                         Shipping: ₹<strong>${order.shippingPrice.toLocaleString('en-IN')}</strong><br>
-                                                                        ${!!order.discount ? `Discount: ₹<strong>${order.discount.toLocaleString('en-IN')}</strong><br>` : ''}
+                                                                        ${order.discount ? `Discount: ₹<strong>${order.discount.toLocaleString('en-IN')}</strong><br>` : ''}
                                                                         Tax: ₹<strong>${order.taxPrice.toLocaleString('en-IN')}</strong><br>
                                                                         Total: ₹<strong>${order.totalPrice.toLocaleString('en-IN')}</strong></p>
                                                                 </td>
@@ -928,4 +927,4 @@ a {text-decoration: none;}
 </html>`
 }
 
-export default generateTemplate;
+export default generateTemplate

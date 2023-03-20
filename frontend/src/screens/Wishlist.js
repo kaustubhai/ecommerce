@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Button, Table } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { getUserWishlist, removeFromUserWishlist } from '../actions/userActions'
+import { getUserWishlist } from '../actions/userActions'
 import ProductRow from '../components/ProductRow'
 import Message from '../components/Message'
-import { Link } from 'react-router-dom'
 
 const Wishlist = ({ history }) => {
     const dispatch = useDispatch()
@@ -15,7 +14,7 @@ const Wishlist = ({ history }) => {
 
     useEffect(() => {
         dispatch(getUserWishlist())
-    }, [])
+    }, [dispatch])
 
   useEffect(() => {
     if (!userInfo) {

@@ -1,5 +1,4 @@
 import express from 'express'
-const router = express.Router()
 import {
   getProducts,
   getProductById,
@@ -10,9 +9,10 @@ import {
   getTopProducts,
   getAllCategory,
   getCategory,
-  bulkUpload,
+  bulkUpload
 } from '../controllers/productController.js'
 import { protect, admin } from '../middleware/authMiddleware.js'
+const router = express.Router()
 
 router.route('/').get(getProducts).post(protect, admin, createProduct)
 router.route('/:id/reviews').post(protect, createProductReview)

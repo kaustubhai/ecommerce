@@ -1,4 +1,4 @@
-import React, { useState ,useRef} from 'react'
+import React from 'react'
 import { Route } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { LinkContainer } from 'react-router-bootstrap'
@@ -10,8 +10,6 @@ const Header = () => {
   const dispatch = useDispatch()
 
   const userLogin = useSelector((state) => state.userLogin)
-  const [toggle,setToggle] = useState(false)
-  const [toggle2,setToggle2] = useState(false)
   const { userInfo } = userLogin
 
   const logoutHandler = () => {

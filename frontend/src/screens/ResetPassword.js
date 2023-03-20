@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Form, Button, Row, Col } from 'react-bootstrap'
+import { Form, Button, Row } from 'react-bootstrap'
 import FormContainer from '../components/FormContainer'
 import { Helmet } from 'react-helmet'
 import Message from '../components/Message'

@@ -1,5 +1,5 @@
 const generateTemplate = (token, uId) => {
-    return `
+  return `
     
 <!doctype html>
 <html lang="en-US">
@@ -83,4 +83,4 @@ const generateTemplate = (token, uId) => {
 </html>`
 }
 
-export default generateTemplate;
+export default generateTemplate

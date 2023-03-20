@@ -5,12 +5,12 @@ const userSchema = mongoose.Schema(
   {
     name: {
       type: String,
-      required: true,
+      required: true
     },
     email: {
       type: String,
       required: true,
-      unique: true,
+      unique: true
     },
     mode: {
       type: String,
@@ -24,25 +24,25 @@ const userSchema = mongoose.Schema(
     }],
     phone: {
       type: String,
-      unique: true,
+      unique: true
     },
     password: {
       type: String,
-      required: true,
+      required: true
     },
     newsletter: {
       type: Boolean,
       required: true,
-      default: true,
+      default: true
     },
     isAdmin: {
       type: Boolean,
       required: true,
-      default: false,
-    },
+      default: false
+    }
   },
   {
-    timestamps: true,
+    timestamps: true
   }
 )
 

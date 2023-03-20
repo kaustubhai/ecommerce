@@ -9,7 +9,7 @@ const PrivacyPolicy = () => {
   const dispatch = useDispatch()
 
   const productTopRated = useSelector((state) => state.productTopRated)
-  const { loading, error, products } = productTopRated
+  const { products } = productTopRated
 
   useEffect(() => {
     dispatch(listTopProducts())

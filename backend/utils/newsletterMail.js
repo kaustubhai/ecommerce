@@ -1,5 +1,5 @@
 const generateNewsletter = (body) => {
-    return `
+  return `
     
 <!doctype html>
 <html lang="en-US">
@@ -23,4 +23,4 @@ const generateNewsletter = (body) => {
 </html>`
 }
 
-export default generateNewsletter;
+export default generateNewsletter

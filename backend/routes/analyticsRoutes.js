@@ -1,14 +1,14 @@
 import express from 'express'
-const router = express.Router()
-import { protect, admin } from '../middleware/authMiddleware.js';
+import { protect, admin } from '../middleware/authMiddleware.js'
 import {
-    getLowInStockProducts,
-    getNewUserOnboardedThisMonth,
-    getNetSaleThisFY,
-    getNetSaleThisMonth,
-    getOutOfStockProducts,
-    getProcessingOrdersCount
+  getLowInStockProducts,
+  getNewUserOnboardedThisMonth,
+  getNetSaleThisFY,
+  getNetSaleThisMonth,
+  getOutOfStockProducts,
+  getProcessingOrdersCount
 } from '../controllers/analyticsController.js'
+const router = express.Router()
 
 router.route('/net-sale-this-fy').get(protect, admin, getNetSaleThisFY)
 router.route('/net-sale-this-month').get(protect, admin, getNetSaleThisMonth)

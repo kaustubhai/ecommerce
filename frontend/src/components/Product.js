@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Badge, Button, Card } from 'react-bootstrap'
-import Rating from './Rating'
+import { Badge, Card } from 'react-bootstrap'
 
 const Product = ({ product }) => {
   const [img, setImg] = useState('')

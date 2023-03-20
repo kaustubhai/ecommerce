@@ -5,7 +5,7 @@ const orderSchema = mongoose.Schema(
     user: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: 'User',
+      ref: 'User'
     },
     orderItems: [
       {
@@ -18,12 +18,12 @@ const orderSchema = mongoose.Schema(
         product: {
           type: mongoose.Schema.Types.ObjectId,
           required: true,
-          ref: 'Product',
-        },
-      },
+          ref: 'Product'
+        }
+      }
     ],
     trackingUrl: {
-      type: String,
+      type: String
     },
     discount: { type: Number },
     shippingAddress: {
@@ -31,50 +31,50 @@ const orderSchema = mongoose.Schema(
       state: { type: String, required: true },
       city: { type: String, required: true },
       postalCode: { type: String, required: true },
-      country: { type: String, required: true },
+      country: { type: String, required: true }
     },
     paymentResult: {
       paymentId: { type: String },
       orderId: { type: String },
-      signature: { type: String },
+      signature: { type: String }
     },
     taxPrice: {
       type: Number,
       required: true,
-      default: 0.0,
+      default: 0.0
     },
     shippingPrice: {
       type: Number,
       required: true,
-      default: 0.0,
+      default: 0.0
     },
     totalPrice: {
       type: Number,
       required: true,
-      default: 0.0,
+      default: 0.0
     },
     isPaid: {
       type: Boolean,
       required: true,
-      default: false,
+      default: false
     },
     paidAt: {
-      type: Date,
+      type: Date
     },
     isDispatched: {
       type: Boolean,
       required: true,
-      default: false,
+      default: false
     },
     dispatchedAt: {
-      type: Date,
+      type: Date
     },
     rpId: {
-      type: String,
+      type: String
     }
   },
   {
-    timestamps: true,
+    timestamps: true
   }
 )
 

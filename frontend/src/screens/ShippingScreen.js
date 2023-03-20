@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Form, Button, Alert } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import FormContainer from '../components/FormContainer'
@@ -25,10 +25,6 @@ const ShippingScreen = ({ history }) => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    checkDeliveryHandler(shippingAddress.postalCode)
-  }, [shippingAddress.postalCode])
-
-  useEffect(() => {
     setAlert(phoneError)
   }, [phoneError])
   
@@ -39,13 +35,17 @@ const ShippingScreen = ({ history }) => {
       history.push('/placeorder')
   }
 
-  const checkDeliveryHandler = async (val) => {
+  const checkDeliveryHandler = useCallback(async (val) => {
     setPostalCode(val)
     if(val.length === 6){
       setAlert('Processing...')
       dispatch(checkDelivery(val));
     }
-  }
+  }, [dispatch])
+
+  useEffect(() => {
+    checkDeliveryHandler(shippingAddress.postalCode)
+  }, [checkDeliveryHandler, shippingAddress.postalCode])
 
   const updatePhoneNumber = async (val) => {
     setPhone(val)
